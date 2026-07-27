@@ -8,9 +8,12 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboard;
+use App\Http\Controllers\Customer\DocumentController as CustomerDocumentController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\CarController as AdminCarController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Admin\DocumentController as AdminDocumentController;
+use App\Http\Controllers\Admin\MaintenanceController as AdminMaintenanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +48,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/bookings/create/{carId}', [BookingController::class, 'create'])->name('bookings.create');
         Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
         Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+        Route::get('/documents', [CustomerDocumentController::class, 'index'])->name('documents.index');
+        Route::post('/documents', [CustomerDocumentController::class, 'store'])->name('documents.store');
     });
 
     // Shared authenticated booking routes
@@ -57,5 +62,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('cars', AdminCarController::class);
         Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
         Route::post('/bookings/{id}/status', [AdminBookingController::class, 'updateStatus'])->name('bookings.status');
+        Route::get('/documents', [AdminDocumentController::class, 'index'])->name('documents.index');
+        Route::post('/documents/{id}/approve', [AdminDocumentController::class, 'approve'])->name('documents.approve');
+        Route::post('/documents/{id}/reject', [AdminDocumentController::class, 'reject'])->name('documents.reject');
+        Route::get('/maintenance', [AdminMaintenanceController::class, 'index'])->name('maintenance.index');
+        Route::post('/maintenance', [AdminMaintenanceController::class, 'store'])->name('maintenance.store');
+        Route::post('/maintenance/{id}/complete', [AdminMaintenanceController::class, 'complete'])->name('maintenance.complete');
     });
 });
