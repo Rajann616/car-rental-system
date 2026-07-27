@@ -17,16 +17,22 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
-        $startDate = $request->filled('start_date') ? Carbon::parse($request->start_date)->startOfDay() : now()->subDays(30)->startOfDay();
-        $endDate = $request->filled('end_date') ? Carbon::parse($request->end_date)->endOfDay() : now()->endOfDay();
+        $fromDateInput = $request->input('from_date', $request->input('start_date'));
+        $toDateInput = $request->input('to_date', $request->input('end_date'));
 
-        $totalRevenue = Payment::where('status', 'Success')
+        $startDate = $fromDateInput ? Carbon::parse($fromDateInput)->startOfDay() : now()->subDays(30)->startOfDay();
+        $endDate = $toDateInput ? Carbon::parse($toDateInput)->endOfDay() : now()->endOfDay();
+
+        $fromDate = $startDate->format('Y-m-d');
+        $toDate = $endDate->format('Y-m-d');
+
+        $totalPeriodRevenue = Payment::where('status', 'Success')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->sum('amount');
 
-        $totalBookingsCount = Booking::whereBetween('created_at', [$startDate, $endDate])->count();
-        $completedBookingsCount = Booking::where('status', 'Completed')->whereBetween('created_at', [$startDate, $endDate])->count();
-        $cancelledBookingsCount = Booking::where('status', 'Cancelled')->whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalPeriodBookings = Booking::whereBetween('created_at', [$startDate, $endDate])->count();
+        $completedBookings = Booking::where('status', 'Completed')->whereBetween('created_at', [$startDate, $endDate])->count();
+        $cancelledBookings = Booking::where('status', 'Cancelled')->whereBetween('created_at', [$startDate, $endDate])->count();
 
         // Top performing vehicles by revenue
         $topVehicles = Car::withCount(['bookings' => function ($q) use ($startDate, $endDate) {
@@ -43,12 +49,12 @@ class ReportController extends Controller
             ->paginate(15);
 
         return view('admin.reports.index', compact(
-            'startDate',
-            'endDate',
-            'totalRevenue',
-            'totalBookingsCount',
-            'completedBookingsCount',
-            'cancelledBookingsCount',
+            'fromDate',
+            'toDate',
+            'totalPeriodRevenue',
+            'totalPeriodBookings',
+            'completedBookings',
+            'cancelledBookings',
             'topVehicles',
             'payments'
         ));
