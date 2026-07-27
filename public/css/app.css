@@ -182,7 +182,7 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; }
     font-family: var(--font-body);
 }
 
-#mainNavbar:not(.scrolled) .brand-text {
+body.has-hero #mainNavbar:not(.scrolled) .brand-text {
     color: var(--white);
 }
 

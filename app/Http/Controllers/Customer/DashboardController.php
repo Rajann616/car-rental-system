@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Car;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -21,7 +22,7 @@ class DashboardController extends Controller
             ->get();
 
         $recentBookings = $user->bookings()
-            ->with('car')
+            ->with(['car', 'payment'])
             ->latest()
             ->take(5)
             ->get();
@@ -29,7 +30,14 @@ class DashboardController extends Controller
         $totalBookings = $user->bookings()->count();
         $totalSpent = $user->payments()->where('status', 'Success')->sum('amount');
         $documentsCount = $user->documents()->count();
+        $approvedDocuments = $user->documents()->where('status', 'Approved')->count();
         $pendingDocuments = $user->documents()->where('status', 'Pending')->count();
+
+        // Recommended vehicles for quick booking
+        $recommendedCars = Car::available()
+            ->orderBy('rental_price_per_day', 'asc')
+            ->take(3)
+            ->get();
 
         return view('customer.dashboard', compact(
             'activeBookings',
@@ -37,7 +45,9 @@ class DashboardController extends Controller
             'totalBookings',
             'totalSpent',
             'documentsCount',
-            'pendingDocuments'
+            'approvedDocuments',
+            'pendingDocuments',
+            'recommendedCars'
         ));
     }
 }
