@@ -56,40 +56,6 @@
     </div>
 </section>
 
-<!-- Search Bar Section -->
-<section class="search-section">
-    <div class="container">
-        <div class="search-card" data-aos="fade-up">
-            <form action="#fleet" method="GET">
-                <div class="row g-3 align-items-end">
-                    <div class="col-lg-3 col-md-6">
-                        <label class="form-label"><i class="fas fa-car me-1 text-primary"></i> Brand / Model</label>
-                        <select name="brand" class="form-select">
-                            <option value="">All Brands</option>
-                            @foreach($brands as $brand)
-                                <option value="{{ $brand }}">{{ $brand }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <label class="form-label"><i class="fas fa-calendar-alt me-1 text-primary"></i> Pickup Date</label>
-                        <input type="date" name="pickup_date" class="form-control" min="{{ date('Y-m-d') }}">
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <label class="form-label"><i class="fas fa-calendar-check me-1 text-primary"></i> Return Date</label>
-                        <input type="date" name="return_date" class="form-control" min="{{ date('Y-m-d', strtotime('+1 day')) }}">
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <button type="submit" class="btn btn-search">
-                            <i class="fas fa-search me-2"></i> Find Available Cars
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
-
 <!-- Fleet Section -->
 <section class="py-5" id="fleet">
     <div class="container py-4">

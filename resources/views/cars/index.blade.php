@@ -6,12 +6,42 @@
 <section class="dashboard-section pb-5">
     <div class="container">
         <!-- Header -->
-        <div class="dashboard-header text-center mb-5" data-aos="fade-down">
+        <div class="dashboard-header text-center mb-4" data-aos="fade-down">
             <span class="section-eyebrow">Gujarat Fleet</span>
             <h1 class="fw-bold mb-2">Find Your Perfect Rental Car</h1>
             <p class="text-muted mx-auto" style="max-width: 600px;">
                 Browse our wide collection of hatchbacks, sedans, SUVs, and luxury vehicles available across Ahmedabad.
             </p>
+        </div>
+
+        <!-- Find Available Cars Search Bar Card -->
+        <div class="search-card mb-5 border-0 shadow-lg rounded-4 p-4 bg-white" data-aos="fade-up">
+            <form action="{{ route('cars.index') }}" method="GET">
+                <div class="row g-3 align-items-end">
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label small fw-bold text-muted text-uppercase"><i class="fas fa-car me-1 text-primary"></i> Brand / Model</label>
+                        <select name="brand" class="form-select">
+                            <option value="">All Brands</option>
+                            @foreach($brands as $brand)
+                                <option value="{{ $brand }}" {{ request('brand') == $brand ? 'selected' : '' }}>{{ $brand }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label small fw-bold text-muted text-uppercase"><i class="fas fa-calendar-alt me-1 text-primary"></i> Pickup Date</label>
+                        <input type="date" name="pickup_date" class="form-control" min="{{ date('Y-m-d') }}" value="{{ request('pickup_date') }}">
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label small fw-bold text-muted text-uppercase"><i class="fas fa-calendar-check me-1 text-primary"></i> Return Date</label>
+                        <input type="date" name="return_date" class="form-control" min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ request('return_date') }}">
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 font-weight-bold" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; height: 48px;">
+                            <i class="fas fa-search me-2"></i> Find Available Cars
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div class="row g-4">
