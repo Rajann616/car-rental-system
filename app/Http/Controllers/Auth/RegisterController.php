@@ -43,6 +43,6 @@ class RegisterController extends Controller
         Auth::login($user);
 
         return redirect()->route('customer.dashboard')
-            ->with('success', 'Welcome to DriveEase! Your account has been created successfully.');
+            ->with('success', 'Welcome to AutoLux! Your account has been created successfully.');
     }
 }

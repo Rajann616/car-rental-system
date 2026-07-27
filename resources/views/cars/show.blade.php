@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $car->display_name . ' — DriveEase')
+@section('title', $car->display_name . ' — AutoLux')
 
 @section('content')
 <section class="dashboard-section pb-5">

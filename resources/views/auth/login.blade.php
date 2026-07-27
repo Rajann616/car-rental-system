@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sign In — DriveEase')
+@section('title', 'Sign In — AutoLux')
 
 @section('content')
 <section class="auth-section">
@@ -9,7 +9,7 @@
             <div class="text-center mb-4">
                 <a href="{{ route('home') }}" class="d-inline-flex align-items-center gap-2 mb-3">
                     <span class="brand-icon"><i class="fas fa-car-side"></i></span>
-                    <span class="brand-text fs-4 fw-bold">Drive<span class="brand-accent">Ease</span></span>
+                    <span class="brand-text fs-4 fw-bold">Auto<span class="brand-accent">Lux</span></span>
                 </a>
                 <h1 class="auth-title">Welcome Back</h1>
                 <p class="auth-subtitle">Sign in to manage your bookings and rentals</p>
@@ -58,7 +58,7 @@
 
                 <div class="p-3 bg-light rounded-3 small">
                     <div class="mb-1"><strong>Customer:</strong> rajesh.patel@gmail.com / password123</div>
-                    <div><strong>Admin:</strong> admin@driveease.in / admin123</div>
+                    <div><strong>Admin:</strong> admin@AutoLux.in / admin123</div>
                 </div>
 
                 <div class="text-center mt-4">

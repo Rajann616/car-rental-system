@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Browse Rental Vehicles — DriveEase')
+@section('title', 'Browse Rental Vehicles — AutoLux')
 
 @section('content')
 <section class="dashboard-section pb-5">

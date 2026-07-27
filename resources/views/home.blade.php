@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'DriveEase — Premium Car Rental in Ahmedabad')
+@section('title', 'AutoLux — Premium Car Rental in Ahmedabad')
 
 @section('content')
 <!-- Hero Section -->
@@ -144,8 +144,8 @@
 <section class="py-5 bg-light" id="about">
     <div class="container py-4">
         <div class="text-center mb-5" data-aos="fade-up">
-            <span class="section-eyebrow">Why DriveEase</span>
-            <h2 class="section-title">The DriveEase Distinction</h2>
+            <span class="section-eyebrow">Why AutoLux</span>
+            <h2 class="section-title">The AutoLux Distinction</h2>
             <p class="section-subtitle mx-auto">We redefine car rental in Gujarat with transparent pricing, instant verification, and premium customer care.</p>
         </div>
 
@@ -254,7 +254,7 @@
                     <div class="testimonial-stars">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="testimonial-text">"The Razorpay booking process was smooth and instant. Driving the Thar in Kutch was an unforgettable experience. Highly recommended DriveEase!"</p>
+                    <p class="testimonial-text">"The Razorpay booking process was smooth and instant. Driving the Thar in Kutch was an unforgettable experience. Highly recommended AutoLux!"</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">PS</div>
                         <div>
@@ -375,7 +375,7 @@
                     <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
                     <div class="contact-info-text">
                         <h6>Email</h6>
-                        <p>support@driveease.in</p>
+                        <p>support@AutoLux.in</p>
                     </div>
                 </div>
             </div>

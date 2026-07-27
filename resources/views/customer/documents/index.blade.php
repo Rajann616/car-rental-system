@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Upload ID Documents — DriveEase')
+@section('title', 'Upload ID Documents — AutoLux')
 
 @section('content')
 <section class="dashboard-section pb-5">

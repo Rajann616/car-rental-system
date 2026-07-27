@@ -22,7 +22,7 @@
                 <div class="col-sm-6">
                     <div class="d-flex align-items-center gap-2 mb-2">
                         <span class="brand-icon"><i class="fas fa-car-side"></i></span>
-                        <span class="brand-text fs-3 fw-bold">Drive<span class="brand-accent">Ease</span></span>
+                        <span class="brand-text fs-3 fw-bold">Auto<span class="brand-accent">Lux</span></span>
                     </div>
                     <div class="small text-muted">123 SG Highway, Iskcon Cross Roads, Ahmedabad, GJ</div>
                     <div class="small text-muted">GSTIN: 24AAACD1234E1Z5 | Support: +91 98765 43210</div>
@@ -123,7 +123,7 @@
 
             <!-- Invoice Footer -->
             <div class="text-center pt-3 border-top text-muted small">
-                Thank you for choosing DriveEase. Drive safely and adhere to traffic regulations across Gujarat!
+                Thank you for choosing AutoLux. Drive safely and adhere to traffic regulations across Gujarat!
             </div>
         </div>
     </div>

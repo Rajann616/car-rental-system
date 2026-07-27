@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Confirm Booking — DriveEase')
+@section('title', 'Confirm Booking — AutoLux')
 
 @section('content')
 <section class="dashboard-section pb-5">
@@ -147,7 +147,7 @@
             "key": "{{ env('RAZORPAY_KEY', 'rzp_test_sample_key') }}",
             "amount": "{{ $totalAmount * 100 }}",
             "currency": "INR",
-            "name": "DriveEase Car Rental",
+            "name": "AutoLux Car Rental",
             "description": "Rental Booking for {{ $car->brand }} {{ $car->model }}",
             "image": "https://cdn-icons-png.flaticon.com/512/3202/3202926.png",
             "order_id": "{{ $razorpayOrder['id'] }}",

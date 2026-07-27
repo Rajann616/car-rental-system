@@ -12,8 +12,8 @@ class UserSeeder extends Seeder
     {
         // Admin User
         User::create([
-            'name' => 'Admin DriveEase',
-            'email' => 'admin@driveease.in',
+            'name' => 'Admin AutoLux',
+            'email' => 'admin@AutoLux.in',
             'phone' => '9876543210',
             'address' => '123 SG Highway, Near Iskcon Temple',
             'city' => 'Ahmedabad',

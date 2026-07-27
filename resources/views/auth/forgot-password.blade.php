@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Forgot Password — DriveEase')
+@section('title', 'Forgot Password — AutoLux')
 
 @section('content')
 <section class="auth-section">
@@ -9,7 +9,7 @@
             <div class="text-center mb-4">
                 <a href="{{ route('home') }}" class="d-inline-flex align-items-center gap-2 mb-3">
                     <span class="brand-icon"><i class="fas fa-car-side"></i></span>
-                    <span class="brand-text fs-4 fw-bold">Drive<span class="brand-accent">Ease</span></span>
+                    <span class="brand-text fs-4 fw-bold">Auto<span class="brand-accent">Lux</span></span>
                 </a>
                 <h1 class="auth-title">Reset Password</h1>
                 <p class="auth-subtitle">Enter your email and we'll send you a password reset link</p>

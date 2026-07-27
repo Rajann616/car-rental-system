@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Customer Dashboard — DriveEase')
+@section('title', 'Customer Dashboard — AutoLux')
 
 @section('content')
 <section class="dashboard-section pb-5">

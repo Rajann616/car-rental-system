@@ -170,10 +170,11 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; }
     justify-content: center;
     width: 42px;
     height: 42px;
-    background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+    background: linear-gradient(135deg, #ff7a00, #ea580c);
     color: var(--white);
     border-radius: 12px;
     font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3);
 }
 
 .brand-text {
@@ -181,16 +182,21 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; }
     font-family: var(--font-body);
 }
 
+#mainNavbar:not(.scrolled) .brand-text {
+    color: var(--white);
+}
+
 .brand-accent {
-    color: var(--primary-500);
+    color: #ff7a00;
 }
 
 .nav-link {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--neutral-700) !important;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ff7a00 !important;
     padding: 0.5rem 1rem !important;
     position: relative;
+    transition: all var(--transition-fast);
 }
 
 .nav-link::after {
@@ -199,17 +205,21 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; }
     bottom: 0;
     left: 1rem;
     right: 1rem;
-    height: 2px;
-    background: var(--primary-500);
+    height: 3px;
+    border-radius: 2px;
+    background: #ff7a00;
     transform: scaleX(0);
     transition: transform var(--transition-fast);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link.active::after {
     transform: scaleX(1);
 }
 
-.nav-link:hover { color: var(--primary-500) !important; }
+.nav-link:hover { 
+    color: #ea580c !important; 
+}
 
 .navbar-actions {
     display: flex;

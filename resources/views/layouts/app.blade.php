@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="DriveEase - Premium car rental service in Ahmedabad, Gujarat. Self-drive, chauffeur, outstation & airport pickup. Maruti, Tata, Hyundai, Mahindra & more.">
-    <title>@yield('title', 'DriveEase — Premium Car Rental in Ahmedabad')</title>
+    <meta name="description" content="AutoLux - Premium car rental service in Ahmedabad, Gujarat. Self-drive, chauffeur, outstation & airport pickup. Maruti, Tata, Hyundai, Mahindra & more.">
+    <title>@yield('title', 'AutoLux — Premium Car Rental in Ahmedabad')</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,7 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
                 <span class="brand-icon"><i class="fas fa-car-side"></i></span>
-                <span class="brand-text">Drive<span class="brand-accent">Ease</span></span>
+                <span class="brand-text">Auto<span class="brand-accent">Lux</span></span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -141,7 +141,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="footer-brand">
                         <span class="brand-icon"><i class="fas fa-car-side"></i></span>
-                        <span class="brand-text">Drive<span class="brand-accent">Ease</span></span>
+                        <span class="brand-text">Auto<span class="brand-accent">Lux</span></span>
                     </div>
                     <p class="footer-desc">Premium car rental service in Ahmedabad, Gujarat. Drive your dreams with our curated fleet of the finest vehicles India has to offer.</p>
                     <div class="social-links">
@@ -184,7 +184,7 @@
                         </li>
                         <li>
                             <i class="fas fa-envelope"></i>
-                            <span>info@driveease.in</span>
+                            <span>info@AutoLux.in</span>
                         </li>
                         <li>
                             <i class="fas fa-clock"></i>
@@ -196,7 +196,7 @@
             <div class="footer-bottom">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <p>&copy; {{ date('Y') }} DriveEase. All rights reserved.</p>
+                        <p>&copy; {{ date('Y') }} AutoLux. All rights reserved.</p>
                     </div>
                     <div class="col-md-6 text-md-end">
                         <a href="#">Privacy Policy</a>
