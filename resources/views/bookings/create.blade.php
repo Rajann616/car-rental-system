@@ -8,7 +8,7 @@
         <!-- Header -->
         <div class="dashboard-header mb-4" data-aos="fade-down">
             <h1 class="fw-bold mb-1">Confirm Reservation & Payment</h1>
-            <p class="text-muted">Review your itinerary and complete payment via Razorpay.</p>
+            <p class="text-muted">Review your itinerary and complete payment via Instant UPI.</p>
         </div>
 
         <div class="row g-4">
@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            <!-- Right Column: Fare Breakdown & Razorpay Payment -->
+            <!-- Right Column: Fare Breakdown & Instant UPI Payment -->
             <div class="col-lg-5" data-aos="fade-left">
                 <div class="dashboard-card sticky-top" style="top: 100px;">
                     <div class="card-header-custom bg-dark text-white">
@@ -111,7 +111,7 @@
                         </div>
 
                         <!-- Hidden Form for Payment Submission -->
-                        <form action="{{ route('customer.bookings.store') }}" method="POST" id="razorpayForm">
+                        <form action="{{ route('customer.bookings.store') }}" method="POST" id="Instant UPIForm">
                             @csrf
                             <input type="hidden" name="car_id" value="{{ $car->id }}">
                             <input type="hidden" name="pickup_date" value="{{ $pickupDate->toDateString() }}">
@@ -120,17 +120,17 @@
                             <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
                             <input type="hidden" name="security_deposit" value="{{ $securityDeposit }}">
                             
-                            <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
-                            <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="{{ $razorpayOrder['id'] }}">
-                            <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+                            <input type="hidden" name="Instant UPI_payment_id" id="Instant UPI_payment_id">
+                            <input type="hidden" name="Instant UPI_order_id" id="Instant UPI_order_id" value="{{ $Instant UPIOrder['id'] }}">
+                            <input type="hidden" name="Instant UPI_signature" id="Instant UPI_signature">
 
-                            <button type="button" id="payBtn" onclick="startRazorpayPayment()" class="btn btn-success btn-lg w-100 rounded-pill fw-bold py-3 shadow-lg">
-                                <i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Razorpay
+                            <button type="button" id="payBtn" onclick="startInstant UPIPayment()" class="btn btn-success btn-lg w-100 rounded-pill fw-bold py-3 shadow-lg">
+                                <i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Instant UPI
                             </button>
                         </form>
 
                         <div class="text-center mt-3">
-                            <small class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> 256-Bit SSL Encrypted Razorpay Checkout</small>
+                            <small class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> 256-Bit SSL Encrypted Instant UPI Checkout</small>
                         </div>
                     </div>
                 </div>
@@ -139,23 +139,23 @@
     </div>
 </section>
 
-<!-- Razorpay JS Checkout Integration -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- Instant UPI JS Checkout Integration -->
+<script src="https://checkout.Instant UPI.com/v1/checkout.js"></script>
 <script>
-    function startRazorpayPayment() {
+    function startInstant UPIPayment() {
         const options = {
-            "key": "{{ env('RAZORPAY_KEY', 'rzp_test_sample_key') }}",
+            "key": "{{ env('Instant UPI_KEY', 'rzp_test_sample_key') }}",
             "amount": "{{ $totalAmount * 100 }}",
             "currency": "INR",
             "name": "AutoLux Car Rental",
             "description": "Rental Booking for {{ $car->brand }} {{ $car->model }}",
             "image": "https://cdn-icons-png.flaticon.com/512/3202/3202926.png",
-            "order_id": "{{ $razorpayOrder['id'] }}",
+            "order_id": "{{ $Instant UPIOrder['id'] }}",
             "handler": function (response) {
-                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
-                document.getElementById('razorpay_signature').value = response.razorpay_signature || '';
-                document.getElementById('razorpayForm').submit();
+                document.getElementById('Instant UPI_payment_id').value = response.Instant UPI_payment_id;
+                document.getElementById('Instant UPI_order_id').value = response.Instant UPI_order_id;
+                document.getElementById('Instant UPI_signature').value = response.Instant UPI_signature || '';
+                document.getElementById('Instant UPIForm').submit();
             },
             "prefill": {
                 "name": "{{ auth()->user()->name }}",
@@ -168,17 +168,17 @@
         };
 
         try {
-            const rzp = new Razorpay(options);
+            const rzp = new Instant UPI(options);
             rzp.on('payment.failed', function (response){
                 alert("Payment Failed: " + response.error.description);
             });
             rzp.open();
         } catch (e) {
-            // Local fallback simulation if Razorpay JS SDK is offline/blocked
+            // Local fallback simulation if Instant UPI JS SDK is offline/blocked
             const demoPaymentId = "pay_demo_" + Math.random().toString(36).substring(7);
-            document.getElementById('razorpay_payment_id').value = demoPaymentId;
-            document.getElementById('razorpay_signature').value = "sig_demo_sandbox";
-            document.getElementById('razorpayForm').submit();
+            document.getElementById('Instant UPI_payment_id').value = demoPaymentId;
+            document.getElementById('Instant UPI_signature').value = "sig_demo_sandbox";
+            document.getElementById('Instant UPIForm').submit();
         }
     }
 </script>

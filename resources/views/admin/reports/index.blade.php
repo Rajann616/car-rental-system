@@ -64,7 +64,7 @@
                     </div>
                     <div class="stat-value font-display fs-2 fw-bold text-dark">₹{{ number_format($totalPeriodRevenue, 0) }}</div>
                     <div class="small text-muted mt-2">
-                        <span class="text-success fw-semibold"><i class="fas fa-circle-check me-1"></i> Paid via Razorpay</span>
+                        <span class="text-success fw-semibold"><i class="fas fa-circle-check me-1"></i> Paid via Instant UPI</span>
                     </div>
                 </div>
             </div>

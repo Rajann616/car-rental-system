@@ -221,7 +221,7 @@
                     <div class="testimonial-stars">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="testimonial-text">"The Razorpay booking process was smooth and instant. Driving the Thar in Kutch was an unforgettable experience. Highly recommended AutoLux!"</p>
+                    <p class="testimonial-text">"The Instant UPI booking process was smooth and instant. Driving the Thar in Kutch was an unforgettable experience. Highly recommended AutoLux!"</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">PS</div>
                         <div>

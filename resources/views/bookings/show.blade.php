@@ -114,7 +114,7 @@
                             <div class="small text-muted">Transaction ID: <strong class="text-dark">{{ $booking->payment->transaction_id }}</strong></div>
                         </div>
                         <div class="col-sm-6 text-sm-end">
-                            <div class="small text-muted">Razorpay Order: <strong>{{ $booking->payment->razorpay_order_id }}</strong></div>
+                            <div class="small text-muted">Instant UPI Order: <strong>{{ $booking->payment->Instant UPI_order_id }}</strong></div>
                             <div class="small text-muted">Payment Status: <span class="badge bg-success">PAID SUCCESSFUL</span></div>
                         </div>
                     </div>

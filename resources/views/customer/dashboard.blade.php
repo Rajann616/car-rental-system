@@ -103,7 +103,7 @@
                     </div>
                     <div class="stat-value font-display fs-2 fw-bold text-dark">₹{{ number_format($totalSpent, 0) }}</div>
                     <div class="small text-muted mt-2">
-                        <span class="text-success"><i class="fas fa-shield-alt me-1"></i> Razorpay Secured</span>
+                        <span class="text-success"><i class="fas fa-shield-alt me-1"></i> Instant UPI Secured</span>
                     </div>
                 </div>
             </div>
