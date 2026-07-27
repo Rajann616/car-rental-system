@@ -24,7 +24,7 @@
 
                         <h1 class="fw-bold text-white font-display fs-2 mb-2">AutoLux Command Center</h1>
                         <p class="text-white-50 mb-0 max-w-2xl">
-                            Real-time overview of fleet availability, customer reservations, driver verification approvals, and monthly revenue.
+                            Real-time overview of car availability, customer reservations, driver verification approvals, and monthly revenue.
                         </p>
                     </div>
 
@@ -70,11 +70,11 @@
                 </div>
             </div>
 
-            <!-- Total Fleet Count -->
+            <!-- Total car Count -->
             <div class="col-xl-3 col-sm-6" data-aos="fade-up" data-aos-delay="200">
                 <div class="stat-card border-0 shadow-sm p-4 rounded-4 bg-white position-relative overflow-hidden">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="stat-label text-muted fw-bold small text-uppercase">Fleet Vehicles</span>
+                        <span class="stat-label text-muted fw-bold small text-uppercase">car Vehicles</span>
                         <div class="stat-icon p-3 rounded-3" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
                             <i class="fas fa-car-side fs-4"></i>
                         </div>
@@ -124,15 +124,15 @@
             </div>
         </div>
 
-        <!-- Fleet Breakdown & Driver Verification Queue Row -->
+        <!-- car Breakdown & Driver Verification Queue Row -->
         <div class="row g-4 mb-4">
             
-            <!-- Fleet Status Breakdown Widget -->
+            <!-- car Status Breakdown Widget -->
             <div class="col-lg-4" data-aos="fade-up">
                 <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden h-100">
                     <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between">
-                        <h5 class="fw-bold mb-0 text-dark"><i class="fas fa-chart-pie me-2 text-primary"></i> Fleet Status Breakdown</h5>
-                        <a href="{{ route('admin.cars.index') }}" class="small text-primary fw-semibold text-decoration-none">Manage Fleet</a>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fas fa-chart-pie me-2 text-primary"></i> car Status Breakdown</h5>
+                        <a href="{{ route('admin.cars.index') }}" class="small text-primary fw-semibold text-decoration-none">Manage Cars</a>
                     </div>
                     <div class="card-body-custom p-4">
                         
@@ -146,7 +146,7 @@
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between small fw-bold mb-1">
-                                <span class="text-muted">Fleet Utilization Rate</span>
+                                <span class="text-muted">car Utilization Rate</span>
                                 <span class="text-dark">{{ $bookedPct }}% Rented</span>
                             </div>
                             <div class="progress rounded-pill" style="height: 12px; background: #e5e7eb;">

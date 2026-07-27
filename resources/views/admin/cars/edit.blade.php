@@ -7,7 +7,7 @@
     <div class="container">
         <div class="mb-4" data-aos="fade-down">
             <a href="{{ route('admin.cars.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
-                <i class="fas fa-arrow-left me-1"></i> Back to Fleet List
+                <i class="fas fa-arrow-left me-1"></i> Back to car List
             </a>
         </div>
 

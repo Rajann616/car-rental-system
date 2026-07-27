@@ -8,8 +8,8 @@
         <!-- Header -->
         <div class="dashboard-header d-flex align-items-center justify-content-between flex-wrap gap-3" data-aos="fade-down">
             <div>
-                <h1 class="fw-bold mb-1">Vehicle Fleet Management</h1>
-                <p class="text-muted mb-0">Add, edit, monitor and update vehicle statuses in your fleet.</p>
+                <h1 class="fw-bold mb-1">Vehicle car Management</h1>
+                <p class="text-muted mb-0">Add, edit, monitor and update vehicle statuses in your car.</p>
             </div>
             <div>
                 <a href="{{ route('admin.cars.create') }}" class="btn btn-primary rounded-pill px-4">

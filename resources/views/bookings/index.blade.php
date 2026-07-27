@@ -129,7 +129,7 @@
                         </div>
                         <h5 class="fw-bold text-dark mb-2">No Rental History Found</h5>
                         <p class="text-muted mx-auto mb-4" style="max-width: 420px;">
-                            You haven't made any vehicle reservations yet. Choose from our luxury fleet to experience self-drive rental in Gujarat!
+                            You haven't made any vehicle reservations yet. Choose from our luxury car to experience self-drive rental in Gujarat!
                         </p>
                         <a href="{{ route('cars.index') }}" class="btn btn-primary rounded-pill px-4 py-2 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
                             <i class="fas fa-search me-2"></i> Browse Vehicles & Book Now

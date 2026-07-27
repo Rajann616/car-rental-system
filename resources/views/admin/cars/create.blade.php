@@ -7,13 +7,13 @@
     <div class="container">
         <div class="mb-4" data-aos="fade-down">
             <a href="{{ route('admin.cars.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
-                <i class="fas fa-arrow-left me-1"></i> Back to Fleet List
+                <i class="fas fa-arrow-left me-1"></i> Back to car List
             </a>
         </div>
 
         <div class="dashboard-card max-w-3xl mx-auto" data-aos="fade-up">
             <div class="card-header-custom">
-                <h5><i class="fas fa-plus-circle me-2 text-primary"></i> Add New Vehicle to Fleet</h5>
+                <h5><i class="fas fa-plus-circle me-2 text-primary"></i> Add New Vehicle to car</h5>
             </div>
             <div class="card-body-custom">
                 <form action="{{ route('admin.cars.store') }}" method="POST" enctype="multipart/form-data">

@@ -20,11 +20,11 @@
                         Drive Your Dreams in <span class="highlight">Gujarat</span>
                     </h1>
                     <p class="hero-desc">
-                        Experience freedom on wheels. Choose from our luxury fleet of Maruti, Tata, Mahindra, Hyundai & Toyota vehicles for self-drive, outstation, or airport transfers.
+                        Experience freedom on wheels. Choose from our luxury car of Maruti, Tata, Mahindra, Hyundai & Toyota vehicles for self-drive, outstation, or airport transfers.
                     </p>
                     <div class="hero-cta-group">
-                        <a href="#fleet" class="btn btn-hero-primary">
-                            <span>Explore Fleet</span>
+                        <a href="#car" class="btn btn-hero-primary">
+                            <span>Explore Cars</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
                         <a href="#services" class="btn btn-hero-outline">
@@ -34,7 +34,7 @@
                     <div class="hero-stats">
                         <div class="hero-stat">
                             <div class="stat-number">15+</div>
-                            <div class="stat-label">Luxury Fleet</div>
+                            <div class="stat-label">Luxury car</div>
                         </div>
                         <div class="hero-stat">
                             <div class="stat-number">5k+</div>
@@ -56,12 +56,12 @@
     </div>
 </section>
 
-<!-- Fleet Section -->
-<section class="py-5" id="fleet">
+<!-- car Section -->
+<section class="py-5" id="car">
     <div class="container py-4">
         <div class="text-center mb-5" data-aos="fade-up">
             <span class="section-eyebrow">Curated Selection</span>
-            <h2 class="section-title">Explore Our Premium Fleet</h2>
+            <h2 class="section-title">Explore Our Premium car</h2>
             <p class="section-subtitle mx-auto">Choose from India's top-rated sedans, hatchbacks, electric vehicles, and rugged 4x4 SUVs.</p>
         </div>
 

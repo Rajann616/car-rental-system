@@ -47,7 +47,7 @@
                     @auth
                         @if(auth()->user()->isCustomer())
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('cars.index') }}">Browse Fleet</a>
+                                <a class="nav-link" href="{{ route('cars.index') }}">Browse Cars</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('customer.bookings.index') }}">Bookings</a>
@@ -58,7 +58,7 @@
                         @endif
                         @if(auth()->user()->isAdmin())
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.cars.index') }}">Fleet Mgr</a>
+                                <a class="nav-link" href="{{ route('admin.cars.index') }}">Car Mgr</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.bookings.index') }}">Reservations</a>
@@ -143,7 +143,7 @@
                         <span class="brand-icon"><i class="fas fa-car-side"></i></span>
                         <span class="brand-text">Auto<span class="brand-accent">Lux</span></span>
                     </div>
-                    <p class="footer-desc">Premium car rental service in Ahmedabad, Gujarat. Drive your dreams with our curated fleet of the finest vehicles India has to offer.</p>
+                    <p class="footer-desc">Premium car rental service in Ahmedabad, Gujarat. Drive your dreams with our curated car of the finest vehicles India has to offer.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
@@ -155,7 +155,7 @@
                     <h5 class="footer-heading">Quick Links</h5>
                     <ul class="footer-links">
                         <li><a href="{{ route('home') }}">Home</a></li>
-                        <li><a href="{{ route('cars.index') }}">Our Fleet</a></li>
+                        <li><a href="{{ route('cars.index') }}">Our car</a></li>
                         <li><a href="{{ route('home') }}#services">Services</a></li>
                         <li><a href="{{ route('home') }}#about">About Us</a></li>
                         <li><a href="{{ route('home') }}#contact">Contact</a></li>

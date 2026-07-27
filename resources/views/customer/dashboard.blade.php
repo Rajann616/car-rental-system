@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <p class="text-white-50 mb-0" style="max-width: 550px;">
-                            Manage your active rentals, track reservations, or pick your next luxury ride from our Ahmedabad fleet.
+                            Manage your active rentals, track reservations, or pick your next luxury ride from our Ahmedabad car.
                         </p>
                     </div>
                     <div class="col-lg-4 text-lg-end">
@@ -192,10 +192,10 @@
                                 </div>
                                 <h5 class="fw-bold text-dark mb-2">No Active Vehicle Rental</h5>
                                 <p class="text-muted mx-auto mb-4" style="max-width: 420px;">
-                                    You don't have any vehicle checked out currently. Choose a vehicle from our Gujarat fleet for your upcoming trip!
+                                    You don't have any vehicle checked out currently. Choose a vehicle from our Gujarat Cars for your upcoming trip!
                                 </p>
                                 <a href="{{ route('cars.index') }}" class="btn btn-primary rounded-pill px-4 py-2 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                                    <i class="fas fa-search me-2"></i> Explore Fleet Now
+                                    <i class="fas fa-search me-2"></i> Explore Cars Now
                                 </a>
                             </div>
                         @endif
@@ -274,7 +274,7 @@
             <div class="mb-4" data-aos="fade-up">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <h5 class="fw-bold text-dark mb-0"><i class="fas fa-fire text-warning me-2"></i> Recommended Cars for You</h5>
-                    <a href="{{ route('cars.index') }}" class="text-primary small fw-semibold">View Fleet Catalog <i class="fas fa-arrow-right ms-1"></i></a>
+                    <a href="{{ route('cars.index') }}" class="text-primary small fw-semibold">View car Catalog <i class="fas fa-arrow-right ms-1"></i></a>
                 </div>
 
                 <div class="row g-3">

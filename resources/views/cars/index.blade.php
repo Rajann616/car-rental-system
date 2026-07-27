@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Browse Luxury Fleet — AutoLux')
+@section('title', 'Browse Luxury Cars — AutoLux')
 
 @section('content')
 <section class="dashboard-section pb-5">
@@ -13,7 +13,7 @@
                 <div class="row align-items-center position-relative" style="z-index: 2;">
                     <div class="col-lg-8">
                         <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-2 small fw-bold">
-                            <i class="fas fa-car-side me-1"></i> Gujarat Fleet Collection
+                            <i class="fas fa-car-side me-1"></i> Gujarat Cars Collection
                         </span>
                         <h1 class="fw-bold text-white font-display fs-2 mb-2">Find Your Ideal Rental Car</h1>
                         <p class="text-white-50 mb-0 max-w-2xl">
@@ -69,7 +69,7 @@
             <div class="col-lg-3" data-aos="fade-right">
                 <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white sticky-top" style="top: 90px; z-index: 10;">
                     <div class="card-header-custom bg-white p-3 border-bottom d-flex justify-content-between align-items-center">
-                        <h6 class="fw-bold mb-0 text-dark"><i class="fas fa-sliders me-2 text-primary"></i> Filter Fleet</h6>
+                        <h6 class="fw-bold mb-0 text-dark"><i class="fas fa-sliders me-2 text-primary"></i> Filter car</h6>
                         <a href="{{ route('cars.index') }}" class="small text-primary text-decoration-none fw-semibold">
                             <i class="fas fa-rotate-left me-1"></i> Reset
                         </a>
