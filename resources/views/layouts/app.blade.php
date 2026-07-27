@@ -45,17 +45,35 @@
                         <a class="nav-link" href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#fleet">Fleet</a>
+                        <a class="nav-link" href="{{ route('cars.index') }}">Browse Fleet</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
+                    @auth
+                        @if(auth()->user()->isCustomer())
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('customer.bookings.index') }}">My Bookings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('customer.documents.index') }}">My Documents</a>
+                            </li>
+                        @endif
+                        @if(auth()->user()->isAdmin())
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.cars.index') }}">Fleet Mgr</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.bookings.index') }}">Reservations</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.documents.index') }}">Verifications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.maintenance.index') }}">Maintenance</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.reports.index') }}">Reports</a>
+                            </li>
+                        @endif
+                    @endauth
                 </ul>
 
                 <div class="navbar-actions">
@@ -72,15 +90,15 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 @if(auth()->user()->isAdmin())
-                                    <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt me-2 text-primary"></i>Admin Dashboard</a></li>
                                 @else
-                                    <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}"><i class="fas fa-tachometer-alt me-2 text-primary"></i>Customer Dashboard</a></li>
                                 @endif
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
+                                        <button type="submit" class="dropdown-item text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
                                     </form>
                                 </li>
                             </ul>
@@ -137,10 +155,10 @@
                     <h5 class="footer-heading">Quick Links</h5>
                     <ul class="footer-links">
                         <li><a href="{{ route('home') }}">Home</a></li>
-                        <li><a href="#fleet">Our Fleet</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="{{ route('cars.index') }}">Our Fleet</a></li>
+                        <li><a href="{{ route('home') }}#services">Services</a></li>
+                        <li><a href="{{ route('home') }}#about">About Us</a></li>
+                        <li><a href="{{ route('home') }}#contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">
