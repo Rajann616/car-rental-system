@@ -50,10 +50,10 @@
                     @auth
                         @if(auth()->user()->isCustomer())
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('customer.bookings.index') }}">My Bookings</a>
+                                <a class="nav-link" href="{{ route('customer.bookings.index') }}">Bookings</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('customer.documents.index') }}">My Documents</a>
+                                <a class="nav-link" href="{{ route('customer.documents.index') }}">Documents</a>
                             </li>
                         @endif
                         @if(auth()->user()->isAdmin())
