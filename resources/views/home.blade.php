@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'AutoLux — Premium Car Rental in Ahmedabad')
+@section('body_class', 'has-hero')
 
 @section('content')
 <!-- Hero Section -->

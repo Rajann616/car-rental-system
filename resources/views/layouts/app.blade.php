@@ -26,7 +26,7 @@
 
     @stack('styles')
 </head>
-<body>
+<body class="@yield('body_class')">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
         <div class="container">

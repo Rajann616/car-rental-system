@@ -178,11 +178,12 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; }
 }
 
 .brand-text {
+    color: var(--primary-900);
     font-family: var(--font-body);
     transition: color var(--transition-fast);
 }
 
-#mainNavbar:not(.scrolled) .brand-text {
+body.has-hero #mainNavbar:not(.scrolled) .brand-text {
     color: var(--white) !important;
 }
 
