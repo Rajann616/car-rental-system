@@ -44,11 +44,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cars.index') }}">Browse Fleet</a>
-                    </li>
                     @auth
                         @if(auth()->user()->isCustomer())
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('cars.index') }}">Browse Fleet</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('customer.bookings.index') }}">Bookings</a>
                             </li>
