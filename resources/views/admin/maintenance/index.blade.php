@@ -1,28 +1,45 @@
 @extends('layouts.app')
 
-@section('title', 'Maintenance Records — Admin')
+@section('title', 'Vehicle Maintenance & Repairs — Admin')
 
 @section('content')
 <section class="dashboard-section pb-5">
     <div class="container">
-        <!-- Header -->
-        <div class="dashboard-header d-flex align-items-center justify-content-between flex-wrap gap-3" data-aos="fade-down">
-            <div>
-                <h1 class="fw-bold mb-1">Vehicle Maintenance & Repairs</h1>
-                <p class="text-muted mb-0">Track servicing logs, repair expenses, and toggle vehicle availability.</p>
-            </div>
-            <div>
-                <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#newMaintenanceModal">
-                    <i class="fas fa-wrench me-2"></i> Schedule Maintenance
-                </button>
+        
+        <!-- Header Banner Card -->
+        <div class="mb-4" data-aos="fade-down">
+            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
+                <div class="row align-items-center position-relative" style="z-index: 2;">
+                    <div class="col-lg-8">
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-2 small fw-bold">
+                            <i class="fas fa-wrench me-1"></i> Fleet Servicing Log
+                        </span>
+                        <h1 class="fw-bold text-white font-display fs-2 mb-2">Vehicle Maintenance & Repairs</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl">
+                            Track servicing schedules, engine repair logs, cost expenses, and toggle vehicle availability status automatically.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                        <button type="button" class="btn btn-lg rounded-pill px-4 fw-bold text-white shadow" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;" data-bs-toggle="modal" data-bs-target="#newMaintenanceModal">
+                            <i class="fas fa-wrench me-2"></i> Schedule Maintenance
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="dashboard-card" data-aos="fade-up">
-            <div class="card-header-custom">
-                <h5><i class="fas fa-screwdriver-wrench me-2 text-primary"></i> Maintenance Logs</h5>
+        <!-- Maintenance Logs Master Table -->
+        <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden" data-aos="fade-up">
+            <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between">
+                <h5 class="fw-bold mb-0 text-dark">
+                    <i class="fas fa-screwdriver-wrench me-2 text-primary"></i> Maintenance Logs ({{ $records->total() }})
+                </h5>
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    <i class="fas fa-arrow-left me-1"></i> Dashboard
+                </a>
             </div>
-            <div class="card-body-custom">
+            <div class="card-body-custom p-4">
                 <div class="table-responsive">
                     <table class="table table-modern align-middle mb-0">
                         <thead>
@@ -40,18 +57,18 @@
                             @forelse($records as $rec)
                                 <tr>
                                     <td>
-                                        <div class="fw-bold">{{ $rec->car->brand }} {{ $rec->car->model }}</div>
+                                        <div class="fw-bold text-dark fs-6">{{ $rec->car->brand }} {{ $rec->car->model }}</div>
                                         <small class="text-muted">{{ $rec->car->registration_number }}</small>
                                     </td>
                                     <td>
-                                        <div class="fw-semibold text-dark">{{ $rec->title }}</div>
+                                        <div class="fw-semibold text-dark fs-6">{{ $rec->title }}</div>
                                         @if($rec->description)
                                             <small class="text-muted d-block">{{ $rec->description }}</small>
                                         @endif
                                     </td>
-                                    <td>{{ $rec->scheduled_date->format('d M Y') }}</td>
-                                    <td>{{ $rec->completed_date ? $rec->completed_date->format('d M Y') : '—' }}</td>
-                                    <td class="fw-bold text-dark">₹{{ number_format($rec->cost, 2) }}</td>
+                                    <td class="small fw-semibold text-dark"><i class="fas fa-calendar-alt text-primary me-1"></i> {{ $rec->scheduled_date->format('d M Y') }}</td>
+                                    <td class="small text-muted">{{ $rec->completed_date ? $rec->completed_date->format('d M Y') : '—' }}</td>
+                                    <td class="fw-bold text-dark fs-6">₹{{ number_format($rec->cost, 2) }}</td>
                                     <td>
                                         <span class="badge-status {{ $rec->status_badge }}">
                                             {{ $rec->status }}
@@ -66,13 +83,13 @@
                                                 </button>
                                             </form>
                                         @else
-                                            <span class="small text-muted"><i class="fas fa-check-circle text-success me-1"></i> Done</span>
+                                            <span class="small text-success fw-semibold"><i class="fas fa-check-circle me-1"></i> Service Done</span>
                                         @endif
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center py-4 text-muted">No maintenance records logged.</td>
+                                    <td colspan="7" class="text-center py-5 text-muted">No vehicle maintenance records logged yet.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -90,44 +107,44 @@
 <!-- Modal: Schedule Maintenance -->
 <div class="modal fade" id="newMaintenanceModal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content rounded-4">
             <form action="{{ route('admin.maintenance.store') }}" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-wrench me-2 text-primary"></i> Schedule Maintenance</h5>
+                    <h5 class="modal-title fw-bold"><i class="fas fa-wrench me-2 text-primary"></i> Schedule Vehicle Maintenance</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Select Vehicle *</label>
-                        <select name="car_id" class="form-select" required>
+                        <label class="form-label small fw-bold text-muted">Select Vehicle *</label>
+                        <select name="car_id" class="form-select border-2" required>
                             @foreach($cars as $c)
                                 <option value="{{ $c->id }}">{{ $c->brand }} {{ $c->model }} ({{ $c->registration_number }})</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Service Title *</label>
-                        <input type="text" name="title" class="form-control" placeholder="e.g. Engine Oil Service, Brake Pad Replacement" required>
+                        <label class="form-label small fw-bold text-muted">Service Title *</label>
+                        <input type="text" name="title" class="form-control border-2" placeholder="e.g. Engine Oil Service, Brake Pad Replacement" required>
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Scheduled Date *</label>
-                            <input type="date" name="scheduled_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                            <label class="form-label small fw-bold text-muted">Scheduled Date *</label>
+                            <input type="date" name="scheduled_date" class="form-control border-2" value="{{ date('Y-m-d') }}" required>
                         </div>
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Estimated Cost (₹)</label>
-                            <input type="number" name="cost" class="form-control" placeholder="0" step="0.01">
+                            <label class="form-label small fw-bold text-muted">Estimated Cost (₹)</label>
+                            <input type="number" name="cost" class="form-control border-2" placeholder="0" step="0.01">
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Service Description / Notes</label>
-                        <textarea name="description" class="form-control" rows="3" placeholder="Details of servicing..."></textarea>
+                        <label class="form-label small fw-bold text-muted">Service Description / Notes</label>
+                        <textarea name="description" class="form-control border-2" rows="3" placeholder="Details of servicing..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Schedule & Set Maintenance Status</button>
+                    <button type="button" class="btn btn-light rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">Schedule & Toggle Maintenance</button>
                 </div>
             </form>
         </div>

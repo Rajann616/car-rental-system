@@ -1,23 +1,42 @@
 @extends('layouts.app')
 
-@section('title', 'Verify Customer Documents — Admin')
+@section('title', 'Customer Verification Queue — Admin')
 
 @section('content')
 <section class="dashboard-section pb-5">
     <div class="container">
-        <!-- Header -->
-        <div class="dashboard-header d-flex align-items-center justify-content-between flex-wrap gap-3" data-aos="fade-down">
-            <div>
-                <h1 class="fw-bold mb-1">Customer Verification Queue</h1>
-                <p class="text-muted mb-0">Review Driving Licenses, Aadhaar cards and verify driver identity.</p>
+        
+        <!-- Header Banner Card -->
+        <div class="mb-4" data-aos="fade-down">
+            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
+                <div class="row align-items-center position-relative" style="z-index: 2;">
+                    <div class="col-lg-8">
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-2 small fw-bold">
+                            <i class="fas fa-user-shield me-1"></i> ID Verification Stream
+                        </span>
+                        <h1 class="fw-bold text-white font-display fs-2 mb-2">Customer Verification Queue</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl">
+                            Review customer Driving Licenses, Aadhaar Cards, and PAN Cards to approve driver verification status.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light rounded-pill px-4 fw-medium">
+                            <i class="fas fa-arrow-left me-2"></i> Dashboard
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="dashboard-card" data-aos="fade-up">
-            <div class="card-header-custom d-flex align-items-center justify-content-between flex-wrap gap-2">
-                <h5 class="mb-0"><i class="fas fa-id-card me-2 text-primary"></i> Verification Requests ({{ $documents->total() }})</h5>
+        <!-- Documents Queue Table Card -->
+        <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden" data-aos="fade-up">
+            <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <h5 class="fw-bold mb-0 text-dark">
+                    <i class="fas fa-id-card me-2 text-primary"></i> Verification Requests ({{ $documents->total() }})
+                </h5>
                 <form action="{{ route('admin.documents.index') }}" method="GET">
-                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <select name="status" class="form-select form-select-sm border-2" onchange="this.form.submit()">
                         <option value="">All Statuses</option>
                         <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending Approval</option>
                         <option value="Approved" {{ request('status') == 'Approved' ? 'selected' : '' }}>Approved</option>
@@ -25,15 +44,15 @@
                     </select>
                 </form>
             </div>
-            <div class="card-body-custom">
+            <div class="card-body-custom p-4">
                 <div class="table-responsive">
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Customer</th>
+                                <th>Customer Details</th>
                                 <th>Doc Type</th>
-                                <th>File</th>
-                                <th>Date</th>
+                                <th>File Preview</th>
+                                <th>Submitted Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -42,16 +61,19 @@
                             @forelse($documents as $doc)
                                 <tr>
                                     <td>
-                                        <div class="fw-bold">{{ $doc->user->name }}</div>
-                                        <small class="text-muted">{{ $doc->user->email }} | {{ $doc->user->phone ?? 'No phone' }}</small>
+                                        <div class="fw-bold text-dark fs-6">{{ $doc->user->name }}</div>
+                                        <small class="text-muted">{{ $doc->user->email }} | {{ $doc->user->phone ?? 'No Phone' }}</small>
                                     </td>
-                                    <td class="fw-bold text-dark">{{ $doc->type }}</td>
+                                    <td class="fw-bold text-dark">
+                                        <i class="fas {{ $doc->type === 'Driving License' ? 'fa-id-card text-primary' : 'fa-file-lines text-secondary' }} me-1"></i>
+                                        {{ $doc->type }}
+                                    </td>
                                     <td>
-                                        <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-info">
-                                            <i class="fas fa-file-download me-1"></i> View Document
+                                        <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                            <i class="fas fa-eye me-1"></i> View Document
                                         </a>
                                     </td>
-                                    <td class="small">{{ $doc->created_at->format('d M Y') }}</td>
+                                    <td class="small text-muted">{{ $doc->created_at->format('d M Y, h:i A') }}</td>
                                     <td>
                                         <span class="badge-status {{ $doc->status_badge }}">
                                             {{ $doc->status }}
@@ -62,41 +84,45 @@
                                             <div class="d-flex gap-2">
                                                 <form action="{{ route('admin.documents.approve', $doc->id) }}" method="POST">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                                    <button type="submit" class="btn btn-sm btn-success rounded-pill px-3">
+                                                        <i class="fas fa-check me-1"></i> Approve
+                                                    </button>
                                                 </form>
-                                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $doc->id }}">Reject</button>
+                                                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $doc->id }}">
+                                                    Reject
+                                                </button>
                                             </div>
 
-                                            <!-- Reject Reason Modal -->
+                                            <!-- Reject Modal -->
                                             <div class="modal fade" id="rejectModal{{ $doc->id }}" tabindex="-1">
                                                 <div class="modal-dialog">
-                                                    <div class="modal-content">
+                                                    <div class="modal-content rounded-4">
                                                         <form action="{{ route('admin.documents.reject', $doc->id) }}" method="POST">
                                                             @csrf
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Reject Document</h5>
+                                                                <h5 class="modal-title fw-bold">Reject Document</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <label class="form-label small fw-bold">Rejection Reason</label>
-                                                                <textarea name="rejection_reason" class="form-control" rows="3" required placeholder="e.g. Blurred image, expired license..."></textarea>
+                                                                <label class="form-label small fw-bold">Rejection Reason *</label>
+                                                                <textarea name="rejection_reason" class="form-control border-2" rows="3" required placeholder="e.g. Blurred photo, expired license..."></textarea>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                                                <button type="submit" class="btn btn-danger">Confirm Rejection</button>
+                                                                <button type="button" class="btn btn-light rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+                                                                <button type="submit" class="btn btn-danger rounded-pill px-4">Confirm Rejection</button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         @else
-                                            <span class="small text-muted">Verified by Admin</span>
+                                            <span class="small text-muted"><i class="fas fa-check-circle text-success me-1"></i> Verified</span>
                                         @endif
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted">No document verification records found.</td>
+                                    <td colspan="6" class="text-center py-5 text-muted">No document verification records found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
