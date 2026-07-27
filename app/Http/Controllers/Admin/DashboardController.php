@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Car;
+use App\Models\Document;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -31,37 +32,31 @@ class DashboardController extends Controller
             'total_revenue' => Payment::where('status', 'Success')->sum('amount'),
             'pending_bookings' => Booking::where('status', 'Pending')->count(),
             'active_bookings' => Booking::where('status', 'Active')->count(),
+            'pending_documents' => Document::where('status', 'Pending')->count(),
         ];
 
-        $recentBookings = Booking::with(['user', 'car'])
+        $recentBookings = Booking::with(['user', 'car', 'payment'])
             ->latest()
             ->take(10)
             ->get();
 
-        $recentPayments = Payment::with(['user', 'booking'])
+        $recentPayments = Payment::with(['user', 'booking.car'])
             ->where('status', 'Success')
             ->latest()
             ->take(5)
             ->get();
 
-        // Monthly revenue for the chart (last 6 months)
-        $monthlyRevenue = Payment::where('status', 'Success')
-            ->where('created_at', '>=', now()->subMonths(6))
-            ->select(
-                DB::raw('MONTH(created_at) as month'),
-                DB::raw('YEAR(created_at) as year'),
-                DB::raw('SUM(amount) as total')
-            )
-            ->groupBy('year', 'month')
-            ->orderBy('year')
-            ->orderBy('month')
+        $pendingDocumentsList = Document::with('user')
+            ->where('status', 'Pending')
+            ->latest()
+            ->take(5)
             ->get();
 
         return view('admin.dashboard', compact(
             'stats',
             'recentBookings',
             'recentPayments',
-            'monthlyRevenue'
+            'pendingDocumentsList'
         ));
     }
 }
