@@ -14,8 +14,12 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            abort(403, 'Unauthorized. Admin access required.');
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please log in with an Admin account to access this page.');
+        }
+
+        if (!auth()->user()->isAdmin()) {
+            return redirect()->route('customer.dashboard')->with('error', 'Access Denied: Admin privileges are required to access the Admin Control Center.');
         }
 
         return $next($request);
