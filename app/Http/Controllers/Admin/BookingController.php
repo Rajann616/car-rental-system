@@ -56,6 +56,28 @@ class BookingController extends Controller
             $booking->car->update(['status' => 'Available']);
         }
 
+        // Send In-App Notification to Customer
+        try {
+            $statusIcons = [
+                'Confirmed' => ['icon' => 'fa-check-circle', 'color' => 'text-success', 'title' => 'Booking Confirmed! 🎉', 'msg' => 'Your booking has been verified and confirmed by AutoLux.'],
+                'Active' => ['icon' => 'fa-key', 'color' => 'text-info', 'title' => 'Vehicle Handed Over! 🔑', 'msg' => 'Vehicle has been handed over. Your rental trip is now active.'],
+                'Completed' => ['icon' => 'fa-flag-checkered', 'color' => 'text-primary', 'title' => 'Rental Completed! 🏁', 'msg' => 'Vehicle returned and rental period completed successfully.'],
+                'Cancelled' => ['icon' => 'fa-times-circle', 'color' => 'text-danger', 'title' => 'Booking Cancelled ⚠️', 'msg' => 'Your booking reservation has been cancelled.'],
+            ];
+
+            $meta = $statusIcons[$newStatus] ?? ['icon' => 'fa-info-circle', 'color' => 'text-primary', 'title' => "Booking {$newStatus}", 'msg' => "Your booking status was updated to {$newStatus}."];
+
+            $booking->user->notify(new \App\Notifications\BookingStatusNotification(
+                $booking,
+                $meta['title'],
+                $meta['msg'],
+                $meta['icon'],
+                $meta['color']
+            ));
+        } catch (\Exception $e) {
+            \Log::warning('Booking status notification failed: ' . $e->getMessage());
+        }
+
         return back()->with('success', "Booking #{$booking->booking_number} updated to {$newStatus}.");
     }
 }

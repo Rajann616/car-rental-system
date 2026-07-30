@@ -8,7 +8,7 @@
         
         <!-- Header Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
+            <div class="p-3 p-md-4 rounded-4 text-white shadow-sm position-relative overflow-hidden" 
                  style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
                 <div class="row align-items-center position-relative" style="z-index: 2;">
                     <div class="col-lg-8">
@@ -25,7 +25,7 @@
                             <i class="fas fa-circle-check text-success fs-4"></i>
                             <div class="text-start">
                                 <div class="fw-bold fs-5 mb-0 leading-none">{{ $cars->total() }} Vehicles</div>
-                                <small class="text-white-50 fs-7">Ready for Instant Pickup</small>
+                                <small class="text-white-50 fs-7">Ready for Instant Delivery</small>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         </select>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <label class="form-label small fw-bold text-muted text-uppercase mb-1"><i class="fas fa-calendar-alt me-1 text-primary"></i> Pickup Date</label>
+                        <label class="form-label small fw-bold text-muted text-uppercase mb-1"><i class="fas fa-calendar-alt me-1 text-primary"></i> Delivery Date</label>
                         <input type="date" name="pickup_date" class="form-control border-2" min="{{ date('Y-m-d') }}" value="{{ request('pickup_date') }}">
                     </div>
                     <div class="col-lg-3 col-md-6">

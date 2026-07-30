@@ -81,6 +81,76 @@
                         <a href="{{ route('login') }}" class="btn btn-nav-outline">Sign In</a>
                         <a href="{{ route('register') }}" class="btn btn-nav-primary">Get Started</a>
                     @else
+                        <!-- Notification Bell -->
+                        @php
+                            $unreadCount = auth()->user()->unreadNotifications->count();
+                            $dbNotifications = auth()->user()->notifications()->latest()->take(8)->get();
+                        @endphp
+                        <div class="dropdown me-2">
+                            <button class="btn btn-nav-notification position-relative" data-bs-toggle="dropdown" aria-expanded="false" id="notificationBell">
+                                <i class="fas fa-bell fs-5"></i>
+                                @if($unreadCount > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                        {{ $unreadCount }}
+                                    </span>
+                                @endif
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0 shadow-lg border-0 rounded-3" style="width: 350px; max-height: 420px; overflow-y: auto;">
+                                <div class="p-3 border-bottom bg-light rounded-top d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-dark"><i class="fas fa-bell me-1 text-primary"></i> Notifications</h6>
+                                        <small class="text-muted" style="font-size: 0.72rem;">You have {{ $unreadCount }} unread notification{{ $unreadCount === 1 ? '' : 's' }}</small>
+                                    </div>
+                                    @if($unreadCount > 0)
+                                        <form action="{{ route('notifications.readAll') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-link text-decoration-none text-primary p-0 fw-semibold" style="font-size: 0.75rem;">
+                                                Mark all read
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                                <div class="notification-list">
+                                    @forelse($dbNotifications as $notif)
+                                        @php
+                                            $data = $notif->data;
+                                            $isUnread = is_null($notif->read_at);
+                                        @endphp
+                                        <form action="{{ route('notifications.read', $notif->id) }}" method="POST" id="read_notif_{{ $notif->id }}" class="d-none">
+                                            @csrf
+                                        </form>
+                                        <div class="p-3 border-bottom notification-item cursor-pointer {{ $isUnread ? 'bg-primary-subtle bg-opacity-10' : '' }}" 
+                                             onclick="event.preventDefault(); document.getElementById('read_notif_{{ $notif->id }}').submit();">
+                                            <div class="d-flex align-items-start gap-2">
+                                                <div class="rounded-circle p-2 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background: rgba(37, 99, 235, 0.1);">
+                                                    <i class="fas {{ $data['icon'] ?? 'fa-info-circle' }} {{ $data['color'] ?? 'text-primary' }} fs-6"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                                        <span class="fw-bold text-dark small">{{ $data['title'] ?? 'Notification' }}</span>
+                                                        @if($isUnread)
+                                                            <span class="badge bg-primary rounded-circle p-1" style="width: 6px; height: 6px;" title="Unread"></span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="text-muted small leading-tight mb-1" style="font-size: 0.78rem;">
+                                                        {{ $data['message'] ?? '' }}
+                                                    </div>
+                                                    <div class="text-muted text-end" style="font-size: 0.68rem;">
+                                                        {{ $notif->created_at->diffForHumans() }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="p-4 text-center text-muted small">
+                                            <i class="fas fa-bell-slash d-block fs-4 mb-2 text-secondary opacity-50"></i>
+                                            No notifications yet
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="dropdown">
                             <button class="btn btn-nav-user dropdown-toggle" data-bs-toggle="dropdown">
                                 <span class="user-avatar">

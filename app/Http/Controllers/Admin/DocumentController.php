@@ -38,6 +38,13 @@ class DocumentController extends Controller
             'rejection_reason' => null,
         ]);
 
+        // Send In-App Notification to Customer
+        try {
+            $doc->user->notify(new \App\Notifications\DocumentStatusNotification($doc));
+        } catch (\Exception $e) {
+            \Log::warning('Document notification failed: ' . $e->getMessage());
+        }
+
         return back()->with('success', "Document for {$doc->user->name} approved successfully.");
     }
 
@@ -58,6 +65,13 @@ class DocumentController extends Controller
             'verified_at' => now(),
             'rejection_reason' => $request->rejection_reason,
         ]);
+
+        // Send In-App Notification to Customer
+        try {
+            $doc->user->notify(new \App\Notifications\DocumentStatusNotification($doc));
+        } catch (\Exception $e) {
+            \Log::warning('Document notification failed: ' . $e->getMessage());
+        }
 
         return back()->with('success', "Document rejected with reason.");
     }

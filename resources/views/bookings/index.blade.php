@@ -8,7 +8,7 @@
         
         <!-- Header Banner Card -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
+            <div class="p-3 p-md-4 rounded-4 text-white shadow-sm position-relative overflow-hidden" 
                  style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
                 <div class="row align-items-center position-relative" style="z-index: 2;">
                     <div class="col-lg-8">
@@ -50,7 +50,7 @@
                                 <tr>
                                     <th>Booking #</th>
                                     <th>Vehicle Details</th>
-                                    <th>Pickup Date</th>
+                                    <th>Delivery Date</th>
                                     <th>Return Date</th>
                                     <th>Total Amount</th>
                                     <th>Status</th>

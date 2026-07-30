@@ -22,7 +22,7 @@
                     <label for="email" class="form-label">Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted"></i></span>
-                        <input type="email" class="form-control border-start-0 @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="name@example.com">
+                        <input type="email" class="form-control border-start-0 @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Enter email address">
                     </div>
                     @error('email')
                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -34,9 +34,12 @@
                         <label for="password" class="form-label mb-0">Password</label>
                         <a href="{{ route('password.request') }}" class="text-primary small">Forgot password?</a>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group password-input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
                         <input type="password" class="form-control border-start-0 @error('password') is-invalid @enderror" id="password" name="password" required placeholder="••••••••">
+                        <button class="btn toggle-password-btn-inside" type="button" data-target="password" title="Toggle password visibility">
+                            <i class="far fa-eye"></i>
+                        </button>
                     </div>
                     @error('password')
                         <div class="text-danger small mt-1">{{ $message }}</div>

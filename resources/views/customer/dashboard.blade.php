@@ -26,7 +26,7 @@
                                     <h2 class="fw-bold mb-0 text-white font-display fs-3">Welcome, {{ auth()->user()->name }}!</h2>
                                     @if(auth()->user()->hasApprovedDocuments())
                                         <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 rounded-pill px-3 py-1 small">
-                                            <i class="fas fa-check-circle me-1"></i> Verified Driver
+                                            <i class="fas fa-check-circle me-1"></i> Verified Customer
                                         </span>
                                     @else
                                         <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 small">
@@ -35,12 +35,12 @@
                                     @endif
                                 </div>
                                 <p class="text-white-50 mb-0 small mt-1">
-                                    <i class="fas fa-map-marker-alt me-1 text-warning"></i> Ahmedabad Hub &nbsp;|&nbsp; Member since {{ auth()->user()->created_at->format('M Y') }}
+                                    <i class="fas fa-map-marker-alt me-1 text-warning"></i> Serving Ahmedabad &nbsp;|&nbsp; Member since {{ auth()->user()->created_at->format('M Y') }}
                                 </p>
                             </div>
                         </div>
                         <p class="text-white-50 mb-0" style="max-width: 550px;">
-                            Manage your active rentals, track reservations, or pick your next luxury ride from our Ahmedabad car.
+                            Manage your active rentals, track reservations, or book your next rental from our Ahmedabad fleet.
                         </p>
                     </div>
                     <div class="col-lg-4 text-lg-end">
@@ -215,7 +215,7 @@
                         @if(auth()->user()->hasApprovedDocuments())
                             <div class="p-3 bg-success bg-opacity-10 border border-success border-opacity-25 rounded-3 mb-3">
                                 <div class="d-flex align-items-center gap-2 text-success fw-bold mb-1">
-                                    <i class="fas fa-check-circle fs-5"></i> 100% Verified Driver
+                                    <i class="fas fa-check-circle fs-5"></i> Identity Verified
                                 </div>
                                 <p class="small text-muted mb-0">Your Driving License and identity documents have been approved by AutoLux admin.</p>
                             </div>
@@ -234,7 +234,7 @@
                         <div class="list-group list-group-flush border-0 small mt-3">
                             <div class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 py-2">
                                 <span class="text-muted"><i class="fas fa-phone me-2 text-primary"></i> Phone</span>
-                                <span class="fw-bold text-dark">{{ auth()->user()->phone ?? '9876543210' }}</span>
+                                <span class="fw-bold text-dark">{{ auth()->user()->phone ?? 'N/A' }}</span>
                             </div>
                             <div class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 py-2">
                                 <span class="text-muted"><i class="fas fa-envelope me-2 text-primary"></i> Email</span>
@@ -323,7 +323,7 @@
                                         <tr>
                                             <th>Booking #</th>
                                             <th>Vehicle</th>
-                                            <th>Pickup Date</th>
+                                            <th>Delivery Date</th>
                                             <th>Return Date</th>
                                             <th>Amount</th>
                                             <th>Status</th>

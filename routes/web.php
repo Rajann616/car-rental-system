@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Shared authenticated booking routes
+    Route::get('/bookings/{id}/success', [BookingController::class, 'success'])->name('bookings.success');
     Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 

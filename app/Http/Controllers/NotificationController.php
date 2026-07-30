@@ -14,6 +14,10 @@ class NotificationController extends Controller
         $notification = auth()->user()->notifications()->where('id', $id)->first();
         if ($notification) {
             $notification->markAsRead();
+            $actionUrl = $notification->data['action_url'] ?? null;
+            if ($actionUrl) {
+                return redirect($actionUrl);
+            }
         }
         return back();
     }

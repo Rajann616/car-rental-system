@@ -42,7 +42,7 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('customer.dashboard')
+        return redirect()->route('cars.index')
             ->with('success', 'Welcome to AutoLux! Your account has been created successfully.');
     }
 }

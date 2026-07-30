@@ -38,7 +38,7 @@
                         <div class="row g-3 mb-3">
                             <div class="col-6">
                                 <div class="p-3 border rounded-3 bg-white">
-                                    <div class="small text-muted"><i class="fas fa-calendar-alt me-1 text-primary"></i> Pickup Date</div>
+                                    <div class="small text-muted"><i class="fas fa-calendar-alt me-1 text-primary"></i> Delivery Date</div>
                                     <div class="fw-bold text-dark fs-6">{{ $pickupDate->format('d M Y') }}</div>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="p-3 border rounded-3 bg-white">
-                            <div class="small text-muted"><i class="fas fa-map-marker-alt me-1 text-primary"></i> Pickup & Return Location</div>
+                            <div class="small text-muted"><i class="fas fa-map-marker-alt me-1 text-primary"></i> Delivery Address</div>
                             <div class="fw-bold text-dark">{{ $request->pickup_location }}</div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                 <!-- Driver Contact & Verification Summary -->
                 <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white">
                     <div class="card-header-custom p-4 border-bottom">
-                        <h5 class="fw-bold mb-0 text-dark"><i class="fas fa-user-check me-2 text-primary"></i> Driver Information</h5>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fas fa-user-check me-2 text-primary"></i> Customer Information</h5>
                     </div>
                     <div class="card-body-custom p-4">
                         <div class="row g-3">
@@ -74,7 +74,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="small text-muted">Phone</label>
-                                <div class="fw-bold text-dark">{{ auth()->user()->phone ?? '9876543210' }}</div>
+                                <div class="fw-bold text-dark">{{ auth()->user()->phone ?? 'N/A' }}</div>
                             </div>
                             <div class="col-md-6">
                                 <label class="small text-muted">ID Verification Status</label>
@@ -95,11 +95,15 @@
                     </div>
                     <div class="card-body-custom p-4">
                         <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Rental Rate (₹{{ number_format($car->rental_price_per_day, 0) }} × {{ $days }} days)</span>
+                            <span class="text-muted">Rental Charge (₹{{ number_format($car->rental_price_per_day, 0) }} × {{ $days }} days)</span>
                             <span class="fw-semibold text-dark">₹{{ number_format($rentalCost, 0) }}</span>
                         </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Delivery Charge</span>
+                            <span class="fw-semibold text-success">Free</span>
+                        </div>
                         <div class="d-flex justify-content-between mb-3">
-                            <span class="text-muted">Refundable Deposit</span>
+                            <span class="text-muted">Security Deposit</span>
                             <span class="fw-semibold text-dark">₹{{ number_format($securityDeposit, 0) }}</span>
                         </div>
 
@@ -125,12 +129,12 @@
                             <input type="hidden" name="razorpay_signature" id="razorpay_signature">
 
                             <button type="button" id="payBtn" onclick="startUPIPayment()" class="btn btn-success btn-lg w-100 rounded-pill fw-bold py-3 shadow-lg" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                                <i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Instant UPI / GPay
+                                <i class="fas fa-lock me-2"></i> Proceed to Secure Payment
                             </button>
                         </form>
 
                         <div class="text-center mt-3">
-                            <small class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> 256-Bit Encrypted Instant UPI Checkout</small>
+                            <small class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> 256-Bit Encrypted Secure Checkout</small>
                         </div>
                     </div>
                 </div>
@@ -140,11 +144,35 @@
 </section>
 
 <!-- Instant UPI JS Checkout Integration -->
+@if(!$isSandbox)
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+@endif
 <script>
+    const IS_SANDBOX = @json($isSandbox);
+
     function startUPIPayment() {
+        const payBtn = document.getElementById('payBtn');
+        payBtn.disabled = true;
+        payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+
+        if (IS_SANDBOX) {
+            // Sandbox / Demo mode — simulate payment directly
+            if (!confirm('🧪 Demo Mode: No real payment will be charged.\n\nClick OK to simulate a successful payment.')) {
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Proceed to Secure Payment';
+                return;
+            }
+
+            const demoPaymentId = "pay_demo_" + Math.random().toString(36).substring(2, 16);
+            document.getElementById('razorpay_payment_id').value = demoPaymentId;
+            document.getElementById('razorpay_signature').value = '';
+            document.getElementById('upiPaymentForm').submit();
+            return;
+        }
+
+        // Production mode — open real Razorpay checkout
         const options = {
-            "key": "{{ env('RAZORPAY_KEY', 'rzp_test_sample_key') }}",
+            "key": @json($razorpayKey),
             "amount": "{{ $totalAmount * 100 }}",
             "currency": "INR",
             "name": "AutoLux Car Rental",
@@ -160,7 +188,13 @@
             "prefill": {
                 "name": "{{ auth()->user()->name }}",
                 "email": "{{ auth()->user()->email }}",
-                "contact": "{{ auth()->user()->phone ?? '9876543210' }}"
+                "contact": "{{ auth()->user()->phone ?? '' }}"
+            },
+            "modal": {
+                "ondismiss": function() {
+                    payBtn.disabled = false;
+                    payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Proceed to Secure Payment';
+                }
             },
             "theme": {
                 "color": "#2563eb"
@@ -169,16 +203,17 @@
 
         try {
             const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (response){
+            rzp.on('payment.failed', function (response) {
                 alert("Payment Failed: " + response.error.description);
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Proceed to Secure Payment';
             });
             rzp.open();
         } catch (e) {
-            // Instant fallback simulation for testing without external keys
-            const demoPaymentId = "pay_upi_" + Math.random().toString(36).substring(7);
-            document.getElementById('razorpay_payment_id').value = demoPaymentId;
-            document.getElementById('razorpay_signature').value = "sig_upi_sandbox";
-            document.getElementById('upiPaymentForm').submit();
+            console.error('Razorpay initialization error:', e);
+            alert('Payment gateway could not be loaded. Please try again.');
+            payBtn.disabled = false;
+            payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Instant UPI / GPay';
         }
     }
 </script>

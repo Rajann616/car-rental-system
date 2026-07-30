@@ -22,7 +22,7 @@
                     <label for="name" class="form-label">Full Name</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fas fa-user text-muted"></i></span>
-                        <input type="text" class="form-control border-start-0 @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required autofocus placeholder="e.g. Rajesh Patel">
+                        <input type="text" class="form-control border-start-0 @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required autofocus placeholder="Enter your full name">
                     </div>
                     @error('name')
                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -33,7 +33,7 @@
                     <label for="email" class="form-label">Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted"></i></span>
-                        <input type="email" class="form-control border-start-0 @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required placeholder="name@example.com">
+                        <input type="email" class="form-control border-start-0 @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required placeholder="Enter email address">
                     </div>
                     @error('email')
                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -44,7 +44,7 @@
                     <label for="phone" class="form-label">Phone Number</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fas fa-phone text-muted"></i></span>
-                        <input type="text" class="form-control border-start-0 @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" required placeholder="9876543210">
+                        <input type="text" class="form-control border-start-0 @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" required placeholder="Enter phone number">
                     </div>
                     @error('phone')
                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -53,9 +53,12 @@
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <div class="input-group">
+                    <div class="input-group password-input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                        <input type="password" class="form-control border-start-0 @error('password') is-invalid @enderror" id="password" name="password" required placeholder="At least 8 characters">
+                        <input type="password" class="form-control border-start-0 @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Enter password (min. 8 characters)">
+                        <button class="btn toggle-password-btn-inside" type="button" data-target="password" title="Toggle password visibility">
+                            <i class="far fa-eye"></i>
+                        </button>
                     </div>
                     @error('password')
                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -64,9 +67,12 @@
 
                 <div class="mb-4">
                     <label for="password_confirmation" class="form-label">Confirm Password</label>
-                    <div class="input-group">
+                    <div class="input-group password-input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                        <input type="password" class="form-control border-start-0" id="password_confirmation" name="password_confirmation" required placeholder="Repeat password">
+                        <input type="password" class="form-control border-start-0" id="password_confirmation" name="password_confirmation" required placeholder="Confirm password">
+                        <button class="btn toggle-password-btn-inside" type="button" data-target="password_confirmation" title="Toggle password visibility">
+                            <i class="far fa-eye"></i>
+                        </button>
                     </div>
                 </div>
 

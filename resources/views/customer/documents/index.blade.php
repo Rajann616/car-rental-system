@@ -8,16 +8,16 @@
         
         <!-- Header Banner Card -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
+            <div class="p-3 p-md-4 rounded-4 text-white shadow-sm position-relative overflow-hidden" 
                  style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
                 <div class="row align-items-center position-relative" style="z-index: 2;">
                     <div class="col-lg-8">
                         <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-2 small fw-bold">
-                            <i class="fas fa-shield-alt me-1"></i> Secure Driver Verification
+                            <i class="fas fa-shield-alt me-1"></i> Identity Verification
                         </span>
                         <h1 class="fw-bold text-white font-display fs-2 mb-2">ID Verification & Documents</h1>
                         <p class="text-white-50 mb-0 max-w-2xl">
-                            Upload your Driving License or Govt ID for instant verification. Required to unlock key pickup for all AutoLux vehicles.
+                            Upload your Driving License or Govt ID for instant verification. Required to unlock booking for all AutoLux vehicles.
                         </p>
                     </div>
                     <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">

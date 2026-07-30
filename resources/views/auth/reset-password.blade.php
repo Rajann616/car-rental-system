@@ -32,9 +32,12 @@
 
                 <div class="mb-3">
                     <label for="password" class="form-label">New Password</label>
-                    <div class="input-group">
+                    <div class="input-group password-input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                        <input type="password" class="form-control border-start-0 @error('password') is-invalid @enderror" id="password" name="password" required placeholder="At least 8 characters">
+                        <input type="password" class="form-control border-start-0 @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Enter new password">
+                        <button class="btn toggle-password-btn-inside" type="button" data-target="password" title="Toggle password visibility">
+                            <i class="far fa-eye"></i>
+                        </button>
                     </div>
                     @error('password')
                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -43,9 +46,12 @@
 
                 <div class="mb-4">
                     <label for="password_confirmation" class="form-label">Confirm New Password</label>
-                    <div class="input-group">
+                    <div class="input-group password-input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                        <input type="password" class="form-control border-start-0" id="password_confirmation" name="password_confirmation" required placeholder="Repeat password">
+                        <input type="password" class="form-control border-start-0" id="password_confirmation" name="password_confirmation" required placeholder="Confirm new password">
+                        <button class="btn toggle-password-btn-inside" type="button" data-target="password_confirmation" title="Toggle password visibility">
+                            <i class="far fa-eye"></i>
+                        </button>
                     </div>
                 </div>
 

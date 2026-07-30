@@ -3,10 +3,56 @@
 @section('title', 'Booking Invoice — ' . $booking->booking_number)
 
 @section('content')
+<style media="print">
+    @page {
+        size: A4 portrait;
+        margin: 10mm;
+    }
+
+    html, body {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+    }
+
+    nav, footer, #mainNavbar, .site-footer, .flash-alert, .d-print-none, header {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .dashboard-section {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+    }
+
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    #printableInvoice {
+        box-shadow: none !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        padding: 20px !important;
+        margin: 0 !important;
+        width: 100% !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+</style>
 <section class="dashboard-section pb-5">
     <div class="container">
         <!-- Print / Action Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-down">
+        <div class="d-flex justify-content-between align-items-center mb-4 d-print-none" data-aos="fade-down">
             <a href="{{ route('customer.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
                 <i class="fas fa-arrow-left me-1"></i> Dashboard
             </a>
@@ -29,9 +75,11 @@
                 </div>
                 <div class="col-sm-6 text-sm-end mt-3 mt-sm-0">
                     <h4 class="fw-bold text-primary mb-1">RENTAL INVOICE</h4>
-                    <div class="fw-bold fs-5 text-dark">{{ $booking->booking_number }}</div>
-                    <div class="small text-muted">Date: {{ $booking->created_at->format('d M Y, h:i A') }}</div>
-                    <span class="badge-status {{ $booking->status_badge }} mt-2 d-inline-block">{{ $booking->status }}</span>
+                    <div class="fw-extrabold fs-3 text-dark font-display" style="letter-spacing: 0.02em;">{{ $booking->booking_number }}</div>
+                    <div class="small text-muted mb-2">Date: {{ $booking->created_at->format('d M Y, h:i A') }}</div>
+                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-1 fw-bold fs-6 rounded-pill">
+                        <i class="fas fa-circle-check me-1"></i> Booking Status: {{ strtoupper($booking->status) }}
+                    </span>
                 </div>
             </div>
 
@@ -49,14 +97,14 @@
                     <div class="fw-bold fs-6 text-dark">{{ $booking->car->brand }} {{ $booking->car->model }} ({{ $booking->car->year }})</div>
                     <div class="small text-muted">Registration No: <span class="fw-semibold text-dark">{{ $booking->car->registration_number }}</span></div>
                     <div class="small text-muted">Fuel & Trans: {{ $booking->car->fuel_type }} ({{ $booking->car->transmission }})</div>
-                    <div class="small text-muted">Pickup Hub: {{ $booking->pickup_location }}</div>
+                    <div class="small text-muted">Vehicle Delivery Address: <span class="fw-semibold text-dark">{{ $booking->pickup_location }}</span></div>
                 </div>
             </div>
 
             <!-- Schedule -->
             <div class="row g-3 mb-4 p-3 bg-light rounded-3">
                 <div class="col-sm-6">
-                    <small class="text-muted d-block">Pickup Date & Time</small>
+                    <small class="text-muted d-block">Delivery Date & Time</small>
                     <strong class="text-dark"><i class="fas fa-calendar-alt text-primary me-1"></i> {{ $booking->pickup_date->format('d M Y') }} (10:00 AM)</strong>
                 </div>
                 <div class="col-sm-6">
@@ -72,7 +120,7 @@
                         <tr>
                             <th>Description</th>
                             <th class="text-center">Days</th>
-                            <th class="text-end">Daily Rate</th>
+                            <th class="text-end">Rate</th>
                             <th class="text-end">Total Amount</th>
                         </tr>
                     </thead>
@@ -88,7 +136,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <strong>Refundable Security Deposit</strong>
+                                <strong>Security Deposit</strong>
                                 <div class="small text-muted">Refunded upon car return inspection</div>
                             </td>
                             <td class="text-center">1</td>
@@ -110,20 +158,21 @@
                 <div class="p-3 border rounded-3 bg-light mb-4">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
-                            <div class="small text-muted">Payment Method: <strong>{{ $booking->payment->method }}</strong></div>
-                            <div class="small text-muted">Transaction ID: <strong class="text-dark">{{ $booking->payment->transaction_id }}</strong></div>
+                            <div class="small text-muted">Payment Method: <strong class="text-dark">{{ $booking->payment->method }}</strong></div>
+                            <div class="small text-muted">Transaction ID: <strong class="text-primary fs-6">{{ $booking->payment->transaction_id }}</strong></div>
                         </div>
                         <div class="col-sm-6 text-sm-end">
-                            <div class="small text-muted">Instant UPI Order: <strong>{{ $booking->payment->Instant UPI_order_id }}</strong></div>
-                            <div class="small text-muted">Payment Status: <span class="badge bg-success">PAID SUCCESSFUL</span></div>
+                            <div class="small text-muted">Order ID: <strong class="text-dark">{{ $booking->payment->razorpay_order_id ?? 'N/A' }}</strong></div>
+                            <div class="small text-muted">Payment Status: <span class="badge bg-success px-2 py-1 fw-bold">{{ strtoupper($booking->payment->status) }}</span></div>
                         </div>
                     </div>
                 </div>
             @endif
 
             <!-- Invoice Footer -->
-            <div class="text-center pt-3 border-top text-muted small">
-                Thank you for choosing AutoLux. Drive safely and adhere to traffic regulations across Gujarat!
+            <div class="text-center pt-3 border-top text-muted small leading-relaxed">
+                Thank you for choosing AutoLux. Drive safely and return the vehicle on time.<br>
+                Security deposit will be refunded after inspection.
             </div>
         </div>
     </div>

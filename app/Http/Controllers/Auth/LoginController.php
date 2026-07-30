@@ -37,7 +37,7 @@ class LoginController extends Controller
                 return redirect()->intended(route('admin.dashboard'));
             }
 
-            return redirect()->intended(route('customer.dashboard'));
+            return redirect()->intended(route('cars.index'));
         }
 
         return back()->withErrors([

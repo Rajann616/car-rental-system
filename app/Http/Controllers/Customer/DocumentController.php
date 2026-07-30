@@ -31,13 +31,30 @@ class DocumentController extends Controller
         $fileName = $file->getClientOriginalName();
         $filePath = $file->store('documents/' . auth()->id(), 'public');
 
-        Document::create([
+        $doc = Document::create([
             'user_id' => auth()->id(),
             'type' => $request->type,
             'file_path' => $filePath,
             'file_name' => $fileName,
             'status' => 'Pending',
         ]);
+
+        // Send In-App Notification to All Admins
+        try {
+            $admins = \App\Models\User::where('role', 'admin')->get();
+            $customerName = auth()->user()->name;
+            foreach ($admins as $admin) {
+                $admin->notify(new \App\Notifications\AdminNotification(
+                    'New Document Uploaded 📄',
+                    "Customer {$customerName} uploaded {$request->type} for verification.",
+                    route('admin.documents.index'),
+                    'fa-id-card',
+                    'text-warning'
+                ));
+            }
+        } catch (\Exception $e) {
+            \Log::warning('Admin document notification failed: ' . $e->getMessage());
+        }
 
         return back()->with('success', "Your {$request->type} has been uploaded successfully for admin verification!");
     }

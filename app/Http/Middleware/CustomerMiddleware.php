@@ -14,8 +14,17 @@ class CustomerMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->isCustomer()) {
-            abort(403, 'Unauthorized. Customer access required.');
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please log in to access this page.');
+        }
+
+        if (auth()->user()->isAdmin()) {
+            if ($request->is('customer/documents*')) {
+                return redirect()->route('admin.documents.index')
+                    ->with('info', 'Redirected to Admin Document Verifications panel.');
+            }
+            return redirect()->route('admin.dashboard')
+                ->with('info', 'Redirected to Admin Dashboard.');
         }
 
         return $next($request);

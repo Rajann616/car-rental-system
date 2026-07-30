@@ -58,8 +58,8 @@
                                 <th>Rental Period</th>
                                 <th>Total Amount</th>
                                 <th>Status</th>
-                                <th>Update Status</th>
-                                <th>Actions</th>
+                                <th style="min-width: 175px;">Update Status</th>
+                                <th class="text-end pe-3">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,14 +100,16 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <form action="{{ route('admin.bookings.status', $booking->id) }}" method="POST" class="d-flex align-items-center gap-1">
+                                        <form action="{{ route('admin.bookings.status', $booking->id) }}" method="POST" class="d-flex align-items-center gap-2" style="min-width: 170px;">
                                             @csrf
-                                            <select name="status" class="form-select form-select-sm py-1 px-2 border-2" style="font-size: 0.8rem;">
+                                            <select name="status" class="form-select form-select-sm border-2 rounded-3 fw-semibold text-dark shadow-sm flex-grow-1" style="font-size: 0.82rem; min-width: 125px;" onchange="this.form.submit()">
                                                 @foreach(['Pending', 'Confirmed', 'Active', 'Completed', 'Cancelled'] as $st)
                                                     <option value="{{ $st }}" {{ $booking->status == $st ? 'selected' : '' }}>{{ $st }}</option>
                                                 @endforeach
                                             </select>
-                                            <button type="submit" class="btn btn-sm btn-primary py-1 px-2" title="Save Status"><i class="fas fa-check"></i></button>
+                                            <button type="submit" class="btn btn-sm btn-primary rounded-3 px-2 py-1 flex-shrink-0 shadow-sm" title="Save Status">
+                                                <i class="fas fa-check"></i>
+                                            </button>
                                         </form>
                                     </td>
                                     <td>

@@ -12,7 +12,8 @@ class VehicleController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Car::query();
+        // Only show available cars for customer browsing
+        $query = Car::available();
 
         // Search by keyword
         if ($request->filled('keyword')) {
@@ -45,6 +46,23 @@ class VehicleController extends Controller
         }
         if ($request->filled('max_price')) {
             $query->where('rental_price_per_day', '<=', $request->max_price);
+        }
+
+        // Filter out cars with conflicting bookings for selected dates
+        if ($request->filled('pickup_date') && $request->filled('return_date')) {
+            $pDate = $request->pickup_date;
+            $rDate = $request->return_date;
+            $query->whereDoesntHave('bookings', function ($bQuery) use ($pDate, $rDate) {
+                $bQuery->whereIn('status', ['Confirmed', 'Active'])
+                       ->where(function ($q) use ($pDate, $rDate) {
+                           $q->whereBetween('pickup_date', [$pDate, $rDate])
+                             ->orWhereBetween('return_date', [$pDate, $rDate])
+                             ->orWhere(function ($sub) use ($pDate, $rDate) {
+                                 $sub->where('pickup_date', '<=', $pDate)
+                                     ->where('return_date', '>=', $rDate);
+                             });
+                       });
+            });
         }
 
         // Sort order

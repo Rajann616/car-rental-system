@@ -27,8 +27,10 @@ class BookingConfirmedNotification extends Notification
         return [
             'booking_id' => $this->booking->id,
             'booking_number' => $this->booking->booking_number,
-            'title' => 'Booking Confirmed!',
+            'title' => 'Booking Confirmed! 🎉',
             'message' => "Your reservation #{$this->booking->booking_number} for {$this->booking->car->brand} {$this->booking->car->model} is confirmed.",
+            'icon' => 'fa-check-circle',
+            'color' => 'text-success',
             'action_url' => route('bookings.show', $this->booking->id),
         ];
     }
