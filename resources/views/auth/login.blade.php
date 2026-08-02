@@ -55,15 +55,6 @@
                     Sign In <i class="fas fa-arrow-right ms-2"></i>
                 </button>
 
-                <div class="auth-divider">
-                    <span>Demo Accounts</span>
-                </div>
-
-                <div class="p-3 bg-light rounded-3 small">
-                    <div class="mb-1"><strong>Customer:</strong> rajesh.patel@gmail.com / password123</div>
-                    <div><strong>Admin:</strong> admin@AutoLux.in / admin123</div>
-                </div>
-
                 <div class="text-center mt-4">
                     <p class="small text-muted mb-0">
                         Don't have an account? <a href="{{ route('register') }}" class="text-primary fw-semibold">Create Account</a>

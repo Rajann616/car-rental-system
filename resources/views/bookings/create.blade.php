@@ -11,6 +11,65 @@
             <p class="text-muted">Review your itinerary and complete payment via Instant UPI / GPay.</p>
         </div>
 
+        <!-- Multi-Step Checkout Stepper -->
+        <div class="mb-4" data-aos="fade-down">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+                <div class="d-flex align-items-center justify-content-between position-relative">
+                    
+                    <!-- Step 1: Completed -->
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center shadow-sm flex-shrink-0" style="width: 42px; height: 42px; font-size: 1rem;">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="d-none d-md-block">
+                            <span class="badge bg-success bg-opacity-10 text-success fw-bold rounded-pill mb-1" style="font-size: 0.65rem;">STEP 1</span>
+                            <div class="fw-bold text-dark small">Select Vehicle</div>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow-1 mx-3 border-top border-2 border-success"></div>
+
+                    <!-- Step 2: Active -->
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm flex-shrink-0" style="width: 42px; height: 42px; font-size: 1rem;">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <span class="badge bg-primary bg-opacity-10 text-primary fw-bold rounded-pill mb-1" style="font-size: 0.65rem;">STEP 2 • ACTIVE</span>
+                            <div class="fw-bold text-primary small">Delivery Location</div>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow-1 mx-3 border-top border-2 border-primary-subtle"></div>
+
+                    <!-- Step 3: Verification -->
+                    <div class="d-flex align-items-center gap-3 opacity-75">
+                        <div class="rounded-circle bg-light border text-muted d-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px; font-size: 1rem;">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="d-none d-md-block">
+                            <span class="badge bg-light text-muted fw-bold rounded-pill mb-1" style="font-size: 0.65rem;">STEP 3</span>
+                            <div class="fw-bold text-muted small">Verification</div>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow-1 mx-3 border-top border-2 border-light"></div>
+
+                    <!-- Step 4: Final Payment -->
+                    <div class="d-flex align-items-center gap-3 opacity-75">
+                        <div class="rounded-circle bg-light border text-muted d-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px; font-size: 1rem;">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="d-none d-md-block">
+                            <span class="badge bg-light text-muted fw-bold rounded-pill mb-1" style="font-size: 0.65rem;">STEP 4</span>
+                            <div class="fw-bold text-muted small">Instant Payment</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4">
             <!-- Left Column: Itinerary Details -->
             <div class="col-lg-7" data-aos="fade-right">

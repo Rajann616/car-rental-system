@@ -52,26 +52,26 @@
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Booking #</th>
-                                <th>Customer</th>
-                                <th>Vehicle</th>
-                                <th>Rental Period</th>
-                                <th>Total Amount</th>
-                                <th>Status</th>
-                                <th style="min-width: 175px;">Update Status</th>
-                                <th class="text-end pe-3">Actions</th>
+                                <th style="min-width: 150px;">Booking #</th>
+                                <th style="min-width: 180px;">Customer</th>
+                                <th style="min-width: 220px;">Vehicle</th>
+                                <th style="min-width: 260px;">Rental Period</th>
+                                <th style="min-width: 130px;">Total Amount</th>
+                                <th style="min-width: 140px;">Status</th>
+                                <th style="min-width: 160px;">Update Status</th>
+                                <th style="min-width: 80px;" class="text-end pe-3">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($bookings as $booking)
                                 <tr>
-                                    <td class="fw-bold text-primary fs-6">{{ $booking->booking_number }}</td>
-                                    <td>
+                                    <td class="fw-bold text-primary fs-6 text-nowrap">{{ $booking->booking_number }}</td>
+                                    <td class="text-nowrap">
                                         <div class="fw-bold text-dark">{{ $booking->user->name }}</div>
                                         <small class="text-muted">{{ $booking->user->email }}</small>
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center gap-2">
+                                        <div class="d-flex align-items-center gap-2" style="min-width: 200px;">
                                             <div class="rounded-2 overflow-hidden bg-light border" style="width: 55px; height: 40px; flex-shrink: 0;">
                                                 @if($booking->car->thumbnail)
                                                     <img src="{{ asset('storage/' . $booking->car->thumbnail) }}" class="w-100 h-100 object-fit-cover">
@@ -82,37 +82,34 @@
                                                 @endif
                                             </div>
                                             <div>
-                                                <div class="fw-bold text-dark fs-7">{{ $booking->car->brand }} {{ $booking->car->model }}</div>
-                                                <small class="text-muted fs-7">{{ $booking->car->registration_number }}</small>
+                                                <div class="fw-bold text-dark fs-7 text-nowrap">{{ $booking->car->brand }} {{ $booking->car->model }}</div>
+                                                <small class="text-muted fs-7 text-nowrap">{{ $booking->car->registration_number }}</small>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="small">
-                                        <div class="fw-semibold text-dark"><i class="fas fa-calendar-alt text-primary me-1"></i> {{ $booking->pickup_date->format('d M') }} — {{ $booking->return_date->format('d M Y') }}</div>
-                                        <div class="text-muted fs-7">{{ $booking->pickup_location }}</div>
+                                    <td>
+                                        <div class="fw-semibold text-dark text-nowrap small"><i class="fas fa-calendar-alt text-primary me-1"></i> {{ $booking->pickup_date->format('d M') }} — {{ $booking->return_date->format('d M Y') }}</div>
+                                        <div class="text-muted fs-7" style="max-width: 240px; line-height: 1.3;">{{ $booking->pickup_location }}</div>
                                     </td>
-                                    <td class="fw-bold text-dark fs-6">
+                                    <td class="fw-bold text-dark fs-6 text-nowrap">
                                         ₹{{ number_format($booking->total_amount, 0) }}
                                     </td>
-                                    <td>
+                                    <td class="text-nowrap">
                                         <span class="badge-status {{ $booking->status_badge }}">
                                             {{ $booking->status }}
                                         </span>
                                     </td>
                                     <td>
-                                        <form action="{{ route('admin.bookings.status', $booking->id) }}" method="POST" class="d-flex align-items-center gap-2" style="min-width: 170px;">
+                                        <form action="{{ route('admin.bookings.status', $booking->id) }}" method="POST" class="d-flex align-items-center" style="min-width: 150px;">
                                             @csrf
-                                            <select name="status" class="form-select form-select-sm border-2 rounded-3 fw-semibold text-dark shadow-sm flex-grow-1" style="font-size: 0.82rem; min-width: 125px;" onchange="this.form.submit()">
+                                            <select name="status" class="form-select form-select-sm border-2 rounded-pill fw-bold text-dark shadow-sm px-3 py-1 bg-white" style="font-size: 0.82rem; cursor: pointer;" onchange="this.form.submit()" title="Change reservation status">
                                                 @foreach(['Pending', 'Confirmed', 'Active', 'Completed', 'Cancelled'] as $st)
                                                     <option value="{{ $st }}" {{ $booking->status == $st ? 'selected' : '' }}>{{ $st }}</option>
                                                 @endforeach
                                             </select>
-                                            <button type="submit" class="btn btn-sm btn-primary rounded-3 px-2 py-1 flex-shrink-0 shadow-sm" title="Save Status">
-                                                <i class="fas fa-check"></i>
-                                            </button>
                                         </form>
                                     </td>
-                                    <td>
+                                    <td class="text-end">
                                         <a href="{{ route('bookings.show', $booking->id) }}" class="btn btn-sm btn-outline-secondary rounded-circle" target="_blank" title="View Invoice">
                                             <i class="fas fa-receipt"></i>
                                         </a>

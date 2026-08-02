@@ -43,7 +43,9 @@ class CustomerBookingTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function customer_can_view_booking_checkout_confirmation_page()
     {
-        $response = $this->actingAs($this->customer)->get("/customer/bookings/create/{$this->car->id}?pickup_location=Iskcon+Cross+Roads&pickup_date=2026-08-01&return_date=2026-08-03");
+        $today = now()->format('Y-m-d');
+        $futureDate = now()->addDays(2)->format('Y-m-d');
+        $response = $this->actingAs($this->customer)->get("/customer/bookings/create/{$this->car->id}?pickup_location=Iskcon+Cross+Roads&pickup_date={$today}&return_date={$futureDate}");
 
         $response->assertStatus(200);
         $response->assertSee('Delivery Address');

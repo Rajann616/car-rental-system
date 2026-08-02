@@ -10,7 +10,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,6 +20,9 @@
 
     <!-- AOS (Animate On Scroll) -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- ApexCharts for Modern Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -135,6 +138,21 @@
                                                     <div class="text-muted small leading-tight mb-1" style="font-size: 0.78rem;">
                                                         {{ $data['message'] ?? '' }}
                                                     </div>
+                                                    @php
+                                                        $replyEmail = $data['reply_email'] ?? null;
+                                                        if (!$replyEmail && preg_match('/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/', $data['message'] ?? '', $matches)) {
+                                                            $replyEmail = $matches[0];
+                                                        }
+                                                    @endphp
+                                                    @if($replyEmail)
+                                                        <div class="mt-1 pt-1 d-flex justify-content-start align-items-center">
+                                                            <a href="mailto:{{ $replyEmail }}?subject=Re: {{ rawurlencode($data['title'] ?? 'AutoLux Inquiry') }}" 
+                                                                class="btn btn-sm btn-outline-primary rounded-pill py-0 px-2 small text-decoration-none" style="font-size: 0.7rem;" 
+                                                                onclick="event.stopPropagation();">
+                                                                <i class="fas fa-reply me-1"></i> Reply to {{ $replyEmail }}
+                                                            </a>
+                                                        </div>
+                                                    @endif
                                                     <div class="text-muted text-end" style="font-size: 0.68rem;">
                                                         {{ $notif->created_at->diffForHumans() }}
                                                     </div>
@@ -179,20 +197,42 @@
         </div>
     </nav>
 
-    <!-- Flash Messages -->
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show flash-alert" role="alert">
-            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
+    <!-- Animated Floating Toast Notifications System -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-4" style="z-index: 1090;">
+        @if(session('success'))
+            <div class="toast align-items-center text-white bg-dark border-0 show shadow-lg rounded-4 p-2 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex align-items-center">
+                    <div class="toast-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-success bg-opacity-25 p-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                            <i class="fas fa-check-circle text-success fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-white small">Action Successful</div>
+                            <div class="text-white-50 small">{{ session('success') }}</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-3 ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
 
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show flash-alert" role="alert">
-            <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
+        @if(session('error'))
+            <div class="toast align-items-center text-white bg-dark border-0 show shadow-lg rounded-4 p-2 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex align-items-center">
+                    <div class="toast-body d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-danger bg-opacity-25 p-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                            <i class="fas fa-exclamation-circle text-danger fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-white small">System Notice</div>
+                            <div class="text-white-50 small">{{ session('error') }}</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-3 ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+    </div>
 
     <!-- Main Content -->
     <main>
@@ -303,6 +343,11 @@
             }
         });
     </script>
+
+    <!-- Three.js, OrbitControls & GLTFLoader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
     @stack('scripts')
 </body>

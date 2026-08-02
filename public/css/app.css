@@ -53,8 +53,8 @@
     --shadow-glow: 0 0 40px rgba(37, 99, 235, 0.15);
 
     /* Typography */
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
 
     /* Spacing */
     --section-gap: 7rem;
@@ -67,6 +67,63 @@
     --transition-fast: 0.2s var(--ease-out);
     --transition-normal: 0.35s var(--ease-out);
     --transition-slow: 0.5s var(--ease-out);
+}
+
+/* UI Micro-Animations & Enhancements */
+.pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10B981;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: pulse-ring 1.8s infinite;
+}
+
+@keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.car-card {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease !important;
+}
+
+.car-card:hover {
+    transform: translateY(-6px) scale(1.01) !important;
+    box-shadow: 0 20px 35px rgba(37, 99, 235, 0.12) !important;
+}
+
+/* Modern Table Layout & Typography */
+.table-modern {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table-modern th {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--neutral-500);
+    padding: 1rem 1.25rem;
+    border-bottom: 2px solid var(--neutral-200);
+    white-space: nowrap;
+    background: var(--neutral-50);
+}
+
+.table-modern td {
+    padding: 1.15rem 1.25rem;
+    background: #ffffff;
+    border-bottom: 1px solid var(--neutral-100);
+    vertical-align: middle;
+}
+
+.table-modern tr:hover td {
+    background-color: rgba(37, 99, 235, 0.02);
 }
 
 /* ---------- Reset & Base ---------- */
@@ -1359,3 +1416,132 @@ body.has-hero #mainNavbar:not(.scrolled) .brand-text {
     .search-card { padding: 1.5rem; }
     .flash-alert { min-width: 90%; }
 }
+
+/* ---------- Three.js 3D Showcase & Glassmorphism ---------- */
+.hero-3d-wrapper {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.65) 0%, rgba(9, 14, 26, 0.75) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 2rem;
+    overflow: hidden;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 35px rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    animation: heroCardFloat 6s ease-in-out infinite;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-3d-wrapper:hover {
+    border-color: rgba(59, 130, 246, 0.35);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 45px rgba(37, 99, 235, 0.2);
+}
+
+@keyframes heroCardFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+}
+
+.hero-3d-canvas {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+
+.hero-3d-canvas:active {
+    cursor: grabbing;
+}
+
+/* Floating Specs Badges - Symmetrical Luxury Styling */
+.hero-floating-badge {
+    position: absolute;
+    z-index: 10;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 0.55rem 1rem;
+    border-radius: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto;
+}
+
+.hero-floating-badge:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.45);
+    background: rgba(15, 23, 42, 0.82);
+}
+
+.badge-top-left {
+    top: 1.25rem;
+    left: 1.25rem;
+}
+
+.badge-top-right {
+    top: 1.25rem;
+    right: 1.25rem;
+}
+
+.badge-bottom-left {
+    bottom: 1.25rem;
+    left: 1.25rem;
+}
+
+.badge-bottom-right {
+    bottom: 1.25rem;
+    right: 1.25rem;
+}
+
+.badge-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+
+.fs-7 {
+    font-size: 0.78rem;
+}
+
+/* Micro-animations: Buttons lift on hover */
+.btn-hero-primary, .btn-hero-outline, .btn-nav-primary, .btn-nav-outline, .btn-auth, .btn-primary {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hero-primary:hover, .btn-hero-outline:hover, .btn-nav-primary:hover, .btn-nav-outline:hover, .btn-auth:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+}
+
+/* Navbar Animated Underline Effect */
+.navbar-nav .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background: linear-gradient(90deg, #2563eb, #38bdf8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.navbar-nav .nav-link:hover::after, .navbar-nav .nav-link.active::after {
+    width: 80%;
+}
+

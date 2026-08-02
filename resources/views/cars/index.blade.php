@@ -177,6 +177,9 @@
 
                                     <!-- Status Badges -->
                                     <span class="car-badge position-absolute top-0 start-0 m-3 {{ strtolower($car->status) }}">
+                                        @if($car->status === 'Available')
+                                            <span class="pulse-dot me-1"></span>
+                                        @endif
                                         {{ $car->status }}
                                     </span>
                                     <span class="car-fuel-badge position-absolute top-0 end-0 m-3">

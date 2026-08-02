@@ -51,14 +51,22 @@
 </style>
 <section class="dashboard-section pb-5">
     <div class="container">
-        <!-- Print / Action Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4 d-print-none" data-aos="fade-down">
+        <!-- Print & WhatsApp Share Action Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 d-print-none flex-wrap gap-2" data-aos="fade-down">
             <a href="{{ route('customer.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
                 <i class="fas fa-arrow-left me-1"></i> Dashboard
             </a>
-            <button onclick="window.print()" class="btn btn-primary btn-sm rounded-pill px-3">
-                <i class="fas fa-print me-1"></i> Print / Download Invoice
-            </button>
+            <div class="d-flex gap-2">
+                @php
+                    $waText = urlencode("Hello AutoLux! Here is my booking invoice #{$booking->booking_number} for {$booking->car->brand} {$booking->car->model}: " . route('bookings.show', $booking->id));
+                @endphp
+                <a href="https://wa.me/?text={{ $waText }}" target="_blank" class="btn btn-success btn-sm rounded-pill px-3 fw-bold">
+                    <i class="fab fa-whatsapp me-1 fs-6"></i> Share on WhatsApp
+                </a>
+                <button onclick="window.print()" class="btn btn-primary btn-sm rounded-pill px-3 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                    <i class="fas fa-file-pdf me-1"></i> Print / Download Tax Invoice (PDF)
+                </button>
+            </div>
         </div>
 
         <!-- Printable Invoice Card -->
@@ -70,16 +78,24 @@
                         <span class="brand-icon"><i class="fas fa-car-side"></i></span>
                         <span class="brand-text fs-3 fw-bold">Auto<span class="brand-accent">Lux</span></span>
                     </div>
-                    <div class="small text-muted">123 SG Highway, Iskcon Cross Roads, Ahmedabad, GJ</div>
+                    <div class="small text-muted">123 SG Highway, Iskcon Cross Roads, Ahmedabad, GJ 380015</div>
                     <div class="small text-muted">GSTIN: 24AAACD1234E1Z5 | Support: +91 98765 43210</div>
                 </div>
                 <div class="col-sm-6 text-sm-end mt-3 mt-sm-0">
-                    <h4 class="fw-bold text-primary mb-1">RENTAL INVOICE</h4>
-                    <div class="fw-extrabold fs-3 text-dark font-display" style="letter-spacing: 0.02em;">{{ $booking->booking_number }}</div>
-                    <div class="small text-muted mb-2">Date: {{ $booking->created_at->format('d M Y, h:i A') }}</div>
-                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-1 fw-bold fs-6 rounded-pill">
-                        <i class="fas fa-circle-check me-1"></i> Booking Status: {{ strtoupper($booking->status) }}
-                    </span>
+                    <div class="d-flex align-items-center justify-content-sm-end gap-3">
+                        <div>
+                            <h4 class="fw-bold text-primary mb-1">RENTAL INVOICE</h4>
+                            <div class="fw-extrabold fs-3 text-dark font-display" style="letter-spacing: 0.02em;">{{ $booking->booking_number }}</div>
+                            <div class="small text-muted mb-2">Date: {{ $booking->created_at->format('d M Y, h:i A') }}</div>
+                            <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-1 fw-bold fs-6 rounded-pill">
+                                <i class="fas fa-circle-check me-1"></i> Status: {{ strtoupper($booking->status) }}
+                            </span>
+                        </div>
+                        <div class="d-none d-sm-block text-center border p-1 rounded-3 bg-light">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=70x70&data={{ urlencode(route('bookings.show', $booking->id)) }}" title="Scan to Verify Invoice Authenticity" style="width:70px; height:70px;">
+                            <div style="font-size: 0.62rem;" class="text-muted fw-bold mt-1">SCAN VERIFIED</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

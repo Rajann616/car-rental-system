@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\ReportController as AdminReportController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/contact', [HomeController::class, 'contact'])->name('contact.send');
 Route::get('/cars', [VehicleController::class, 'index'])->name('cars.index');
 Route::get('/cars/{id}', [VehicleController::class, 'show'])->name('cars.show');
 
