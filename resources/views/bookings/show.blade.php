@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() ? 'layouts.customer' : 'layouts.app')
 
 @section('title', 'Booking Invoice — ' . $booking->booking_number)
+@section('page_title', 'Invoice ' . $booking->booking_number)
 
 @section('content')
 <style media="print">

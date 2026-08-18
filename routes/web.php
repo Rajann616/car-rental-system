@@ -33,6 +33,9 @@ Route::get('/cars/{id}', [VehicleController::class, 'show'])->name('cars.show');
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/auth/google', [LoginController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::post('/auth/google', [LoginController::class, 'postGoogleLogin'])->name('auth.google.post');
+    Route::get('/auth/google/callback', [LoginController::class, 'handleGoogleCallback'])->name('auth.google.callback');
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register']);
     Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -55,12 +58,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
         Route::get('/documents', [CustomerDocumentController::class, 'index'])->name('documents.index');
         Route::post('/documents', [CustomerDocumentController::class, 'store'])->name('documents.store');
+        Route::post('/save-search', [CustomerDashboard::class, 'saveSearch'])->name('save-search');
     });
 
     // Shared authenticated booking routes
     Route::get('/bookings/{id}/success', [BookingController::class, 'success'])->name('bookings.success');
     Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::post('/bookings/{id}/extend', [BookingController::class, 'extend'])->name('bookings.extend');
 
     // Admin routes
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {

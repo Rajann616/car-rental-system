@@ -3,90 +3,138 @@
 @section('title', 'Create Account — AutoLux')
 
 @section('content')
-<section class="auth-section">
-    <div class="container">
-        <div class="auth-card" data-aos="zoom-in">
-            <div class="text-center mb-4">
-                <a href="{{ route('home') }}" class="d-inline-flex align-items-center gap-2 mb-3">
-                    <span class="brand-icon"><i class="fas fa-car-side"></i></span>
-                    <span class="brand-text fs-4 fw-bold">Auto<span class="brand-accent">Lux</span></span>
-                </a>
-                <h1 class="auth-title">Join AutoLux</h1>
-                <p class="auth-subtitle">Create an account to start booking luxury vehicles</p>
-            </div>
+<div class="simple-auth-page">
+    
+    <!-- Minimal Top Bar (No Header Clutter) -->
+    <div class="simple-auth-topbar">
+        <a href="{{ route('home') }}" class="simple-brand-logo">
+            <i class="fas fa-car-side" style="color: #FF7A00;"></i> Auto<span style="color: #FF7A00;">Lux</span>
+        </a>
+        <a href="{{ route('login') }}" class="text-dark fw-bold small text-decoration-none">
+            Already registered? <span class="text-primary">Sign In →</span>
+        </a>
+    </div>
 
-            <form method="POST" action="{{ route('register') }}">
-                @csrf
-
-                <div class="mb-3">
-                    <label for="name" class="form-label">Full Name</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-user text-muted"></i></span>
-                        <input type="text" class="form-control border-start-0 @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required autofocus placeholder="Enter your full name">
-                    </div>
-                    @error('name')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email Address</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted"></i></span>
-                        <input type="email" class="form-control border-start-0 @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required placeholder="Enter email address">
-                    </div>
-                    @error('email')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-phone text-muted"></i></span>
-                        <input type="text" class="form-control border-start-0 @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" required placeholder="Enter phone number">
-                    </div>
-                    @error('phone')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="input-group password-input-group">
-                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                        <input type="password" class="form-control border-start-0 @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Enter password (min. 8 characters)">
-                        <button class="btn toggle-password-btn-inside" type="button" data-target="password" title="Toggle password visibility">
-                            <i class="far fa-eye"></i>
-                        </button>
-                    </div>
-                    @error('password')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
+    <div class="simple-auth-container">
+        <div class="simple-auth-card" data-aos="fade-up" data-aos-duration="500">
+            <!-- Clean Form Area -->
+            <div class="simple-form-area">
 
                 <div class="mb-4">
-                    <label for="password_confirmation" class="form-label">Confirm Password</label>
-                    <div class="input-group password-input-group">
-                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                        <input type="password" class="form-control border-start-0" id="password_confirmation" name="password_confirmation" required placeholder="Confirm password">
-                        <button class="btn toggle-password-btn-inside" type="button" data-target="password_confirmation" title="Toggle password visibility">
-                            <i class="far fa-eye"></i>
+                    <h2 class="simple-form-title">Create account ✨</h2>
+                    <p class="simple-form-subtitle">Get started in less than 2 minutes.</p>
+                </div>
+
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+
+                        <!-- Full Name Input -->
+                        <div class="simple-field-group">
+                            <label for="name" class="simple-field-label">Full Name</label>
+                            <div class="simple-input-box">
+                                <i class="fas fa-user simple-input-icon"></i>
+                                <input type="text" class="simple-input @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required autofocus placeholder="Rai Rajan">
+                            </div>
+                            @error('name')
+                                <div class="text-danger small mt-1.5 fw-semibold">⚠ {{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Email Address Input -->
+                        <div class="simple-field-group">
+                            <label for="email" class="simple-field-label">Email</label>
+                            <div class="simple-input-box">
+                                <i class="fas fa-envelope simple-input-icon"></i>
+                                <input type="email" class="simple-input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required placeholder="name@example.com">
+                            </div>
+                            @error('email')
+                                <div class="text-danger small mt-1.5 fw-semibold">⚠ {{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Phone Number Input -->
+                        <div class="simple-field-group">
+                            <label for="phone" class="simple-field-label">Phone Number</label>
+                            <div class="simple-input-box">
+                                <i class="fas fa-phone simple-input-icon"></i>
+                                <input type="text" class="simple-input @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" required placeholder="9876543210">
+                            </div>
+                            @error('phone')
+                                <div class="text-danger small mt-1.5 fw-semibold">⚠ {{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="simple-field-group">
+                            <label for="password" class="simple-field-label">Password</label>
+                            <div class="simple-input-box">
+                                <i class="fas fa-lock simple-input-icon"></i>
+                                <input type="password" class="simple-input @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Min. 8 characters">
+                                <button type="button" class="simple-eye-btn toggle-password-btn" data-target="password" title="Toggle Password">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            @error('password')
+                                <div class="text-danger small mt-1.5 fw-semibold">⚠ {{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Confirm Password Input -->
+                        <div class="simple-field-group mb-4">
+                            <label for="password_confirmation" class="simple-field-label">Confirm Password</label>
+                            <div class="simple-input-box">
+                                <i class="fas fa-lock simple-input-icon"></i>
+                                <input type="password" class="simple-input" id="password_confirmation" name="password_confirmation" required placeholder="Re-enter password">
+                                <button type="button" class="simple-eye-btn toggle-password-btn" data-target="password_confirmation" title="Toggle Password">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-simple-orange">
+                            <span>Create Account</span>
+                            <i class="fas fa-user-plus"></i>
                         </button>
-                    </div>
-                </div>
 
-                <button type="submit" class="btn btn-auth">
-                    Create Account <i class="fas fa-user-plus ms-2"></i>
-                </button>
-
-                <div class="text-center mt-4">
-                    <p class="small text-muted mb-0">
-                        Already have an account? <a href="{{ route('login') }}" class="text-primary fw-semibold">Sign In</a>
-                    </p>
+                        <div class="text-center mt-4">
+                            <p class="small text-muted mb-0">
+                                Already have an account? 
+                                <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none ms-1">Sign In</a>
+                            </p>
+                        </div>
                 </div>
-            </form>
         </div>
     </div>
-</section>
+
+    <!-- Minimal Page Footer -->
+    <div class="text-center text-muted small mt-4" style="font-size: 0.8rem;">
+        © {{ date('Y') }} AutoLux Car Rental. All rights reserved.
+    </div>
+
+</div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtns = document.querySelectorAll('.toggle-password-btn');
+    toggleBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const targetId = this.getAttribute('data-target');
+            const targetInput = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+            if (targetInput.type === 'password') {
+                targetInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                targetInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+});
+</script>
+@endpush
 @endsection

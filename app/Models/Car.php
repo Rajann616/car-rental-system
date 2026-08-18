@@ -59,13 +59,17 @@ class Car extends Model
     /**
      * Check if car is available for given dates.
      */
-    public function isAvailableForDates($pickupDate, $returnDate): bool
+    public function isAvailableForDates($pickupDate, $returnDate, $excludeBookingId = null): bool
     {
-        if ($this->status !== 'Available') {
+        // If not checking for an extension on an existing booking, status must be Available
+        if ($this->status !== 'Available' && !$excludeBookingId) {
             return false;
         }
 
         return !$this->bookings()
+            ->when($excludeBookingId, function ($query) use ($excludeBookingId) {
+                $query->where('id', '!=', $excludeBookingId);
+            })
             ->whereIn('status', ['Confirmed', 'Active'])
             ->where(function ($query) use ($pickupDate, $returnDate) {
                 $query->whereBetween('pickup_date', [$pickupDate, $returnDate])

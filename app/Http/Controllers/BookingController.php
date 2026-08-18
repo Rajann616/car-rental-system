@@ -224,4 +224,67 @@ class BookingController extends Controller
 
         return back()->with('success', 'Booking cancelled successfully. Refund will be processed as per policy.');
     }
+
+    /**
+     * Extend active booking by N days.
+     */
+    public function extend(Request $request, $id)
+    {
+        $booking = Booking::with('car')->findOrFail($id);
+
+        if ($booking->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'extension_days' => 'required|integer|min:1|max:7',
+        ]);
+
+        $days = (int) $request->extension_days;
+        $dailyRate = $booking->car->rental_price_per_day;
+        $extraCost = $dailyRate * $days;
+
+        $newReturnDate = Carbon::parse($booking->return_date)->addDays($days);
+
+        // Check if car is available for extended dates (excluding current booking)
+        if (!$booking->car->isAvailableForDates($booking->return_date->toDateString(), $newReturnDate->toDateString(), $booking->id)) {
+            return back()->with('error', 'Vehicle is reserved for another customer during requested extension dates.');
+        }
+
+        $booking->update([
+            'return_date' => $newReturnDate,
+            'total_amount' => $booking->total_amount + $extraCost,
+        ]);
+
+        // Process Instant UPI Payment if selected
+        $paymentMsg = "added to your final invoice";
+        if ($request->payment_method === 'upi' || $request->filled('razorpay_payment_id')) {
+            $paymentId = $request->razorpay_payment_id ?? ('pay_demo_ext_' . substr(md5(time() . rand(100, 999)), 0, 12));
+            Payment::create([
+                'booking_id' => $booking->id,
+                'user_id' => auth()->id(),
+                'amount' => $extraCost,
+                'currency' => 'INR',
+                'status' => 'Success',
+                'razorpay_order_id' => 'order_ext_' . time(),
+                'razorpay_payment_id' => $paymentId,
+                'method' => 'Razorpay UPI Extension',
+            ]);
+            $paymentMsg = "paid instantly via Instant UPI (Ref: {$paymentId})";
+        }
+
+        // Send Notification & Email Alert
+        try {
+            auth()->user()->notify(new \App\Notifications\RentalExtensionConfirmedNotification(
+                $booking,
+                $days,
+                $extraCost,
+                $paymentMsg
+            ));
+        } catch (\Exception $e) {
+            \Log::warning('Extension notification failed: ' . $e->getMessage());
+        }
+
+        return back()->with('success', "Rental extended successfully by {$days} day(s) until " . $newReturnDate->format('d M, Y') . "! Charge: ₹" . number_format($extraCost, 0) . " ({$paymentMsg}).");
+    }
 }

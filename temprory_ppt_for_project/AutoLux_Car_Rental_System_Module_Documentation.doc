@@ -1,0 +1,939 @@
+================================================================================
+                    AUTOLUX - CAR RENTAL SYSTEM
+                    MODULE DOCUMENTATION
+================================================================================
+
+Project Name     : AutoLux - Car Rental System
+Framework        : Laravel (PHP)
+Database         : MySQL
+Frontend         : Blade Templates with CSS
+Payment Gateway  : Razorpay
+Architecture     : MVC (Model-View-Controller)
+Roles            : Admin, Customer
+
+================================================================================
+                         TABLE OF CONTENTS
+================================================================================
+
+1.  Project Overview
+2.  System Architecture
+3.  Module 1  - Authentication Module
+4.  Module 2  - Home / Landing Page Module
+5.  Module 3  - Car / Vehicle Management Module
+6.  Module 4  - Booking Management Module
+7.  Module 5  - Payment Module
+8.  Module 6  - Document Verification Module
+9.  Module 7  - Maintenance Records Module
+10. Module 8  - Reports & Analytics Module
+11. Module 9  - Notifications Module
+12. Module 10 - Admin Dashboard Module
+13. Module 11 - Customer Dashboard Module
+14. Database Schema (Data Dictionary)
+15. Route Summary
+16. Middleware Details
+17. Model Relationships (ER Summary)
+
+
+================================================================================
+1. PROJECT OVERVIEW
+================================================================================
+
+AutoLux is a full-featured online car rental management system built with 
+Laravel. It allows customers to browse available vehicles, make bookings, 
+upload verification documents, and track their rental history. Administrators 
+can manage the vehicle fleet, approve/reject bookings, verify customer 
+documents, schedule vehicle maintenance, and generate business reports.
+
+Key Features:
+  - Role-based access control (Admin & Customer)
+  - Vehicle fleet management with multi-image support
+  - Online booking with date-based availability checking
+  - Razorpay payment gateway integration
+  - Document upload and verification (KYC)
+  - Vehicle maintenance scheduling and tracking
+  - Business reports and analytics dashboard
+  - Real-time notification system
+  - Responsive design with modern UI
+  - Password reset via email
+
+
+================================================================================
+2. SYSTEM ARCHITECTURE
+================================================================================
+
+The project follows the standard Laravel MVC pattern:
+
+    +-------------------+
+    |    Browser/User   |
+    +--------+----------+
+             |
+    +--------v----------+
+    |   Routes (web.php)|
+    +--------+----------+
+             |
+    +--------v----------+
+    |    Middleware      |
+    |  (Auth, Admin,    |
+    |   Customer)       |
+    +--------+----------+
+             |
+    +--------v----------+
+    |   Controllers     |
+    +--------+----------+
+             |
+    +--------v----------+
+    |   Models (Eloquent)|
+    +--------+----------+
+             |
+    +--------v----------+
+    |  MySQL Database   |
+    +-------------------+
+
+    Views: Blade Templates (resources/views/)
+    Layout: Master layout (layouts/app.blade.php)
+
+Directory Structure:
+    app/
+      Http/
+        Controllers/
+          Auth/           -> Authentication controllers
+          Admin/          -> Admin panel controllers
+          Customer/       -> Customer panel controllers
+          HomeController.php
+          VehicleController.php
+          BookingController.php
+          NotificationController.php
+        Middleware/
+          AdminMiddleware.php
+          CustomerMiddleware.php
+      Models/
+        User.php
+        Car.php
+        CarImage.php
+        Booking.php
+        Payment.php
+        Document.php
+        MaintenanceRecord.php
+    resources/views/
+      layouts/app.blade.php
+      welcome.blade.php
+      home.blade.php
+      auth/
+      cars/
+      bookings/
+      admin/
+      customer/
+    database/migrations/
+    routes/web.php
+
+
+================================================================================
+3. MODULE 1 - AUTHENTICATION MODULE
+================================================================================
+
+Purpose:
+  Handles user registration, login, logout, and password reset functionality.
+  Supports two roles: 'admin' and 'customer'.
+
+Controllers:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Auth/LoginController.php                    | Login form display, login/logout |
+  | Auth/RegisterController.php                 | Registration form & processing   |
+  | Auth/ForgotPasswordController.php           | Password reset via email         |
+  +---------------------------------------------+----------------------------------+
+
+Views:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | auth/login.blade.php                        | Login page                       |
+  | auth/register.blade.php                     | Registration page                |
+  | auth/forgot-password.blade.php              | Forgot password page             |
+  | auth/reset-password.blade.php               | Reset password page              |
+  +---------------------------------------------+----------------------------------+
+
+Middleware:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | AdminMiddleware.php                         | Restricts access to admin users  |
+  | CustomerMiddleware.php                      | Restricts access to customers    |
+  +---------------------------------------------+----------------------------------+
+
+Routes:
+  GET  /login              -> Show login form
+  POST /login              -> Process login
+  POST /logout             -> Logout user
+  GET  /register           -> Show registration form
+  POST /register           -> Process registration
+  GET  /forgot-password    -> Show forgot password form
+  POST /forgot-password    -> Send reset link email
+  GET  /reset-password/{token} -> Show reset password form
+  POST /reset-password     -> Process password reset
+
+Features:
+  - Email-based login authentication
+  - Automatic role assignment (default: customer)
+  - Password hashing using Laravel's built-in bcrypt
+  - Remember me token support
+  - Guest middleware (prevents logged-in users from seeing login/register)
+  - Email-based password reset with token verification
+
+
+================================================================================
+4. MODULE 2 - HOME / LANDING PAGE MODULE
+================================================================================
+
+Purpose:
+  Public-facing pages including the main landing page, vehicle showcase,
+  and contact form functionality.
+
+Controller:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | HomeController.php                          | Landing page & contact form      |
+  +---------------------------------------------+----------------------------------+
+
+Views:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | welcome.blade.php                           | Public landing page (homepage)   |
+  | home.blade.php                              | Logged-in user home page         |
+  +---------------------------------------------+----------------------------------+
+
+Routes:
+  GET  /           -> Homepage / Landing page
+  POST /contact    -> Process contact form submission
+
+Features:
+  - Hero section with call-to-action
+  - Featured vehicles showcase
+  - Contact form with email notification
+  - Responsive design for all devices
+
+
+================================================================================
+5. MODULE 3 - CAR / VEHICLE MANAGEMENT MODULE
+================================================================================
+
+Purpose:
+  Complete vehicle fleet management. Public users can browse and view car 
+  details. Admins can perform full CRUD (Create, Read, Update, Delete) 
+  operations on the vehicle inventory.
+
+Models:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Car.php                                     | Car entity with attributes       |
+  | CarImage.php                                | Car gallery images               |
+  +---------------------------------------------+----------------------------------+
+
+Controllers:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | VehicleController.php                       | Public car listing & detail view |
+  | Admin/CarController.php                     | Admin CRUD for cars              |
+  +---------------------------------------------+----------------------------------+
+
+Views (Public):
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | cars/index.blade.php                        | Public car listing with filters  |
+  | cars/show.blade.php                         | Car detail page with gallery     |
+  +---------------------------------------------+----------------------------------+
+
+Views (Admin):
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | admin/cars/index.blade.php                  | Admin car listing table          |
+  | admin/cars/create.blade.php                 | Add new car form                 |
+  | admin/cars/edit.blade.php                   | Edit car form                    |
+  +---------------------------------------------+----------------------------------+
+
+Database Table - cars:
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Description                   |
+  +-------------------------+-------------------+-------------------------------+
+  | id                      | BIGINT (PK)       | Auto-increment primary key    |
+  | brand                   | VARCHAR(100)      | Car brand (e.g., Toyota)      |
+  | model                   | VARCHAR(100)      | Car model (e.g., Camry)       |
+  | year                    | YEAR              | Manufacturing year            |
+  | registration_number     | VARCHAR(20) UQ    | Unique registration plate     |
+  | fuel_type               | ENUM              | Petrol/Diesel/Electric/       |
+  |                         |                   | Hybrid/CNG                    |
+  | transmission            | ENUM              | Manual/Automatic              |
+  | seating_capacity        | TINYINT           | Number of seats (default: 5)  |
+  | rental_price_per_day    | DECIMAL(10,2)     | Daily rental price in INR     |
+  | description             | TEXT              | Car description               |
+  | features                | JSON              | Feature list as JSON array    |
+  | status                  | ENUM              | Available/Booked/Rented/      |
+  |                         |                   | Maintenance                   |
+  | thumbnail               | VARCHAR           | Thumbnail image path          |
+  | created_at              | TIMESTAMP         | Record creation time          |
+  | updated_at              | TIMESTAMP         | Last update time              |
+  +-------------------------+-------------------+-------------------------------+
+
+Database Table - car_images:
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Description                   |
+  +-------------------------+-------------------+-------------------------------+
+  | id                      | BIGINT (PK)       | Auto-increment primary key    |
+  | car_id                  | BIGINT (FK)       | References cars.id            |
+  | image_path              | VARCHAR           | Image file path               |
+  | sort_order              | INT               | Display order (default: 0)    |
+  | created_at              | TIMESTAMP         | Record creation time          |
+  | updated_at              | TIMESTAMP         | Last update time              |
+  +-------------------------+-------------------+-------------------------------+
+
+Routes (Public):
+  GET /cars           -> Browse all available cars
+  GET /cars/{id}      -> View car details
+
+Routes (Admin):
+  GET    /admin/cars          -> List all cars
+  GET    /admin/cars/create   -> Show create car form
+  POST   /admin/cars          -> Store new car
+  GET    /admin/cars/{id}/edit -> Show edit car form
+  PUT    /admin/cars/{id}     -> Update car
+  DELETE /admin/cars/{id}     -> Delete car
+
+Key Methods in Car Model:
+  - isAvailableForDates($pickup, $return) : Check date-based availability
+  - scopeAvailable($query)               : Filter only available cars
+  - scopeByBrand($query, $brand)         : Filter by brand
+  - scopeByFuelType($query, $fuelType)   : Filter by fuel type
+  - scopeByTransmission($query, $type)   : Filter by transmission
+  - scopeByPriceRange($query, $min, $max): Filter by price range
+  - getFormattedPriceAttribute()          : Returns price as "₹X,XXX"
+  - getDisplayNameAttribute()             : Returns "Brand Model (Year)"
+
+
+================================================================================
+6. MODULE 4 - BOOKING MANAGEMENT MODULE
+================================================================================
+
+Purpose:
+  Manages the entire car booking lifecycle from creation to completion or 
+  cancellation. Customers create bookings, and admins manage booking statuses.
+
+Model:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Booking.php                                 | Booking entity with lifecycle    |
+  +---------------------------------------------+----------------------------------+
+
+Controllers:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | BookingController.php                       | Customer booking operations      |
+  | Admin/BookingController.php                 | Admin booking management         |
+  +---------------------------------------------+----------------------------------+
+
+Views (Customer):
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | bookings/index.blade.php                    | My bookings list                 |
+  | bookings/create.blade.php                   | Create new booking form          |
+  | bookings/show.blade.php                     | Booking detail view              |
+  | bookings/success.blade.php                  | Booking success confirmation     |
+  +---------------------------------------------+----------------------------------+
+
+Views (Admin):
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | admin/bookings/index.blade.php              | All bookings management table    |
+  +---------------------------------------------+----------------------------------+
+
+Database Table - bookings:
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Description                   |
+  +-------------------------+-------------------+-------------------------------+
+  | id                      | BIGINT (PK)       | Auto-increment primary key    |
+  | booking_number          | VARCHAR(20) UQ    | Auto-generated (BK-XXXXXXXX) |
+  | user_id                 | BIGINT (FK)       | References users.id           |
+  | car_id                  | BIGINT (FK)       | References cars.id            |
+  | pickup_date             | DATE              | Rental start date             |
+  | return_date             | DATE              | Rental end date               |
+  | total_amount            | DECIMAL(10,2)     | Total rental cost in INR      |
+  | security_deposit        | DECIMAL(10,2)     | Security deposit (default: 0) |
+  | status                  | ENUM              | Pending/Confirmed/Active/     |
+  |                         |                   | Completed/Cancelled           |
+  | pickup_location         | TEXT              | Pickup address                |
+  | return_location         | TEXT              | Return address                |
+  | notes                   | TEXT              | Additional notes              |
+  | cancelled_at            | TIMESTAMP         | Cancellation timestamp        |
+  | cancellation_reason     | TEXT              | Reason for cancellation       |
+  | created_at              | TIMESTAMP         | Record creation time          |
+  | updated_at              | TIMESTAMP         | Last update time              |
+  +-------------------------+-------------------+-------------------------------+
+
+Routes (Customer):
+  GET  /customer/bookings/create/{carId}  -> Show booking form for a car
+  POST /customer/bookings                 -> Store new booking
+  GET  /customer/bookings                 -> List my bookings
+
+Routes (Shared Authenticated):
+  GET  /bookings/{id}/success  -> Booking success page
+  GET  /bookings/{id}          -> View booking details
+  POST /bookings/{id}/cancel   -> Cancel a booking
+
+Routes (Admin):
+  GET  /admin/bookings              -> View all bookings
+  POST /admin/bookings/{id}/status  -> Update booking status
+
+Booking Status Lifecycle:
+  Pending -> Confirmed -> Active -> Completed
+       \                                
+        +-> Cancelled
+
+Key Methods in Booking Model:
+  - Auto-generates booking_number on creation (BK-XXXXXXXX)
+  - canBeCancelled()            : True if status is Pending/Confirmed AND 
+                                  24+ hours before pickup
+  - getRentalDaysAttribute()    : Calculates number of rental days
+  - getFormattedTotalAttribute(): Returns "₹X,XXX.XX" format
+  - getStatusBadgeAttribute()   : Returns CSS class for status badge
+
+
+================================================================================
+7. MODULE 5 - PAYMENT MODULE
+================================================================================
+
+Purpose:
+  Handles payment processing for bookings using Razorpay payment gateway.
+  Tracks transaction details, payment status, and refunds.
+
+Model:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Payment.php                                 | Payment transaction entity       |
+  +---------------------------------------------+----------------------------------+
+
+Database Table - payments:
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Description                   |
+  +-------------------------+-------------------+-------------------------------+
+  | id                      | BIGINT (PK)       | Auto-increment primary key    |
+  | transaction_id          | VARCHAR(50) UQ    | Auto-generated (TXN-XXXX...) |
+  | booking_id              | BIGINT (FK)       | References bookings.id        |
+  | user_id                 | BIGINT (FK)       | References users.id           |
+  | amount                  | DECIMAL(10,2)     | Payment amount in INR         |
+  | currency                | VARCHAR(3)        | Currency code (default: INR)  |
+  | status                  | ENUM              | Pending/Success/Failed/       |
+  |                         |                   | Refunded                      |
+  | razorpay_order_id       | VARCHAR           | Razorpay order identifier     |
+  | razorpay_payment_id     | VARCHAR           | Razorpay payment identifier   |
+  | razorpay_signature      | VARCHAR           | Razorpay signature for verify |
+  | method                  | VARCHAR(50)       | Payment method (UPI/Card/etc) |
+  | metadata                | JSON              | Additional payment metadata   |
+  | created_at              | TIMESTAMP         | Record creation time          |
+  | updated_at              | TIMESTAMP         | Last update time              |
+  +-------------------------+-------------------+-------------------------------+
+
+Payment Status Flow:
+  Pending -> Success
+       \-> Failed
+  Success -> Refunded
+
+Key Methods in Payment Model:
+  - Auto-generates transaction_id on creation (TXN-XXXXXXXXXXXX)
+  - isSuccessful()                 : Returns true if status is 'Success'
+  - getFormattedAmountAttribute()  : Returns "₹X,XXX.XX" format
+  - getStatusBadgeAttribute()      : Returns CSS class for status badge
+
+
+================================================================================
+8. MODULE 6 - DOCUMENT VERIFICATION MODULE
+================================================================================
+
+Purpose:
+  Manages KYC (Know Your Customer) document uploads by customers and 
+  verification/approval by admins. Customers must upload identity documents
+  before they can rent vehicles.
+
+Model:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Document.php                                | Document entity                  |
+  +---------------------------------------------+----------------------------------+
+
+Controllers:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Customer/DocumentController.php             | Customer document upload         |
+  | Admin/DocumentController.php                | Admin document verification      |
+  +---------------------------------------------+----------------------------------+
+
+Views:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | customer/documents/index.blade.php          | Customer document upload page    |
+  | admin/documents/index.blade.php             | Admin document review page       |
+  +---------------------------------------------+----------------------------------+
+
+Database Table - documents:
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Description                   |
+  +-------------------------+-------------------+-------------------------------+
+  | id                      | BIGINT (PK)       | Auto-increment primary key    |
+  | user_id                 | BIGINT (FK)       | References users.id           |
+  | type                    | ENUM              | Driving License/Aadhaar Card/ |
+  |                         |                   | PAN Card                      |
+  | file_path               | VARCHAR           | Stored file path              |
+  | file_name               | VARCHAR           | Original file name            |
+  | status                  | ENUM              | Pending/Approved/Rejected     |
+  | rejection_reason        | TEXT              | Reason if rejected            |
+  | verified_by             | BIGINT (FK)       | Admin who verified (users.id) |
+  | verified_at             | TIMESTAMP         | Verification timestamp        |
+  | created_at              | TIMESTAMP         | Record creation time          |
+  | updated_at              | TIMESTAMP         | Last update time              |
+  +-------------------------+-------------------+-------------------------------+
+
+Routes (Customer):
+  GET  /customer/documents   -> View my documents
+  POST /customer/documents   -> Upload a document
+
+Routes (Admin):
+  GET  /admin/documents             -> View all pending documents
+  POST /admin/documents/{id}/approve -> Approve a document
+  POST /admin/documents/{id}/reject  -> Reject a document
+
+Supported Document Types:
+  1. Driving License
+  2. Aadhaar Card
+  3. PAN Card
+
+Document Verification Flow:
+  Customer Uploads -> Pending -> Admin Reviews -> Approved / Rejected
+
+Key Methods in Document Model:
+  - isApproved()               : Returns true if status is 'Approved'
+  - isPending()                : Returns true if status is 'Pending'
+  - getStatusBadgeAttribute()  : Returns CSS class for status badge
+  - verifier() relationship    : Links to the admin who verified
+
+
+================================================================================
+9. MODULE 7 - MAINTENANCE RECORDS MODULE
+================================================================================
+
+Purpose:
+  Allows admins to schedule and track vehicle maintenance activities.
+  Helps keep the fleet in optimal condition.
+
+Model:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | MaintenanceRecord.php                       | Maintenance record entity        |
+  +---------------------------------------------+----------------------------------+
+
+Controller:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Admin/MaintenanceController.php             | Admin maintenance management     |
+  +---------------------------------------------+----------------------------------+
+
+View:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | admin/maintenance/index.blade.php           | Maintenance records listing      |
+  +---------------------------------------------+----------------------------------+
+
+Database Table - maintenance_records:
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Description                   |
+  +-------------------------+-------------------+-------------------------------+
+  | id                      | BIGINT (PK)       | Auto-increment primary key    |
+  | car_id                  | BIGINT (FK)       | References cars.id            |
+  | title                   | VARCHAR           | Maintenance title             |
+  | description             | TEXT              | Detailed description          |
+  | scheduled_date          | DATE              | Scheduled maintenance date    |
+  | completed_date          | DATE              | Actual completion date        |
+  | cost                    | DECIMAL(10,2)     | Maintenance cost (default: 0) |
+  | status                  | ENUM              | Scheduled/In Progress/        |
+  |                         |                   | Completed/Cancelled           |
+  | created_at              | TIMESTAMP         | Record creation time          |
+  | updated_at              | TIMESTAMP         | Last update time              |
+  +-------------------------+-------------------+-------------------------------+
+
+Routes (Admin):
+  GET  /admin/maintenance              -> View all maintenance records
+  POST /admin/maintenance              -> Create new maintenance record
+  POST /admin/maintenance/{id}/complete -> Mark maintenance as completed
+
+Maintenance Status Flow:
+  Scheduled -> In Progress -> Completed
+         \-> Cancelled
+
+Key Methods in MaintenanceRecord Model:
+  - getFormattedCostAttribute()  : Returns "₹X,XXX.XX" format
+  - getStatusBadgeAttribute()    : Returns CSS class for status badge
+
+
+================================================================================
+10. MODULE 8 - REPORTS & ANALYTICS MODULE
+================================================================================
+
+Purpose:
+  Provides business intelligence and analytics for administrators.
+  Generates reports on bookings, revenue, vehicle utilization, and more.
+
+Controller:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Admin/ReportController.php                  | Report generation & display      |
+  +---------------------------------------------+----------------------------------+
+
+View:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | admin/reports/index.blade.php               | Reports dashboard                |
+  +---------------------------------------------+----------------------------------+
+
+Routes (Admin):
+  GET /admin/reports  -> View reports dashboard
+
+Report Types:
+  - Booking statistics (total, pending, completed, cancelled)
+  - Revenue reports (daily, monthly, yearly)
+  - Vehicle utilization rates
+  - Customer activity reports
+
+
+================================================================================
+11. MODULE 9 - NOTIFICATIONS MODULE
+================================================================================
+
+Purpose:
+  Provides in-app notifications for users about booking updates, document 
+  verification status, and other important events.
+
+Controller:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | NotificationController.php                  | Mark notifications as read       |
+  +---------------------------------------------+----------------------------------+
+
+Database Table - notifications (Laravel default):
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Description                   |
+  +-------------------------+-------------------+-------------------------------+
+  | id                      | UUID (PK)         | UUID primary key              |
+  | type                    | VARCHAR           | Notification class type       |
+  | notifiable_type         | VARCHAR           | Polymorphic type (User)       |
+  | notifiable_id           | BIGINT            | Polymorphic ID (user_id)      |
+  | data                    | TEXT              | JSON notification data        |
+  | read_at                 | TIMESTAMP         | When notification was read    |
+  | created_at              | TIMESTAMP         | Record creation time          |
+  | updated_at              | TIMESTAMP         | Last update time              |
+  +-------------------------+-------------------+-------------------------------+
+
+Routes:
+  POST /notifications/{id}/read   -> Mark single notification as read
+  POST /notifications/read-all    -> Mark all notifications as read
+
+Features:
+  - Real-time notification bell in navigation
+  - Polymorphic notification system (Laravel Notifiable trait)
+  - Read/unread status tracking
+  - Bulk mark-all-as-read functionality
+
+
+================================================================================
+12. MODULE 10 - ADMIN DASHBOARD MODULE
+================================================================================
+
+Purpose:
+  Central admin control panel with an overview of all system metrics,
+  recent activities, and quick-action shortcuts.
+
+Controller:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Admin/DashboardController.php               | Admin dashboard data             |
+  +---------------------------------------------+----------------------------------+
+
+View:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | admin/dashboard.blade.php                   | Admin dashboard page             |
+  +---------------------------------------------+----------------------------------+
+
+Routes:
+  GET /admin/dashboard  -> Admin dashboard
+
+Dashboard Features:
+  - Total cars, bookings, customers, and revenue statistics
+  - Recent bookings overview
+  - Pending document verifications
+  - Upcoming maintenance schedules
+  - Quick navigation to all admin modules
+
+
+================================================================================
+13. MODULE 11 - CUSTOMER DASHBOARD MODULE
+================================================================================
+
+Purpose:
+  Personal dashboard for customers showing their booking history, 
+  document status, and account overview.
+
+Controller:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | Customer/DashboardController.php            | Customer dashboard data          |
+  +---------------------------------------------+----------------------------------+
+
+View:
+  +---------------------------------------------+----------------------------------+
+  | File                                        | Description                      |
+  +---------------------------------------------+----------------------------------+
+  | customer/dashboard.blade.php                | Customer dashboard page          |
+  +---------------------------------------------+----------------------------------+
+
+Routes:
+  GET /customer/dashboard  -> Customer dashboard
+
+Dashboard Features:
+  - Active and upcoming bookings
+  - Recent booking history
+  - Document verification status
+  - Quick actions (browse cars, view bookings, upload documents)
+
+
+================================================================================
+14. DATABASE SCHEMA (DATA DICTIONARY)
+================================================================================
+
+Total Database Tables: 9
+  1. users
+  2. password_reset_tokens
+  3. sessions
+  4. cache / cache_locks
+  5. jobs / job_batches / failed_jobs
+  6. cars
+  7. car_images
+  8. bookings
+  9. payments
+  10. documents
+  11. maintenance_records
+  12. notifications
+
+Table: users
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Constraints                   |
+  +-------------------------+-------------------+-------------------------------+
+  | id                      | BIGINT UNSIGNED   | PRIMARY KEY, AUTO_INCREMENT   |
+  | name                    | VARCHAR(255)      | NOT NULL                      |
+  | email                   | VARCHAR(255)      | NOT NULL, UNIQUE              |
+  | phone                   | VARCHAR(15)       | NULLABLE                      |
+  | address                 | TEXT              | NULLABLE                      |
+  | city                    | VARCHAR(100)      | NULLABLE                      |
+  | state                   | VARCHAR(100)      | NULLABLE                      |
+  | pincode                 | VARCHAR(10)       | NULLABLE                      |
+  | avatar                  | VARCHAR(255)      | NULLABLE                      |
+  | role                    | ENUM(customer,    | DEFAULT 'customer'            |
+  |                         |      admin)       |                               |
+  | email_verified_at       | TIMESTAMP         | NULLABLE                      |
+  | password                | VARCHAR(255)      | NOT NULL                      |
+  | remember_token          | VARCHAR(100)      | NULLABLE                      |
+  | created_at              | TIMESTAMP         | NULLABLE                      |
+  | updated_at              | TIMESTAMP         | NULLABLE                      |
+  +-------------------------+-------------------+-------------------------------+
+
+Table: password_reset_tokens
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Constraints                   |
+  +-------------------------+-------------------+-------------------------------+
+  | email                   | VARCHAR(255)      | PRIMARY KEY                   |
+  | token                   | VARCHAR(255)      | NOT NULL                      |
+  | created_at              | TIMESTAMP         | NULLABLE                      |
+  +-------------------------+-------------------+-------------------------------+
+
+Table: sessions
+  +-------------------------+-------------------+-------------------------------+
+  | Column                  | Type              | Constraints                   |
+  +-------------------------+-------------------+-------------------------------+
+  | id                      | VARCHAR(255)      | PRIMARY KEY                   |
+  | user_id                 | BIGINT UNSIGNED   | NULLABLE, INDEXED, FK->users  |
+  | ip_address              | VARCHAR(45)       | NULLABLE                      |
+  | user_agent              | TEXT              | NULLABLE                      |
+  | payload                 | LONGTEXT          | NOT NULL                      |
+  | last_activity           | INTEGER           | NOT NULL, INDEXED             |
+  +-------------------------+-------------------+-------------------------------+
+
+
+================================================================================
+15. ROUTE SUMMARY
+================================================================================
+
+TOTAL ROUTES: 30+
+
+PUBLIC ROUTES (No authentication required):
+  +------+-----------------------------+----------------------------+
+  | HTTP | URI                         | Name                       |
+  +------+-----------------------------+----------------------------+
+  | GET  | /                           | home                       |
+  | POST | /contact                    | contact.send               |
+  | GET  | /cars                       | cars.index                 |
+  | GET  | /cars/{id}                  | cars.show                  |
+  +------+-----------------------------+----------------------------+
+
+GUEST ROUTES (Only non-authenticated users):
+  +------+-----------------------------+----------------------------+
+  | HTTP | URI                         | Name                       |
+  +------+-----------------------------+----------------------------+
+  | GET  | /login                      | login                      |
+  | POST | /login                      | (login process)            |
+  | GET  | /register                   | register                   |
+  | POST | /register                   | (register process)         |
+  | GET  | /forgot-password            | password.request           |
+  | POST | /forgot-password            | password.email             |
+  | GET  | /reset-password/{token}     | password.reset             |
+  | POST | /reset-password             | password.update            |
+  +------+-----------------------------+----------------------------+
+
+AUTHENTICATED ROUTES (Any logged-in user):
+  +------+-----------------------------+----------------------------+
+  | HTTP | URI                         | Name                       |
+  +------+-----------------------------+----------------------------+
+  | POST | /logout                     | logout                     |
+  | POST | /notifications/{id}/read    | notifications.read         |
+  | POST | /notifications/read-all     | notifications.readAll      |
+  | GET  | /bookings/{id}/success      | bookings.success           |
+  | GET  | /bookings/{id}              | bookings.show              |
+  | POST | /bookings/{id}/cancel       | bookings.cancel            |
+  +------+-----------------------------+----------------------------+
+
+CUSTOMER ROUTES (prefix: /customer):
+  +------+------------------------------------+--------------------------+
+  | HTTP | URI                                | Name                     |
+  +------+------------------------------------+--------------------------+
+  | GET  | /customer/dashboard                | customer.dashboard       |
+  | GET  | /customer/bookings/create/{carId}  | customer.bookings.create |
+  | POST | /customer/bookings                 | customer.bookings.store  |
+  | GET  | /customer/bookings                 | customer.bookings.index  |
+  | GET  | /customer/documents                | customer.documents.index |
+  | POST | /customer/documents                | customer.documents.store |
+  +------+------------------------------------+--------------------------+
+
+ADMIN ROUTES (prefix: /admin):
+  +--------+---------------------------------+----------------------------+
+  | HTTP   | URI                             | Name                       |
+  +--------+---------------------------------+----------------------------+
+  | GET    | /admin/dashboard                | admin.dashboard            |
+  | GET    | /admin/cars                     | admin.cars.index           |
+  | GET    | /admin/cars/create              | admin.cars.create          |
+  | POST   | /admin/cars                     | admin.cars.store           |
+  | GET    | /admin/cars/{id}                | admin.cars.show            |
+  | GET    | /admin/cars/{id}/edit           | admin.cars.edit            |
+  | PUT    | /admin/cars/{id}                | admin.cars.update          |
+  | DELETE | /admin/cars/{id}                | admin.cars.destroy         |
+  | GET    | /admin/bookings                 | admin.bookings.index       |
+  | POST   | /admin/bookings/{id}/status     | admin.bookings.status      |
+  | GET    | /admin/documents                | admin.documents.index      |
+  | POST   | /admin/documents/{id}/approve   | admin.documents.approve    |
+  | POST   | /admin/documents/{id}/reject    | admin.documents.reject     |
+  | GET    | /admin/maintenance              | admin.maintenance.index    |
+  | POST   | /admin/maintenance              | admin.maintenance.store    |
+  | POST   | /admin/maintenance/{id}/complete| admin.maintenance.complete |
+  | GET    | /admin/reports                  | admin.reports.index        |
+  +--------+---------------------------------+----------------------------+
+
+
+================================================================================
+16. MIDDLEWARE DETAILS
+================================================================================
+
+1. AdminMiddleware (AdminMiddleware.php):
+   - Checks if authenticated user has role = 'admin'
+   - Redirects unauthorized users away from admin routes
+   - Applied to all /admin/* routes
+
+2. CustomerMiddleware (CustomerMiddleware.php):
+   - Checks if authenticated user has role = 'customer'
+   - Redirects unauthorized users away from customer routes
+   - Applied to all /customer/* routes
+
+3. Built-in Laravel Middleware:
+   - auth       : Ensures user is logged in
+   - guest      : Ensures user is NOT logged in (for login/register pages)
+
+
+================================================================================
+17. MODEL RELATIONSHIPS (ER SUMMARY)
+================================================================================
+
+  User (1) -----> (Many) Bookings
+  User (1) -----> (Many) Payments
+  User (1) -----> (Many) Documents
+
+  Car  (1) -----> (Many) CarImages
+  Car  (1) -----> (Many) Bookings
+  Car  (1) -----> (Many) MaintenanceRecords
+
+  Booking (1) --> (1) Payment
+  Booking (N) --> (1) User
+  Booking (N) --> (1) Car
+
+  Payment (N) --> (1) Booking
+  Payment (N) --> (1) User
+
+  Document (N) --> (1) User (uploader)
+  Document (N) --> (1) User (verifier / verified_by)
+
+  MaintenanceRecord (N) --> (1) Car
+
+Relationship Diagram:
+
+  +----------+       +----------+       +-----------+
+  |  Users   |1----N>| Bookings |1----1>|  Payments |
+  +----------+       +----+-----+       +-----------+
+       |1                  |N
+       |N                  |1
+  +----------+       +----+-----+       +------------------+
+  | Documents|       |   Cars   |1----N>| MaintenanceRecs  |
+  +----------+       +----+-----+       +------------------+
+                          |1
+                          |N
+                     +----+-----+
+                     | CarImages|
+                     +----------+
+
+
+================================================================================
+                         END OF DOCUMENTATION
+================================================================================
+
+Prepared for: AutoLux - Car Rental System Project
+Document Type: Module Documentation
+Total Modules: 11
+Total Database Tables: 12 (including Laravel system tables)
+Total Routes: 30+
+
+================================================================================

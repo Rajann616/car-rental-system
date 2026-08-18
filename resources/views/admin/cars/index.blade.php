@@ -1,10 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Vehicle Management — Admin')
+@section('page_title', 'Vehicle Fleet')
 
 @section('content')
-<section class="dashboard-section pb-5">
-    <div class="container">
+<div class="container-fluid px-0">
         
         <!-- Header Banner Card -->
         <div class="mb-4" data-aos="fade-down">
@@ -122,7 +122,6 @@
                     {{ $cars->links() }}
                 </div>
             </div>
-        </div>
     </div>
-</section>
+</div>
 @endsection

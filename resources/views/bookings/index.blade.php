@@ -1,10 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.customer')
 
 @section('title', 'Booking History — AutoLux')
+@section('page_title', 'Bookings')
 
 @section('content')
 <section class="dashboard-section pb-5">
-    <div class="container">
+    <div class="container-fluid px-0">
         
         <!-- Header Banner Card -->
         <div class="mb-4" data-aos="fade-down">
@@ -42,9 +43,11 @@
                 </div>
             </div>
             
-            <div class="card-body-custom p-4">
+            <div class="card-body-custom p-3 p-md-4">
                 @if($bookings->count() > 0)
-                    <div class="table-responsive">
+                    
+                    <!-- Desktop Table View (>= 768px) -->
+                    <div class="table-responsive desktop-table-container">
                         <table class="table table-modern align-middle mb-0">
                             <thead>
                                 <tr>
@@ -116,7 +119,63 @@
                         </table>
                     </div>
 
-                    <!-- Clean Centered Bootstrap 5 Pagination -->
+                    <!-- Mobile Booking Cards View (<= 767px) -->
+                    <div class="mobile-booking-cards">
+                        @foreach($bookings as $booking)
+                            <div class="card border rounded-4 shadow-sm p-3 mb-3 bg-white">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="fw-bold text-primary small">{{ $booking->booking_number }}</span>
+                                    <span class="badge-status {{ $booking->status_badge }}">
+                                        {{ $booking->status }}
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <div class="rounded-3 overflow-hidden bg-light border" style="width: 60px; height: 45px; flex-shrink: 0;">
+                                        @if($booking->car->thumbnail)
+                                            <img src="{{ asset('storage/' . $booking->car->thumbnail) }}" class="w-100 h-100 object-fit-cover">
+                                        @else
+                                            <div class="d-flex align-items-center justify-content-center h-100 text-primary">
+                                                <i class="fas fa-car fs-5"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark fs-6">{{ $booking->car->brand }} {{ $booking->car->model }}</div>
+                                        <small class="text-muted">{{ $booking->car->fuel_type }} · {{ $booking->rental_days }} Days</small>
+                                    </div>
+                                </div>
+                                <div class="row g-2 border-top border-bottom py-2 my-2 small text-muted">
+                                    <div class="col-6">
+                                        <div><strong>Delivery:</strong></div>
+                                        <div>{{ $booking->pickup_date->format('d M Y') }}</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div><strong>Return:</strong></div>
+                                        <div>{{ $booking->return_date->format('d M Y') }}</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mt-2">
+                                    <div>
+                                        <span class="small text-muted">Amount:</span>
+                                        <div class="fw-bold text-dark fs-5">₹{{ number_format($booking->total_amount, 0) }}</div>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ route('bookings.show', $booking->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                            <i class="fas fa-receipt me-1"></i> Invoice
+                                        </a>
+                                        @if($booking->canBeCancelled())
+                                            <form action="{{ route('bookings.cancel', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking reservation?');">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">Cancel</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Clean Centered Pagination -->
                     <div class="d-flex justify-content-center mt-4">
                         {{ $bookings->links() }}
                     </div>
@@ -129,7 +188,7 @@
                         </div>
                         <h5 class="fw-bold text-dark mb-2">No Rental History Found</h5>
                         <p class="text-muted mx-auto mb-4" style="max-width: 420px;">
-                            You haven't made any vehicle reservations yet. Choose from our luxury car to experience self-drive rental in Gujarat!
+                            You haven't made any vehicle reservations yet. Choose from our luxury cars to experience self-drive rental in Gujarat!
                         </p>
                         <a href="{{ route('cars.index') }}" class="btn btn-primary rounded-pill px-4 py-2 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
                             <i class="fas fa-search me-2"></i> Browse Vehicles & Book Now

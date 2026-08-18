@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() ? 'layouts.customer' : 'layouts.app')
 
 @section('title', $car->display_name . ' — AutoLux')
+@section('page_title', $car->display_name)
 
 @section('content')
 <section class="dashboard-section pb-5">

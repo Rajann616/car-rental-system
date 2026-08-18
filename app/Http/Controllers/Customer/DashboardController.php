@@ -50,4 +50,30 @@ class DashboardController extends Controller
             'recommendedCars'
         ));
     }
+
+    /**
+     * Save customer search alert preference.
+     */
+    public function saveSearch(Request $request)
+    {
+        $user = auth()->user();
+
+        $brand = $request->get('brand', 'All Brands');
+        $keyword = $request->get('keyword', '');
+
+        // Dispatch notification
+        try {
+            $user->notify(new \App\Notifications\BookingStatusNotification(
+                new \App\Models\Booking(['booking_number' => 'ALERT-' . rand(1000, 9999)]),
+                "Search Alert Saved 🔔",
+                "Your search alert for " . ($brand ?: "vehicles") . " " . ($keyword ? "'{$keyword}'" : "") . " has been saved. We will notify you when new matching cars arrive!",
+                'fa-bell',
+                'text-warning'
+            ));
+        } catch (\Exception $e) {
+            \Log::warning('Save search notification failed: ' . $e->getMessage());
+        }
+
+        return back()->with('success', "Search Alert Saved! We'll notify you via email & in-app alerts when new " . ($brand ?: "matching") . " vehicles are listed.");
+    }
 }

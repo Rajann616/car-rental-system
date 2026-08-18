@@ -12,6 +12,13 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (auth()->check()) {
+            if (auth()->user()->isAdmin()) {
+                return redirect()->route('admin.dashboard');
+            }
+            return redirect()->route('customer.dashboard');
+        }
+
         $featuredCars = Car::available()
             ->orderBy('rental_price_per_day', 'desc')
             ->take(6)

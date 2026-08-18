@@ -3,65 +3,112 @@
 @section('title', 'Sign In — AutoLux')
 
 @section('content')
-<section class="auth-section">
-    <div class="container">
-        <div class="auth-card" data-aos="zoom-in">
-            <div class="text-center mb-4">
-                <a href="{{ route('home') }}" class="d-inline-flex align-items-center gap-2 mb-3">
-                    <span class="brand-icon"><i class="fas fa-car-side"></i></span>
-                    <span class="brand-text fs-4 fw-bold">Auto<span class="brand-accent">Lux</span></span>
-                </a>
-                <h1 class="auth-title">Welcome Back</h1>
-                <p class="auth-subtitle">Sign in to manage your bookings and rentals</p>
-            </div>
+<div class="simple-auth-page">
+    
+    <!-- Minimal Top Bar (No Header Clutter) -->
+    <div class="simple-auth-topbar">
+        <a href="{{ route('home') }}" class="simple-brand-logo">
+            <i class="fas fa-car-side" style="color: #FF7A00;"></i> Auto<span style="color: #FF7A00;">Lux</span>
+        </a>
+        <a href="{{ route('register') }}" class="text-dark fw-bold small text-decoration-none">
+            New here? <span class="text-primary">Get Started →</span>
+        </a>
+    </div>
 
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email Address</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted"></i></span>
-                        <input type="email" class="form-control border-start-0 @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Enter email address">
-                    </div>
-                    @error('email')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                    @enderror
+    <div class="simple-auth-container">
+        <div class="simple-auth-card" data-aos="fade-up" data-aos-duration="500">
+            <!-- Clean Form Area -->
+            <div class="simple-form-area">
+                
+                <div class="mb-4">
+                    <h2 class="simple-form-title">Welcome back 👋</h2>
+                    <p class="simple-form-subtitle">Good to see you again.</p>
                 </div>
 
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <label for="password" class="form-label mb-0">Password</label>
-                        <a href="{{ route('password.request') }}" class="text-primary small">Forgot password?</a>
-                    </div>
-                    <div class="input-group password-input-group">
-                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                        <input type="password" class="form-control border-start-0 @error('password') is-invalid @enderror" id="password" name="password" required placeholder="••••••••">
-                        <button class="btn toggle-password-btn-inside" type="button" data-target="password" title="Toggle password visibility">
-                            <i class="far fa-eye"></i>
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+
+                        <!-- Email Input -->
+                        <div class="simple-field-group">
+                            <label for="email" class="simple-field-label">Email</label>
+                            <div class="simple-input-box">
+                                <i class="fas fa-envelope simple-input-icon"></i>
+                                <input type="email" class="simple-input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="name@example.com">
+                            </div>
+                            @error('email')
+                                <div class="text-danger small mt-1.5 fw-semibold">⚠ {{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="simple-field-group mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label for="password" class="simple-field-label mb-0">Password</label>
+                                <a href="{{ route('password.request') }}" class="text-primary small text-decoration-none fw-semibold">Forgot?</a>
+                            </div>
+                            <div class="simple-input-box">
+                                <i class="fas fa-lock simple-input-icon"></i>
+                                <input type="password" class="simple-input @error('password') is-invalid @enderror" id="password" name="password" required placeholder="••••••••••••">
+                                <button type="button" class="simple-eye-btn toggle-password-btn" data-target="password" title="Toggle Password">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            @error('password')
+                                <div class="text-danger small mt-1.5 fw-semibold">⚠ {{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                <label class="form-check-label small text-muted fw-medium" for="remember">Remember me</label>
+                            </div>
+                        </div>
+
+                        <!-- Sign In Button -->
+                        <button type="submit" class="btn-simple-orange">
+                            <span>Sign In</span>
+                            <i class="fas fa-arrow-right"></i>
                         </button>
-                    </div>
-                    @error('password')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
 
-                <div class="mb-4 form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                    <label class="form-check-label small" for="remember">Remember me on this device</label>
+                        <div class="text-center mt-4">
+                            <p class="small text-muted mb-0">
+                                New to AutoLux? 
+                                <a href="{{ route('register') }}" class="text-primary fw-bold text-decoration-none ms-1">Create an account</a>
+                            </p>
+                        </div>
                 </div>
-
-                <button type="submit" class="btn btn-auth">
-                    Sign In <i class="fas fa-arrow-right ms-2"></i>
-                </button>
-
-                <div class="text-center mt-4">
-                    <p class="small text-muted mb-0">
-                        Don't have an account? <a href="{{ route('register') }}" class="text-primary fw-semibold">Create Account</a>
-                    </p>
-                </div>
-            </form>
         </div>
     </div>
-</section>
+
+    <!-- Minimal Page Footer -->
+    <div class="text-center text-muted small mt-4" style="font-size: 0.8rem;">
+        © {{ date('Y') }} AutoLux Car Rental. All rights reserved.
+    </div>
+
+</div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.querySelector('.toggle-password-btn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    }
+});
+</script>
+@endpush
 @endsection

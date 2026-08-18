@@ -1,10 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Admin Command Center — AutoLux')
+@section('page_title', 'Dashboard & Command Center')
 
 @section('content')
-<section class="dashboard-section pb-5">
-    <div class="container">
+<div class="container-fluid px-0">
         
         <!-- Command Center Hero Banner -->
         <div class="mb-4" data-aos="fade-down">
@@ -396,5 +396,5 @@
         </div>
 
     </div>
-</section>
+</div>
 @endsection
