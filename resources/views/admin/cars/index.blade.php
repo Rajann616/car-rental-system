@@ -7,34 +7,30 @@
 <div class="container-fluid px-0">
         
         <!-- Header Banner Card -->
-        <!-- Unified Liquid Glass Header Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="liquid-glass-hero text-white">
-                <div class="liquid-glow-orb-1"></div>
-                <div class="liquid-glow-orb-2"></div>
-                <div class="row align-items-center position-relative g-3" style="z-index: 2;">
+            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
+                <div class="row align-items-center position-relative" style="z-index: 2;">
                     <div class="col-lg-8">
-                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            <span class="badge liquid-badge-gold rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                <i class="fas fa-car me-1"></i> Fleet Management
-                            </span>
-                        </div>
-                        <h1 class="fw-bold text-white font-display fs-3 mb-1">Vehicle Management</h1>
-                        <p class="text-white-50 mb-0 max-w-2xl small">
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-2 small fw-bold">
+                            <i class="fas fa-car me-1"></i> Fleet Management
+                        </span>
+                        <h1 class="fw-bold text-white font-display fs-2 mb-2">Vehicle Management</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl">
                             Add new vehicles, update rental pricing, modify specs, and track vehicle availability status.
                         </p>
                     </div>
-                    <div class="col-lg-4 text-lg-end mt-2 mt-lg-0">
-                        <a href="{{ route('admin.cars.create') }}" class="btn rounded-pill px-4 py-2 fw-bold text-white shadow-sm" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                            <i class="fas fa-plus-circle me-1"></i> Add Vehicle
+                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                        <a href="{{ route('admin.cars.create') }}" class="btn btn-lg rounded-pill px-4 fw-bold text-white shadow" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                            <i class="fas fa-plus-circle me-1"></i> Add New Vehicle
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Vehicles Master Liquid Card -->
-        <div class="liquid-card border-0 shadow-sm overflow-hidden" data-aos="fade-up">
+        <!-- Vehicles Master Table Card -->
+        <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden" data-aos="fade-up">
             <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
                 <h5 class="fw-bold mb-0 text-dark">
                     <i class="fas fa-car me-2 text-primary"></i> All Vehicles ({{ $cars->total() }})
@@ -50,8 +46,7 @@
                 </form>
             </div>
             <div class="card-body-custom p-4">
-                <!-- Desktop Table View -->
-                <div class="desktop-table-container table-responsive">
+                <div class="table-responsive">
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
@@ -116,71 +111,11 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center py-5">
-                                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-2" style="background: rgba(37, 99, 235, 0.08); color: #2563eb;">
-                                            <i class="fas fa-car fs-3"></i>
-                                        </div>
-                                        <h6 class="fw-bold text-dark mb-1">No Vehicles Found</h6>
-                                        <p class="small text-muted mb-3">Add a new car or adjust your filter query.</p>
-                                        <a href="{{ route('admin.cars.create') }}" class="btn btn-sm btn-primary rounded-pill px-3 py-1.5 fw-semibold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                                            <i class="fas fa-plus me-1"></i> Add Vehicle
-                                        </a>
-                                    </td>
+                                    <td colspan="7" class="text-center py-5 text-muted">No vehicles found in fleet.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
-                </div>
-
-                <!-- Mobile Card Container (<= 767px) -->
-                <div class="mobile-card-container">
-                    @forelse($cars as $car)
-                        <div class="card border rounded-4 shadow-sm p-3 mb-2 bg-white">
-                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                <span class="fw-bold text-dark fs-6">{{ $car->brand }} {{ $car->model }}</span>
-                                <span class="badge-status {{ strtolower($car->status) }}">{{ $car->status }}</span>
-                            </div>
-                            <div class="d-flex align-items-center gap-3 mb-2">
-                                <div class="rounded-3 overflow-hidden bg-light border" style="width: 60px; height: 45px; flex-shrink: 0;">
-                                    @if($car->thumbnail)
-                                        <img src="{{ asset('storage/' . $car->thumbnail) }}" class="w-100 h-100 object-fit-cover">
-                                    @else
-                                        <div class="d-flex align-items-center justify-content-center h-100 text-primary">
-                                            <i class="fas fa-car fs-5"></i>
-                                        </div>
-                                    @endif
-                                </div>
-                                <div>
-                                    <div class="small fw-semibold text-dark">{{ $car->registration_number }}</div>
-                                    <small class="text-muted">{{ $car->fuel_type }} · {{ $car->transmission }} · {{ $car->seating_capacity }} Seater</small>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between pt-2 border-top">
-                                <div class="fw-bold text-primary fs-6">₹{{ number_format($car->rental_price_per_day, 0) }} <span class="small text-muted fw-normal">/ day</span></div>
-                                <div class="d-flex gap-2">
-                                    <a href="{{ route('cars.show', $car->id) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5" target="_blank">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-2.5">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2.5">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="text-center py-5 bg-light rounded-4">
-                            <i class="fas fa-car text-muted opacity-25 fs-2 mb-2 d-block"></i>
-                            <h6 class="fw-bold text-dark mb-1">No Vehicles Found</h6>
-                            <p class="small text-muted mb-0">Try changing your search keywords or filter.</p>
-                        </div>
-                    @endforelse
                 </div>
 
                 <div class="d-flex justify-content-center mt-4">

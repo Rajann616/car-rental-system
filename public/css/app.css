@@ -2145,75 +2145,33 @@ body.has-hero #mainNavbar:not(.scrolled) .btn-nav-outline {
 
 /* Top Header Bar */
 .customer-top-header, .admin-top-header {
-    height: 60px;
+    height: 64px;
     z-index: 1030;
     background: #FFFFFF;
-    box-shadow: 0 1px 3px rgba(10, 22, 40, 0.05);
 }
 
 .customer-content-area, .admin-content-area {
     flex: 1;
     min-width: 0;
     background: var(--soft-bg);
-    padding: 18px 24px 32px;
+    padding: 24px 28px 40px;
 }
 
-/* Multi-Viewport Responsive Adjustments (1440px, 1280px, 1024px, 768px, 430px, 390px, 375px) */
-@media (min-width: 1440px) {
+@media (max-width: 991.98px) {
     .customer-content-area, .admin-content-area {
-        padding: 20px 32px 40px;
+        padding: 20px;
     }
 }
 
-@media (max-width: 1279.98px) {
+@media (max-width: 575.98px) {
     .customer-content-area, .admin-content-area {
-        padding: 18px 20px 30px;
-    }
-}
-
-@media (max-width: 1023.98px) {
-    .customer-content-area, .admin-content-area {
-        padding: 16px 18px 28px;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .customer-content-area, .admin-content-area {
-        padding: 14px 14px 24px;
-    }
-    
-    .desktop-table-container {
-        display: none !important;
-    }
-
-    .mobile-card-container, .mobile-booking-cards {
-        display: flex !important;
-        flex-direction: column;
-        gap: 0.85rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .mobile-card-container, .mobile-booking-cards {
-        display: none !important;
-    }
-}
-
-@media (max-width: 430px) {
-    .customer-top-header, .admin-top-header {
-        height: 56px;
-        padding-left: 0.75rem !important;
-        padding-right: 0.75rem !important;
-    }
-    
-    .dashboard-header h1, .dashboard-header h2 {
-        font-size: 1.35rem !important;
+        padding: 16px;
     }
 }
 
 /* Mobile Sidebar Drawer Adjustments */
 .mobile-sidebar-drawer {
-    width: 270px;
+    width: 280px;
 }
 
 /* Mobile Viewports (<= 991.98px) */
@@ -2233,9 +2191,9 @@ body.has-hero #mainNavbar:not(.scrolled) .btn-nav-outline {
     border: 2px dashed var(--primary-300);
     background: rgba(37, 99, 235, 0.02);
     border-radius: var(--card-radius);
-    padding: 2rem 1.25rem;
+    padding: 2.5rem 1.5rem;
     text-align: center;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.2s ease;
     cursor: pointer;
 }
 
@@ -2244,263 +2202,22 @@ body.has-hero #mainNavbar:not(.scrolled) .btn-nav-outline {
     background: rgba(37, 99, 235, 0.05);
 }
 
-/* ========================================================
-   UNIFIED LIQUID GLASS THEME SYSTEM
-   Standardized hero banners, badges, and card improvements
-   ======================================================== */
-.liquid-glass-hero {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%),
-                linear-gradient(135deg, #071322 0%, #0c2547 45%, #143b73 100%);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 1.25rem !important;
-    box-shadow: 0 20px 45px -10px rgba(6, 17, 32, 0.35);
-    position: relative;
-    overflow: hidden;
-    padding: 1.25rem 1.75rem !important;
-}
-
+/* Mobile Booking Card View (<= 767.98px) */
 @media (max-width: 767.98px) {
-    .liquid-glass-hero {
-        padding: 1.15rem 1.25rem !important;
-        border-radius: 1rem !important;
+    .desktop-table-container {
+        display: none !important;
+    }
+
+    .mobile-booking-cards {
+        display: flex !important;
+        flex-direction: column;
+        gap: 1rem;
     }
 }
 
-.liquid-glass-hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, 
-        rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.5) 25%, 
-        rgba(255, 255, 255, 0.95) 50%, 
-        rgba(255, 255, 255, 0.5) 75%, 
-        rgba(255, 255, 255, 0) 100%);
-    z-index: 3;
-}
-
-.liquid-glow-orb-1 {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255, 122, 0, 0.3) 0%, rgba(245, 158, 11, 0.1) 50%, rgba(0,0,0,0) 70%);
-    top: -80px;
-    right: -60px;
-    border-radius: 50%;
-    filter: blur(45px);
-    animation: liquidMorph 14s infinite ease-in-out alternate;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.liquid-glow-orb-2 {
-    position: absolute;
-    width: 260px;
-    height: 260px;
-    background: radial-gradient(circle, rgba(37, 99, 235, 0.35) 0%, rgba(56, 189, 248, 0.1) 50%, rgba(0,0,0,0) 70%);
-    bottom: -60px;
-    left: 12%;
-    border-radius: 50%;
-    filter: blur(40px);
-    animation: liquidMorph 16s infinite ease-in-out alternate-reverse;
-    pointer-events: none;
-    z-index: 1;
-}
-
-@keyframes liquidMorph {
-    0% { transform: scale(1) translate(0, 0); }
-    50% { transform: scale(1.15) translate(14px, -14px); }
-    100% { transform: scale(0.92) translate(-10px, 10px); }
-}
-
-/* Standardized Liquid Glass Badges */
-.liquid-badge-gold {
-    background: rgba(255, 122, 0, 0.18);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #ff9838;
-    border: 1px solid rgba(255, 152, 56, 0.4);
-}
-
-.liquid-badge-blue {
-    background: rgba(37, 99, 235, 0.18);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #93c5fd;
-    border: 1px solid rgba(147, 197, 253, 0.35);
-}
-
-.liquid-badge-green {
-    background: rgba(16, 185, 129, 0.18);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #6ee7b7;
-    border: 1px solid rgba(110, 231, 183, 0.35);
-}
-
-.liquid-badge-dark {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #f1f5f9;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Enhanced Liquid Glass Content Cards */
-.liquid-card {
-    background: #ffffff;
-    border: 1px solid rgba(226, 232, 240, 0.85);
-    border-radius: 1.15rem;
-    box-shadow: 0 4px 20px rgba(7, 26, 51, 0.04);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.liquid-card:hover {
-    box-shadow: 0 8px 30px rgba(7, 26, 51, 0.08);
-    border-color: rgba(203, 213, 225, 0.9);
-}
-
-/* ========================================================
-   COMPREHENSIVE MULTI-VIEWPORT RESPONSIVE SYSTEM
-   Tested across 1440px, 1280px, 1024px, 768px, 430px, 390px, 375px
-   ======================================================== */
-
-/* Prevent horizontal overflow on small devices */
-html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw;
-}
-
-.customer-app-wrapper, .admin-app-wrapper {
-    overflow-x: hidden;
-    max-width: 100vw;
-}
-
-/* 1440px - Large Desktop Enhancement */
-@media (min-width: 1440px) {
-    .container, .container-lg, .container-xl, .container-xxl {
-        max-width: 1380px;
+@media (min-width: 768px) {
+    .mobile-booking-cards {
+        display: none !important;
     }
 }
-
-/* 1024px - Small Desktop & Tablet Landscape */
-@media (min-width: 768px) and (max-width: 1023.98px) {
-    .customer-content-area, .admin-content-area {
-        padding: 16px 20px 30px;
-    }
-    
-    .car-catalog-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-}
-
-/* 768px - Tablet Portrait Viewport */
-@media (max-width: 767.98px) {
-    .customer-content-area, .admin-content-area {
-        padding: 12px 12px 24px !important;
-    }
-
-    .liquid-glass-hero {
-        padding: 1.1rem 1.15rem !important;
-        border-radius: 1rem !important;
-    }
-
-    .liquid-glass-hero h1, .liquid-glass-hero h2 {
-        font-size: 1.35rem !important;
-    }
-
-    /* Stack filter controls naturally */
-    .filter-bar-group {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 0.5rem !important;
-    }
-
-    .filter-bar-group .btn, 
-    .filter-bar-group .form-select, 
-    .filter-bar-group .form-control {
-        width: 100% !important;
-    }
-
-    /* Mobile modal responsiveness */
-    .modal-dialog {
-        margin: 0.75rem auto !important;
-        max-width: calc(100vw - 1.5rem) !important;
-    }
-
-    /* Dropdown full-width clamp on mobile */
-    .notification-dropdown {
-        width: calc(100vw - 24px) !important;
-        max-width: 340px !important;
-        right: -10px !important;
-    }
-}
-
-/* 430px - Large Mobile (iPhone Pro Max, Samsung Ultra) */
-@media (max-width: 430px) {
-    .customer-top-header, .admin-top-header {
-        height: 56px !important;
-        padding-left: 0.65rem !important;
-        padding-right: 0.65rem !important;
-    }
-
-    .customer-top-header h5, .admin-top-header h5 {
-        font-size: 1rem !important;
-        max-width: 160px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .stat-card {
-        padding: 1rem !important;
-    }
-
-    .stat-value {
-        font-size: 1.65rem !important;
-    }
-
-    .btn-liquid-primary, .btn-simple-orange {
-        padding: 0.55rem 1rem !important;
-        font-size: 0.85rem !important;
-    }
-}
-
-/* 390px & 375px - Standard & Compact Mobile (iPhone 14/15/16, iPhone SE) */
-@media (max-width: 390px) {
-    .customer-content-area, .admin-content-area {
-        padding: 10px 10px 20px !important;
-    }
-
-    .liquid-glass-hero {
-        padding: 1rem 0.85rem !important;
-    }
-
-    .liquid-glow-orb-1, .liquid-glow-orb-2 {
-        opacity: 0.25 !important;
-    }
-
-    .card-header-custom, .card-body-custom {
-        padding: 1rem 0.85rem !important;
-    }
-
-    .mobile-booking-cards .card, 
-    .mobile-card-container .card {
-        padding: 0.85rem !important;
-        border-radius: 0.85rem !important;
-    }
-
-    .btn-group-responsive {
-        flex-direction: column !important;
-        width: 100% !important;
-    }
-
-    .btn-group-responsive .btn {
-        width: 100% !important;
-    }
-}
-
-
 

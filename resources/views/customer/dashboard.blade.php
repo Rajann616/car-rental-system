@@ -198,87 +198,120 @@
 <section class="dashboard-section pb-5">
     <div class="container">
         
-        <!-- Unified Liquid Glass Dashboard Hero Banner -->
+        <!-- Welcome Hero Banner Card (Compact Liquid Glass 3-Column Layout) -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="liquid-glass-hero text-white">
+            <div class="dashboard-hero-card p-3 p-md-4 rounded-4 text-white">
                 
                 <!-- Fluid Morphing Liquid Orbs -->
-                <div class="liquid-glow-orb-1"></div>
-                <div class="liquid-glow-orb-2"></div>
+                <div class="position-absolute rounded-circle hero-glow-1 pointer-events-none"></div>
+                <div class="position-absolute rounded-circle hero-glow-2 pointer-events-none"></div>
+                <div class="position-absolute rounded-circle hero-glow-3 pointer-events-none"></div>
 
                 <div class="row align-items-center g-3 position-relative" style="z-index: 2;">
                     
                     <!-- Left: User Greeting & Badges -->
-                    <div class="col-lg-8">
-                        <div class="d-flex align-items-center gap-3 mb-2">
-                            <div class="user-avatar-large flex-shrink-0" style="width: 48px; height: 48px; background: linear-gradient(135deg, #ff7a00, #ea580c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: #fff; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 6px 16px rgba(255,122,0,0.4);">
+                    <div class="col-xl-5 col-lg-5">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="user-avatar-large flex-shrink-0" style="width: 54px; height: 54px; background: linear-gradient(135deg, #ff7a00, #ea580c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; color: #fff; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 8px 20px rgba(255,122,0,0.4), inset 0 1px 1px rgba(255,255,255,0.6);">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                             </div>
                             <div>
                                 <div class="d-flex align-items-center gap-2 flex-wrap">
-                                    <h2 class="fw-bold mb-0 text-white font-display fs-3">
+                                    <h3 class="fw-bold mb-0 text-white font-display fs-4">
                                         <span id="timeGreeting">Welcome</span>, {{ auth()->user()->name }}! 👋
-                                    </h2>
+                                    </h3>
                                     @if(auth()->user()->hasApprovedDocuments())
-                                        <span class="badge liquid-badge-green rounded-pill px-2.5 py-0.5 fs-7 fw-semibold">
+                                        <span class="liquid-badge rounded-pill px-2 py-0.5 fs-7 fw-semibold text-success border-success border-opacity-50">
                                             <i class="fas fa-check-circle me-1"></i> Verified
                                         </span>
                                     @else
-                                        <span class="badge liquid-badge-gold rounded-pill px-2.5 py-0.5 fs-7 fw-semibold">
+                                        <span class="liquid-badge rounded-pill px-2 py-0.5 fs-7 fw-semibold text-warning border-warning border-opacity-50">
                                             <i class="fas fa-exclamation-triangle me-1"></i> Action Needed
                                         </span>
                                     @endif
                                 </div>
-                                <p class="text-white-50 mb-0 small mt-0.5">
-                                    <i class="fas fa-location-dot me-1 text-warning"></i> Serving Gujarat Hub (Ahmedabad) &nbsp;|&nbsp; Member since {{ auth()->user()->created_at->format('M Y') }}
+                                <p class="text-white-50 mb-0 small mt-1">
+                                    <i class="fas fa-map-marker-alt me-1 text-warning"></i> Serving Gujarat Hub (Ahmedabad) &nbsp;|&nbsp; Member since {{ auth()->user()->created_at->format('M Y') }}
                                 </p>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-wrap gap-2 mt-2">
-                            <span class="badge liquid-badge-blue rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                <i class="fas fa-bolt me-1"></i> Instant Self-Drive Pickup
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <span class="liquid-badge rounded-pill px-3 py-1 fs-7 font-monospace">
+                                <i class="fas fa-bolt text-warning me-1"></i> Instant Self-Drive Pickup
                             </span>
-                            @if($activeBookings->count() > 0)
-                                <span class="badge liquid-badge-green rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                    <i class="fas fa-car-side me-1"></i> {{ $activeBookings->count() }} Vehicle{{ $activeBookings->count() > 1 ? 's' : '' }} Active
-                                </span>
-                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Middle: Live Liquid Quick Stats -->
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="liquid-badge p-3 rounded-4 h-100 d-flex flex-column justify-content-between">
+                                    <div class="d-flex align-items-center justify-content-between text-white-50 fs-7 mb-1">
+                                        <span>Active Rental</span>
+                                        <i class="fas fa-car-side text-warning"></i>
+                                    </div>
+                                    <div class="fw-bold fs-5 text-white">
+                                        {{ $activeBookings->count() > 0 ? $activeBookings->count() . ' Active' : '0 Active' }}
+                                    </div>
+                                    <div class="fs-7 text-white-50 mt-1">
+                                        {{ $activeBookings->count() > 0 ? 'Vehicle in use' : 'Ready for trip' }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="liquid-badge p-3 rounded-4 h-100 d-flex flex-column justify-content-between">
+                                    <div class="d-flex align-items-center justify-content-between text-white-50 fs-7 mb-1">
+                                        <span>ID Status</span>
+                                        <i class="fas fa-id-card text-info"></i>
+                                    </div>
+                                    <div class="fw-bold fs-5 text-white">
+                                        {{ auth()->user()->hasApprovedDocuments() ? 'Verified' : 'Pending' }}
+                                    </div>
+                                    <div class="fs-7 text-white-50 mt-1">
+                                        {{ $documentsCount }} docs uploaded
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Right: Action Buttons -->
-                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                        <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
-                            <a href="{{ route('cars.index') }}" class="btn rounded-pill px-4 py-2.5 fw-bold text-white shadow-sm" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                                <i class="fas fa-car-side me-1.5"></i> Book a Car
+                    <div class="col-xl-3 col-lg-3 text-lg-end">
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('cars.index') }}" class="btn btn-liquid-primary btn-md rounded-pill px-3 py-2 fw-bold d-inline-flex align-items-center justify-content-center gap-2">
+                                <i class="fas fa-car-side fs-6"></i> Book New Vehicle
                             </a>
-                            <a href="{{ route('customer.documents.index') }}" class="btn btn-outline-light rounded-pill px-3.5 py-2.5 fw-medium">
-                                <i class="fas fa-id-card me-1.5"></i> My Documents
+                            <a href="{{ route('customer.documents.index') }}" class="btn btn-liquid-glass btn-md rounded-pill px-3 py-2 fw-medium d-inline-flex align-items-center justify-content-center gap-2">
+                                <i class="fas fa-id-card fs-6"></i> My Documents
                             </a>
                         </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
 
         <!-- Quick Search & Category Filter Bar -->
         <div class="mb-4" data-aos="fade-up">
-            <div class="bg-white p-3 rounded-4 shadow-sm border d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+            <div class="bg-white p-3 rounded-4 shadow-sm border d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
                 <form action="{{ route('cars.index') }}" method="GET" class="flex-grow-1">
                     <div class="input-group">
                         <span class="input-group-text bg-light border-0 ps-3 text-muted"><i class="fas fa-search"></i></span>
-                        <input type="text" name="search" class="form-control bg-light border-0 py-2 fs-6" placeholder="Search cars by brand or model (e.g. Swift, Fortuner, Thar)...">
-                        <button type="submit" class="btn btn-primary px-4 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">Search Cars</button>
+                        <input type="text" name="search" class="form-control bg-light border-0 py-2 fs-6" placeholder="Quick search vehicles by model, brand (e.g. Swift, Fortuner, Thar)...">
+                        <button type="submit" class="btn btn-primary rounded-end-3 px-4 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">Search Fleet</button>
                     </div>
                 </form>
 
                 <div class="d-flex align-items-center gap-2 flex-wrap flex-shrink-0">
-                    <span class="text-muted small fw-semibold d-none d-xl-inline"><i class="fas fa-filter text-primary me-1"></i> Filter:</span>
-                    <a href="{{ route('cars.index') }}" class="btn btn-sm rounded-pill px-3 py-1.5 fw-semibold {{ !request('fuel') ? 'btn-primary' : 'btn-light border' }}">All Fleet</a>
-                    <a href="{{ route('cars.index', ['fuel' => 'Petrol']) }}" class="btn btn-sm rounded-pill px-3 py-1.5 fw-semibold {{ request('fuel') == 'Petrol' ? 'btn-primary' : 'btn-light border' }}"><i class="fas fa-gas-pump fs-7 text-danger me-1"></i> Petrol</a>
-                    <a href="{{ route('cars.index', ['fuel' => 'Diesel']) }}" class="btn btn-sm rounded-pill px-3 py-1.5 fw-semibold {{ request('fuel') == 'Diesel' ? 'btn-primary' : 'btn-light border' }}"><i class="fas fa-oil-can fs-7 text-warning me-1"></i> Diesel</a>
-                    <a href="{{ route('cars.index', ['fuel' => 'Electric']) }}" class="btn btn-sm rounded-pill px-3 py-1.5 fw-semibold {{ request('fuel') == 'Electric' ? 'btn-primary' : 'btn-light border' }}"><i class="fas fa-charging-station fs-7 text-success me-1"></i> EV</a>
+                    <span class="text-muted small fw-semibold d-none d-lg-inline"><i class="fas fa-filter text-primary me-1"></i> Filter:</span>
+                    <a href="{{ route('cars.index') }}" class="quick-filter-chip active">All Fleet</a>
+                    <a href="{{ route('cars.index', ['fuel' => 'Petrol']) }}" class="quick-filter-chip"><i class="fas fa-gas-pump fs-7 text-danger"></i> Petrol</a>
+                    <a href="{{ route('cars.index', ['fuel' => 'Diesel']) }}" class="quick-filter-chip"><i class="fas fa-oil-can fs-7 text-warning"></i> Diesel</a>
+                    <a href="{{ route('cars.index', ['fuel' => 'Electric']) }}" class="quick-filter-chip"><i class="fas fa-charging-station fs-7 text-success"></i> EV</a>
                 </div>
             </div>
         </div>
@@ -315,7 +348,7 @@
                     <div class="stat-value font-display fs-2 fw-bold text-dark">{{ $totalBookings }}</div>
                     <div class="small mt-2">
                         <a href="{{ route('customer.bookings.index') }}" class="text-primary fw-semibold text-decoration-none">
-                            View all bookings <i class="fas fa-arrow-right ms-1"></i>
+                            View full history <i class="fas fa-arrow-right ms-1"></i>
                         </a>
                     </div>
                 </div>
@@ -324,14 +357,14 @@
             <div class="col-xl-3 col-sm-6" data-aos="fade-up" data-aos-delay="300">
                 <div class="stat-card-modern p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="stat-label text-muted fw-bold small text-uppercase tracking-wider">Total Spent</span>
+                        <span class="stat-label text-muted fw-bold small text-uppercase tracking-wider">Total Amount Spent</span>
                         <div class="stat-icon-wrapper" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
                             <i class="fas fa-wallet"></i>
                         </div>
                     </div>
                     <div class="stat-value font-display fs-2 fw-bold text-dark">₹{{ number_format($totalSpent, 0) }}</div>
                     <div class="small mt-2">
-                        <span class="text-success fw-medium"><i class="fas fa-shield-alt me-1"></i> Razorpay & UPI Secured</span>
+                        <span class="text-success fw-medium"><i class="fas fa-shield-alt me-1"></i> Instant UPI / Razorpay Secured</span>
                     </div>
                 </div>
             </div>
@@ -361,7 +394,7 @@
             
             <!-- Left: Current & Upcoming Rentals -->
             <div class="col-lg-8" data-aos="fade-up">
-                <div class="liquid-card border-0 shadow-sm overflow-hidden">
+                <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
                     <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between">
                         <h5 class="fw-bold mb-0 text-dark">
                             <i class="fas fa-key me-2 text-primary"></i> Current & Active Rentals
@@ -426,10 +459,10 @@
                                 </div>
                                 <h6 class="fw-bold text-dark mb-2">No Active Vehicle Rental</h6>
                                 <p class="text-muted mx-auto mb-3 small" style="max-width: 440px;">
-                                    You don't have any cars currently checked out. Browse our luxury fleet in Gujarat and book your next trip.
+                                    You don't have any active rental currently checked out. Browse our verified Gujarat fleet for your next journey!
                                 </p>
-                                <a href="{{ route('cars.index') }}" class="btn btn-primary rounded-pill btn-sm px-4 py-2 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                                    <i class="fas fa-search me-1"></i> Book a Car Now
+                                <a href="{{ route('cars.index') }}" class="btn btn-primary btn-sm rounded-pill px-4 py-2 fw-bold shadow-sm" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                                    <i class="fas fa-search me-2"></i> Explore Available Cars
                                 </a>
                             </div>
                         @endif
@@ -441,7 +474,7 @@
             <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
                 
                 <!-- Profile & Verification Card -->
-                <div class="liquid-card border-0 shadow-sm overflow-hidden mb-4" id="profile">
+                <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden mb-4" id="profile" style="transition: all 0.3s ease;">
                     <div class="card-header-custom bg-white p-4 border-bottom">
                         <h5 class="fw-bold mb-0 text-dark">
                             <i class="fas fa-shield-alt me-2 text-primary"></i> Verification & Profile

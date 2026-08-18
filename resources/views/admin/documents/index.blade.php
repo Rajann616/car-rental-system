@@ -7,25 +7,21 @@
 <div class="container-fluid px-0">
         
         <!-- Header Banner Card -->
-        <!-- Unified Liquid Glass Header Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="liquid-glass-hero text-white">
-                <div class="liquid-glow-orb-1"></div>
-                <div class="liquid-glow-orb-2"></div>
-                <div class="row align-items-center position-relative g-3" style="z-index: 2;">
+            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
+                <div class="row align-items-center position-relative" style="z-index: 2;">
                     <div class="col-lg-8">
-                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            <span class="badge liquid-badge-gold rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                <i class="fas fa-user-shield me-1"></i> ID Verification Stream
-                            </span>
-                        </div>
-                        <h1 class="fw-bold text-white font-display fs-3 mb-1">Customer Verification Queue</h1>
-                        <p class="text-white-50 mb-0 max-w-2xl small">
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-2 small fw-bold">
+                            <i class="fas fa-user-shield me-1"></i> ID Verification Stream
+                        </span>
+                        <h1 class="fw-bold text-white font-display fs-2 mb-2">Customer Verification Queue</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl">
                             Review customer Driving Licenses, Aadhaar Cards, and PAN Cards to approve driver verification status.
                         </p>
                     </div>
-                    <div class="col-lg-4 text-lg-end mt-2 mt-lg-0">
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light rounded-pill px-4 py-2 fw-medium shadow-xs">
+                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light rounded-pill px-4 fw-medium">
                             <i class="fas fa-arrow-left me-2"></i> Dashboard
                         </a>
                     </div>
@@ -33,8 +29,8 @@
             </div>
         </div>
 
-        <!-- Documents Queue Master Liquid Card -->
-        <div class="liquid-card border-0 shadow-sm overflow-hidden" data-aos="fade-up">
+        <!-- Documents Queue Table Card -->
+        <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden" data-aos="fade-up">
             <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
                 <h5 class="fw-bold mb-0 text-dark">
                     <i class="fas fa-id-card me-2 text-primary"></i> Verification Requests ({{ $documents->total() }})
@@ -49,8 +45,7 @@
                 </form>
             </div>
             <div class="card-body-custom p-4">
-                <!-- Desktop Table View -->
-                <div class="desktop-table-container table-responsive">
+                <div class="table-responsive">
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
@@ -103,7 +98,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content rounded-4">
                                                         <form action="{{ route('admin.documents.reject', $doc->id) }}" method="POST">
-                                                             @csrf
+                                                            @csrf
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title fw-bold">Reject Document</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -127,57 +122,11 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-5">
-                                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-2" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
-                                            <i class="fas fa-check-circle fs-3"></i>
-                                        </div>
-                                        <h6 class="fw-bold text-dark mb-1">Queue is Clear</h6>
-                                        <p class="small text-muted mb-0">No documents are pending verification.</p>
-                                    </td>
+                                    <td colspan="6" class="text-center py-5 text-muted">No document verification records found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
-                </div>
-
-                <!-- Mobile Card Container (<= 767px) -->
-                <div class="mobile-card-container">
-                    @forelse($documents as $doc)
-                        <div class="card border rounded-4 shadow-sm p-3 mb-2 bg-white">
-                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                <span class="fw-bold text-dark fs-6">{{ $doc->user->name }}</span>
-                                <span class="badge-status {{ $doc->status_badge }}">{{ $doc->status }}</span>
-                            </div>
-                            <div class="small text-muted mb-2">
-                                <div><i class="fas fa-envelope text-primary me-1"></i> {{ $doc->user->email }}</div>
-                                <div><i class="fas fa-id-card text-primary me-1"></i> {{ $doc->type }} · {{ $doc->created_at->format('d M Y') }}</div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between pt-2 border-top gap-2 flex-wrap">
-                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                                    <i class="fas fa-eye me-1"></i> View
-                                </a>
-                                @if($doc->status === 'Pending')
-                                    <div class="d-flex gap-2">
-                                        <form action="{{ route('admin.documents.approve', $doc->id) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-success rounded-pill px-3">
-                                                Approve
-                                            </button>
-                                        </form>
-                                        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $doc->id }}">
-                                            Reject
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    @empty
-                        <div class="text-center py-5 bg-light rounded-4">
-                            <i class="fas fa-check-circle text-success fs-2 mb-2 d-block opacity-75"></i>
-                            <h6 class="fw-bold text-dark mb-1">Queue is Clear</h6>
-                            <p class="small text-muted mb-0">No documents require review.</p>
-                        </div>
-                    @endforelse
                 </div>
 
                 <div class="d-flex justify-content-center mt-4">

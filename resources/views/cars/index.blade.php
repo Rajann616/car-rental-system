@@ -129,31 +129,30 @@
 <section class="dashboard-section pb-5">
     <div class="container-fluid px-0">
         
-        <!-- Unified Liquid Glass Header Banner -->
+        <!-- Liquid Glass Slim Header Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="liquid-glass-hero text-white">
-                <div class="liquid-glow-orb-1"></div>
-                <div class="liquid-glow-orb-2"></div>
+            <div class="py-3 px-4 rounded-4 text-white liquid-cars-hero shadow-sm">
+                <div class="hero-glow-1"></div>
+                <div class="hero-glow-2"></div>
 
-                <div class="row align-items-center position-relative g-3" style="z-index: 2;">
-                    <div class="col-lg-8">
+                <div class="row align-items-center position-relative g-2" style="z-index: 2;">
+                    <div class="col-md-8 col-lg-9">
                         <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            <span class="badge liquid-badge-gold rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                <i class="fas fa-car me-1"></i> Self-Drive Fleet
-                            </span>
-                            <span class="badge liquid-badge-blue rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                <i class="fas fa-location-dot me-1"></i> Gujarat Hub
+                            <h4 class="fw-bold text-white font-display mb-0">Find Your Ideal Self-Drive Car</h4>
+                            <span class="badge liquid-badge rounded-pill px-3 py-1 fs-7 fw-semibold">
+                                <i class="fas fa-sparkles text-warning me-1"></i> Gujarat Verified Fleet
                             </span>
                         </div>
-                        <h1 class="fw-bold text-white font-display fs-3 mb-1">Find Your Ideal Self-Drive Car</h1>
-                        <p class="text-white-50 mb-0 max-w-2xl small">
+                        <p class="text-white-50 mb-0 small">
                             Explore Ahmedabad's finest self-drive vehicles. Filter by brand, fuel, transmission, or price.
                         </p>
                     </div>
-                    <div class="col-lg-4 text-lg-end mt-2 mt-lg-0">
-                        <div class="d-inline-flex align-items-center gap-2 liquid-badge-green px-3.5 py-2 rounded-pill shadow-xs">
-                            <i class="fas fa-circle-check fs-6 text-success"></i>
-                            <span class="fw-bold fs-7 text-white">{{ $cars->total() }} Vehicles Available</span>
+                    <div class="col-md-4 col-lg-3 text-md-end mt-2 mt-md-0">
+                        <div class="d-inline-flex align-items-center gap-2 liquid-badge px-3 py-2 rounded-pill shadow-xs">
+                            <i class="fas fa-circle-check text-success fs-5"></i>
+                            <div class="text-start">
+                                <div class="fw-bold fs-6 text-white leading-none">{{ $cars->total() }} Vehicles Available</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -354,7 +353,7 @@
                                         <span class="text-uppercase text-primary small fw-bold tracking-wider">{{ $car->brand }}</span>
                                         <span class="small text-muted fw-semibold fs-7"><i class="fas fa-calendar me-1"></i>{{ $car->year }}</span>
                                     </div>
-                                    <h5 class="fw-bold mb-2 fs-6" style="min-height: 2.2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    <h5 class="fw-bold mb-2 fs-6">
                                         <a href="{{ route('cars.show', $car->id) }}" class="text-dark text-decoration-none transition-all hover-primary">
                                             {{ $car->model }}
                                         </a>

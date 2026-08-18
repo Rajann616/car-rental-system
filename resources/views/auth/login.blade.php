@@ -36,7 +36,7 @@
                                 <input type="email" class="simple-input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="name@example.com">
                             </div>
                             @error('email')
-                                <div class="text-danger small mt-1.5 fw-semibold d-flex align-items-center"><i class="fas fa-circle-exclamation me-1.5"></i> {{ $message }}</div>
+                                <div class="text-danger small mt-1.5 fw-semibold">⚠ {{ $message }}</div>
                             @enderror
                         </div>
 
@@ -49,12 +49,12 @@
                             <div class="simple-input-box">
                                 <i class="fas fa-lock simple-input-icon"></i>
                                 <input type="password" class="simple-input @error('password') is-invalid @enderror" id="password" name="password" required placeholder="••••••••••••">
-                                <button type="button" class="simple-eye-btn toggle-password-btn" data-target="password" title="Toggle Password" aria-label="Toggle password visibility">
+                                <button type="button" class="simple-eye-btn toggle-password-btn" data-target="password" title="Toggle Password">
                                     <i class="far fa-eye"></i>
                                 </button>
                             </div>
                             @error('password')
-                                <div class="text-danger small mt-1.5 fw-semibold d-flex align-items-center"><i class="fas fa-circle-exclamation me-1.5"></i> {{ $message }}</div>
+                                <div class="text-danger small mt-1.5 fw-semibold">⚠ {{ $message }}</div>
                             @enderror
                         </div>
 

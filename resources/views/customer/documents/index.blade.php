@@ -231,20 +231,20 @@
 <section class="dashboard-section pb-5">
     <div class="container-fluid px-0">
         
-        <!-- Unified Liquid Glass Header Banner -->
+        <!-- Header Banner Card -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="liquid-glass-hero text-white">
-                <div class="liquid-glow-orb-1"></div>
-                <div class="liquid-glow-orb-2"></div>
+            <div class="p-3.5 p-md-4 rounded-4 text-white dashboard-hero-card shadow-sm">
+                <div class="hero-glow-1"></div>
+                <div class="hero-glow-2"></div>
 
                 <div class="row align-items-center position-relative g-3" style="z-index: 2;">
                     <div class="col-lg-8">
-                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            <span class="badge liquid-badge-gold rounded-pill px-3 py-1 fs-7 fw-semibold">
+                        <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
+                            <span class="badge glass-badge-gold rounded-pill px-3 py-1.5 fs-7 fw-bold">
                                 <i class="fas fa-shield-check me-1"></i> Identity Verification
                             </span>
-                            <span class="badge liquid-badge-blue rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                <i class="fas fa-lock me-1"></i> 256-Bit SSL Encrypted
+                            <span class="badge glass-badge-dark rounded-pill px-3 py-1.5 fs-7 fw-semibold">
+                                <i class="fas fa-lock text-info me-1"></i> 256-Bit SSL Encrypted
                             </span>
                         </div>
                         <h1 class="fw-bold text-white font-display fs-3 mb-1">ID Verification & Documents</h1>
@@ -335,7 +335,7 @@
 
                             <div class="mt-4 pt-2 border-top text-end">
                                 <button type="submit" id="submitBtn" class="btn btn-liquid-primary rounded-pill px-4 py-2.5 fw-bold shadow-sm">
-                                    <i class="fas fa-paper-plane me-2"></i> Upload & Verify
+                                    <i class="fas fa-paper-plane me-2"></i> Submit for Verification
                                 </button>
                             </div>
                         </form>

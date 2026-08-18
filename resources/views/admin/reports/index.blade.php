@@ -7,25 +7,21 @@
 <div class="container-fluid px-0">
         
         <!-- Header Banner Card -->
-        <!-- Unified Liquid Glass Header Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="liquid-glass-hero text-white">
-                <div class="liquid-glow-orb-1"></div>
-                <div class="liquid-glow-orb-2"></div>
-                <div class="row align-items-center position-relative g-3" style="z-index: 2;">
+            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
+                <div class="row align-items-center position-relative" style="z-index: 2;">
                     <div class="col-lg-8">
-                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            <span class="badge liquid-badge-gold rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                <i class="fas fa-chart-pie me-1"></i> Business Intelligence
-                            </span>
-                        </div>
-                        <h1 class="fw-bold text-white font-display fs-3 mb-1">Reports & Financial Analytics</h1>
-                        <p class="text-white-50 mb-0 max-w-2xl small">
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-2 small fw-bold">
+                            <i class="fas fa-chart-pie me-1"></i> Business Intelligence
+                        </span>
+                        <h1 class="fw-bold text-white font-display fs-2 mb-2">Reports & Financial Analytics</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl">
                             Filter revenue stream audit logs, check trip performance metrics, and track completed payment transactions.
                         </p>
                     </div>
-                    <div class="col-lg-4 text-lg-end mt-2 mt-lg-0">
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light rounded-pill px-4 py-2 fw-medium shadow-xs">
+                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light rounded-pill px-4 fw-medium">
                             <i class="fas fa-arrow-left me-2"></i> Dashboard
                         </a>
                     </div>
@@ -33,8 +29,8 @@
             </div>
         </div>
 
-        <!-- Date Range Filter Bar Liquid Card -->
-        <div class="liquid-card mb-4 border-0 shadow-sm p-4" data-aos="fade-up">
+        <!-- Date Range Filter Bar -->
+        <div class="search-card mb-4 border-0 shadow-sm rounded-4 p-4 bg-white" data-aos="fade-up">
             <form action="{{ route('admin.reports.index') }}" method="GET">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-4">
@@ -158,8 +154,7 @@
             </div>
             <div class="card-body-custom p-4">
                 @if($payments->count() > 0)
-                    <!-- Desktop Table View -->
-                    <div class="desktop-table-container table-responsive">
+                    <div class="table-responsive">
                         <table class="table table-modern align-middle mb-0">
                             <thead>
                                 <tr>
@@ -195,27 +190,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-
-                    <!-- Mobile Card Container (<= 767px) -->
-                    <div class="mobile-card-container">
-                        @foreach($payments as $pay)
-                            <div class="card border rounded-4 shadow-sm p-3 mb-2 bg-white">
-                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <span class="fw-bold text-primary small">{{ $pay->transaction_id }}</span>
-                                    <span class="badge bg-success bg-opacity-10 text-success px-2 py-1 rounded-pill small fw-semibold">SUCCESS</span>
-                                </div>
-                                <div class="small fw-semibold text-dark">{{ $pay->booking ? $pay->booking->booking_number : 'Booking Payment' }}</div>
-                                <div class="small text-muted mb-2">
-                                    <div>{{ $pay->user->name }} · {{ $pay->booking && $pay->booking->car ? $pay->booking->car->brand . ' ' . $pay->booking->car->model : 'Vehicle' }}</div>
-                                    <div>{{ $pay->created_at->format('d M Y, h:i A') }}</div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between pt-2 border-top">
-                                    <span class="badge bg-light text-dark border">{{ $pay->method }}</span>
-                                    <div class="fw-bold text-success fs-6">₹{{ number_format($pay->amount, 0) }}</div>
-                                </div>
-                            </div>
-                        @endforeach
                     </div>
                 @else
                     <div class="text-center py-5 text-muted">

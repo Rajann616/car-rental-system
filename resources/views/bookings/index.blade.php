@@ -7,34 +7,31 @@
 <section class="dashboard-section pb-5">
     <div class="container-fluid px-0">
         
-        <!-- Unified Liquid Glass Header Banner -->
+        <!-- Header Banner Card -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="liquid-glass-hero text-white">
-                <div class="liquid-glow-orb-1"></div>
-                <div class="liquid-glow-orb-2"></div>
-                <div class="row align-items-center position-relative g-3" style="z-index: 2;">
+            <div class="p-3 p-md-4 rounded-4 text-white shadow-sm position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
+                <div class="row align-items-center position-relative" style="z-index: 2;">
                     <div class="col-lg-8">
-                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            <span class="badge liquid-badge-gold rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                <i class="fas fa-history me-1"></i> Rental Records
-                            </span>
-                        </div>
-                        <h1 class="fw-bold text-white font-display fs-3 mb-1">Booking History & Reservations</h1>
-                        <p class="text-white-50 mb-0 max-w-2xl small">
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-2 small fw-bold">
+                            <i class="fas fa-history me-1"></i> Rental Records
+                        </span>
+                        <h1 class="fw-bold text-white font-display fs-2 mb-2">Booking History & Reservations</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl">
                             Track your active vehicle checkouts, download PDF rental invoices, or manage upcoming bookings.
                         </p>
                     </div>
-                    <div class="col-lg-4 text-lg-end mt-2 mt-lg-0">
-                        <a href="{{ route('cars.index') }}" class="btn rounded-pill px-4 py-2 fw-bold text-white shadow-sm" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                            <i class="fas fa-plus-circle me-1"></i> Book New Vehicle
+                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                        <a href="{{ route('cars.index') }}" class="btn btn-lg rounded-pill px-4 fw-bold text-white shadow-lg" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                            <i class="fas fa-plus-circle me-2"></i> Book New Vehicle
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Bookings History Liquid Card -->
-        <div class="liquid-card border-0 shadow-sm overflow-hidden" data-aos="fade-up">
+        <!-- Bookings History Card -->
+        <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden" data-aos="fade-up">
             <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
                 <h5 class="fw-bold mb-0 text-dark">
                     <i class="fas fa-list-check me-2 text-primary"></i> All Rental Reservations ({{ $bookings->total() }})

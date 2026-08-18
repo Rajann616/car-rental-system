@@ -6,31 +6,32 @@
 @section('content')
 <div class="container-fluid px-0">
         
-        <!-- Unified Liquid Glass Command Center Hero Banner -->
+        <!-- Command Center Hero Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="liquid-glass-hero text-white">
+            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
                 
-                <!-- Fluid Morphing Liquid Orbs -->
-                <div class="liquid-glow-orb-1"></div>
-                <div class="liquid-glow-orb-2"></div>
+                <!-- Ambient Accent Orbs -->
+                <div class="position-absolute rounded-circle" style="width: 300px; height: 300px; background: rgba(255, 122, 0, 0.15); filter: blur(70px); top: -60px; right: -50px;"></div>
+                <div class="position-absolute rounded-circle" style="width: 220px; height: 220px; background: rgba(37, 99, 235, 0.2); filter: blur(50px); bottom: -40px; left: 15%;"></div>
 
-                <div class="row align-items-center position-relative g-3" style="z-index: 2;">
-                    <div class="col-lg-7">
-                        <div class="d-inline-flex align-items-center gap-2 liquid-badge-green rounded-pill px-3 py-1 mb-1 small">
-                            <span class="d-inline-block rounded-circle bg-success" style="width: 7px; height: 7px; box-shadow: 0 0 8px #10b981;"></span>
-                            <span class="text-white fw-semibold fs-7">System Operational &nbsp;•&nbsp; Database & Payment Gateway Connected</span>
+                <div class="row align-items-center position-relative" style="z-index: 2;">
+                    <div class="col-lg-7 mb-3 mb-lg-0">
+                        <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-10 border border-white border-opacity-15 rounded-pill px-3 py-1 mb-3 small">
+                            <span class="d-inline-block rounded-circle bg-success" style="width: 8px; height: 8px; box-shadow: 0 0 8px #10b981;"></span>
+                            <span class="text-white-50 fw-semibold fs-7">System Operational &nbsp;•&nbsp; MySQL & Instant UPI Gateway Connected</span>
                         </div>
 
-                        <h1 class="fw-bold text-white font-display fs-3 mb-1">AutoLux Command Center</h1>
-                        <p class="text-white-50 mb-0 max-w-2xl small">
-                            Real-time overview of vehicle fleet status, customer bookings, driver verifications, and monthly revenue.
+                        <h1 class="fw-bold text-white font-display fs-2 mb-2">AutoLux Command Center</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl">
+                            Real-time overview of car availability, customer reservations, driver verification approvals, and monthly revenue.
                         </p>
                     </div>
 
                     <!-- Quick Command Action Shortcuts -->
-                    <div class="col-lg-5 text-lg-end mt-2 mt-lg-0">
+                    <div class="col-lg-5 text-lg-end">
                         <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
-                            <a href="{{ route('admin.cars.create') }}" class="btn rounded-pill px-3.5 py-2 fw-bold text-white shadow-sm" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                            <a href="{{ route('admin.cars.create') }}" class="btn rounded-pill px-3 py-2 fw-bold text-white shadow" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
                                 <i class="fas fa-plus-circle me-1"></i> Add Vehicle
                             </a>
                             <a href="{{ route('admin.documents.index') }}" class="btn btn-outline-light rounded-pill px-3 py-2 fw-medium position-relative">
@@ -69,11 +70,11 @@
                 </div>
             </div>
 
-            <!-- Total Vehicle Count -->
+            <!-- Total car Count -->
             <div class="col-xl-3 col-sm-6" data-aos="fade-up" data-aos-delay="200">
                 <div class="stat-card border-0 shadow-sm p-4 rounded-4 bg-white position-relative overflow-hidden">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="stat-label text-muted fw-bold small text-uppercase">Total Vehicles</span>
+                        <span class="stat-label text-muted fw-bold small text-uppercase">car Vehicles</span>
                         <div class="stat-icon p-3 rounded-3" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
                             <i class="fas fa-car-side fs-4"></i>
                         </div>
@@ -123,14 +124,14 @@
             </div>
         </div>
 
-        <!-- Fleet Breakdown & Driver Verification Queue Row -->
+        <!-- car Breakdown & Driver Verification Queue Row -->
         <div class="row g-4 mb-4">
             
-            <!-- Fleet Status Breakdown Widget -->
+            <!-- car Status Breakdown Widget -->
             <div class="col-lg-4" data-aos="fade-up">
                 <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden h-100">
                     <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between">
-                        <h5 class="fw-bold mb-0 text-dark"><i class="fas fa-chart-pie me-2 text-primary"></i> Fleet Status Breakdown</h5>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fas fa-chart-pie me-2 text-primary"></i> car Status Breakdown</h5>
                         <a href="{{ route('admin.cars.index') }}" class="small text-primary fw-semibold text-decoration-none">Manage Cars</a>
                     </div>
                     <div class="card-body-custom p-4">
@@ -185,7 +186,7 @@
 
             <!-- Driver ID Verification Queue Widget -->
             <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="liquid-card border-0 shadow-sm overflow-hidden h-100">
+                <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden h-100">
                     <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between">
                         <h5 class="fw-bold mb-0 text-dark">
                             <i class="fas fa-id-card me-2 text-primary"></i> Driver Verification Approvals Queue
@@ -253,7 +254,7 @@
         <!-- Recent Customer Reservations Table -->
         <div class="row g-4 mb-4" data-aos="fade-up">
             <div class="col-12">
-                <div class="liquid-card border-0 shadow-sm overflow-hidden">
+                <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
                     <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
                         <h5 class="fw-bold mb-0 text-dark">
                             <i class="fas fa-list-check me-2 text-primary"></i> Live Reservations Command Stream
