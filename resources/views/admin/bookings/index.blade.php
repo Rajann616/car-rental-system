@@ -48,7 +48,8 @@
                 </form>
             </div>
             <div class="card-body-custom p-4">
-                <div class="table-responsive">
+                <!-- Desktop Table View -->
+                <div class="desktop-table-container table-responsive">
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
@@ -102,7 +103,7 @@
                                     <td>
                                         <form action="{{ route('admin.bookings.status', $booking->id) }}" method="POST" class="d-flex align-items-center" style="min-width: 150px;">
                                             @csrf
-                                            <select name="status" class="form-select form-select-sm border-2 rounded-pill fw-bold text-dark shadow-sm px-3 py-1 bg-white" style="font-size: 0.82rem; cursor: pointer;" onchange="this.form.submit()" title="Change reservation status">
+                                            <select name="status" class="form-select form-select-sm border-2 rounded-pill fw-bold text-dark shadow-sm px-3 py-1 bg-white" style="font-size: 0.82rem; cursor: pointer;" onchange="this.form.submit()" title="Change booking status">
                                                 @foreach(['Pending', 'Confirmed', 'Active', 'Completed', 'Cancelled'] as $st)
                                                     <option value="{{ $st }}" {{ $booking->status == $st ? 'selected' : '' }}>{{ $st }}</option>
                                                 @endforeach
@@ -117,11 +118,56 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center py-5 text-muted">No customer reservations found.</td>
+                                    <td colspan="8" class="text-center py-5 text-muted">No customer bookings found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Mobile Card Container (<= 767px) -->
+                <div class="mobile-card-container">
+                    @forelse($bookings as $booking)
+                        <div class="card border rounded-4 shadow-sm p-3 mb-2 bg-white">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="fw-bold text-primary small">{{ $booking->booking_number }}</span>
+                                <span class="badge-status {{ $booking->status_badge }}">{{ $booking->status }}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div class="rounded-3 overflow-hidden bg-light border" style="width: 60px; height: 45px; flex-shrink: 0;">
+                                    @if($booking->car->thumbnail)
+                                        <img src="{{ asset('storage/' . $booking->car->thumbnail) }}" class="w-100 h-100 object-fit-cover">
+                                    @else
+                                        <div class="d-flex align-items-center justify-content-center h-100 text-primary">
+                                            <i class="fas fa-car fs-5"></i>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark fs-6">{{ $booking->car->brand }} {{ $booking->car->model }}</div>
+                                    <small class="text-muted">{{ $booking->user->name }} · {{ $booking->pickup_date->format('d M') }} to {{ $booking->return_date->format('d M Y') }}</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+                                <div class="fw-bold text-dark fs-6">₹{{ number_format($booking->total_amount, 0) }}</div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <form action="{{ route('admin.bookings.status', $booking->id) }}" method="POST">
+                                        @csrf
+                                        <select name="status" class="form-select form-select-sm border rounded-pill fw-bold" style="font-size: 0.75rem;" onchange="this.form.submit()">
+                                            @foreach(['Pending', 'Confirmed', 'Active', 'Completed', 'Cancelled'] as $st)
+                                                <option value="{{ $st }}" {{ $booking->status == $st ? 'selected' : '' }}>{{ $st }}</option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                    <a href="{{ route('bookings.show', $booking->id) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5" target="_blank">
+                                        <i class="fas fa-receipt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-4 text-muted">No customer bookings found.</div>
+                    @endforelse
                 </div>
 
                 <div class="d-flex justify-content-center mt-4">

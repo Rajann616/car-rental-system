@@ -154,7 +154,8 @@
             </div>
             <div class="card-body-custom p-4">
                 @if($payments->count() > 0)
-                    <div class="table-responsive">
+                    <!-- Desktop Table View -->
+                    <div class="desktop-table-container table-responsive">
                         <table class="table table-modern align-middle mb-0">
                             <thead>
                                 <tr>
@@ -190,6 +191,27 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Mobile Card Container (<= 767px) -->
+                    <div class="mobile-card-container">
+                        @foreach($payments as $pay)
+                            <div class="card border rounded-4 shadow-sm p-3 mb-2 bg-white">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="fw-bold text-primary small">{{ $pay->transaction_id }}</span>
+                                    <span class="badge bg-success bg-opacity-10 text-success px-2 py-1 rounded-pill small fw-semibold">SUCCESS</span>
+                                </div>
+                                <div class="small fw-semibold text-dark">{{ $pay->booking ? $pay->booking->booking_number : 'Booking Payment' }}</div>
+                                <div class="small text-muted mb-2">
+                                    <div>{{ $pay->user->name }} · {{ $pay->booking && $pay->booking->car ? $pay->booking->car->brand . ' ' . $pay->booking->car->model : 'Vehicle' }}</div>
+                                    <div>{{ $pay->created_at->format('d M Y, h:i A') }}</div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+                                    <span class="badge bg-light text-dark border">{{ $pay->method }}</span>
+                                    <div class="fw-bold text-success fs-6">₹{{ number_format($pay->amount, 0) }}</div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 @else
                     <div class="text-center py-5 text-muted">

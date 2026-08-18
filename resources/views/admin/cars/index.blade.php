@@ -46,7 +46,8 @@
                 </form>
             </div>
             <div class="card-body-custom p-4">
-                <div class="table-responsive">
+                <!-- Desktop Table View -->
+                <div class="desktop-table-container table-responsive">
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
@@ -116,6 +117,53 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Mobile Card Container (<= 767px) -->
+                <div class="mobile-card-container">
+                    @forelse($cars as $car)
+                        <div class="card border rounded-4 shadow-sm p-3 mb-2 bg-white">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="fw-bold text-dark fs-6">{{ $car->brand }} {{ $car->model }}</span>
+                                <span class="badge-status {{ strtolower($car->status) }}">{{ $car->status }}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div class="rounded-3 overflow-hidden bg-light border" style="width: 60px; height: 45px; flex-shrink: 0;">
+                                    @if($car->thumbnail)
+                                        <img src="{{ asset('storage/' . $car->thumbnail) }}" class="w-100 h-100 object-fit-cover">
+                                    @else
+                                        <div class="d-flex align-items-center justify-content-center h-100 text-primary">
+                                            <i class="fas fa-car fs-5"></i>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div>
+                                    <div class="small fw-semibold text-dark">{{ $car->registration_number }}</div>
+                                    <small class="text-muted">{{ $car->fuel_type }} · {{ $car->transmission }} · {{ $car->seating_capacity }} Seater</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+                                <div class="fw-bold text-primary fs-6">₹{{ number_format($car->rental_price_per_day, 0) }} <span class="small text-muted fw-normal">/ day</span></div>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('cars.show', $car->id) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5" target="_blank">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-2.5">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2.5">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-4 text-muted">No vehicles found in fleet.</div>
+                    @endforelse
                 </div>
 
                 <div class="d-flex justify-content-center mt-4">

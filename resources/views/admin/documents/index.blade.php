@@ -45,7 +45,8 @@
                 </form>
             </div>
             <div class="card-body-custom p-4">
-                <div class="table-responsive">
+                <!-- Desktop Table View -->
+                <div class="desktop-table-container table-responsive">
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
@@ -98,7 +99,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content rounded-4">
                                                         <form action="{{ route('admin.documents.reject', $doc->id) }}" method="POST">
-                                                            @csrf
+                                                             @csrf
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title fw-bold">Reject Document</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -127,6 +128,42 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Mobile Card Container (<= 767px) -->
+                <div class="mobile-card-container">
+                    @forelse($documents as $doc)
+                        <div class="card border rounded-4 shadow-sm p-3 mb-2 bg-white">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="fw-bold text-dark fs-6">{{ $doc->user->name }}</span>
+                                <span class="badge-status {{ $doc->status_badge }}">{{ $doc->status }}</span>
+                            </div>
+                            <div class="small text-muted mb-2">
+                                <div><i class="fas fa-envelope text-primary me-1"></i> {{ $doc->user->email }}</div>
+                                <div><i class="fas fa-id-card text-primary me-1"></i> {{ $doc->type }} · {{ $doc->created_at->format('d M Y') }}</div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between pt-2 border-top gap-2 flex-wrap">
+                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                    <i class="fas fa-eye me-1"></i> View
+                                </a>
+                                @if($doc->status === 'Pending')
+                                    <div class="d-flex gap-2">
+                                        <form action="{{ route('admin.documents.approve', $doc->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-success rounded-pill px-3">
+                                                Approve
+                                            </button>
+                                        </form>
+                                        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $doc->id }}">
+                                            Reject
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-4 text-muted">No document verification records found.</div>
+                    @endforelse
                 </div>
 
                 <div class="d-flex justify-content-center mt-4">

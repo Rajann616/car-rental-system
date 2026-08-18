@@ -40,7 +40,8 @@
                 </a>
             </div>
             <div class="card-body-custom p-4">
-                <div class="table-responsive">
+                <!-- Desktop Table View -->
+                <div class="desktop-table-container table-responsive">
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
@@ -94,6 +95,40 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Mobile Card Container (<= 767px) -->
+                <div class="mobile-card-container">
+                    @forelse($records as $rec)
+                        <div class="card border rounded-4 shadow-sm p-3 mb-2 bg-white">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="fw-bold text-dark fs-6">{{ $rec->car->brand }} {{ $rec->car->model }}</span>
+                                <span class="badge-status {{ $rec->status_badge }}">{{ $rec->status }}</span>
+                            </div>
+                            <div class="small fw-semibold text-dark mb-1">{{ $rec->title }}</div>
+                            <div class="small text-muted mb-2">
+                                <div><i class="fas fa-calendar-alt text-primary me-1"></i> Scheduled: {{ $rec->scheduled_date->format('d M Y') }}</div>
+                                @if($rec->completed_date)
+                                    <div><i class="fas fa-check text-success me-1"></i> Done: {{ $rec->completed_date->format('d M Y') }}</div>
+                                @endif
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+                                <div class="fw-bold text-dark fs-6">₹{{ number_format($rec->cost, 2) }}</div>
+                                @if($rec->status !== 'Completed')
+                                    <form action="{{ route('admin.maintenance.complete', $rec->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-success rounded-pill px-3">
+                                            Mark Completed
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="small text-success fw-semibold"><i class="fas fa-check-circle me-1"></i> Done</span>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-4 text-muted">No vehicle maintenance records logged yet.</div>
+                    @endforelse
                 </div>
 
                 <div class="d-flex justify-content-center mt-4">
