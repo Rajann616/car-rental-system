@@ -198,21 +198,20 @@
 <section class="dashboard-section pb-5">
     <div class="container">
         
-        <!-- Welcome Hero Banner Card (Compact Liquid Glass 3-Column Layout) -->
+        <!-- Unified Liquid Glass Dashboard Hero Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="dashboard-hero-card p-3 p-md-4 rounded-4 text-white">
+            <div class="liquid-glass-hero text-white">
                 
                 <!-- Fluid Morphing Liquid Orbs -->
-                <div class="position-absolute rounded-circle hero-glow-1 pointer-events-none"></div>
-                <div class="position-absolute rounded-circle hero-glow-2 pointer-events-none"></div>
-                <div class="position-absolute rounded-circle hero-glow-3 pointer-events-none"></div>
+                <div class="liquid-glow-orb-1"></div>
+                <div class="liquid-glow-orb-2"></div>
 
                 <div class="row align-items-center g-3 position-relative" style="z-index: 2;">
                     
                     <!-- Left: User Greeting & Badges -->
                     <div class="col-xl-5 col-lg-5">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="user-avatar-large flex-shrink-0" style="width: 54px; height: 54px; background: linear-gradient(135deg, #ff7a00, #ea580c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; color: #fff; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 8px 20px rgba(255,122,0,0.4), inset 0 1px 1px rgba(255,255,255,0.6);">
+                            <div class="user-avatar-large flex-shrink-0" style="width: 50px; height: 50px; background: linear-gradient(135deg, #ff7a00, #ea580c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; color: #fff; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 8px 20px rgba(255,122,0,0.4);">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                             </div>
                             <div>
@@ -221,24 +220,24 @@
                                         <span id="timeGreeting">Welcome</span>, {{ auth()->user()->name }}! 👋
                                     </h3>
                                     @if(auth()->user()->hasApprovedDocuments())
-                                        <span class="liquid-badge rounded-pill px-2 py-0.5 fs-7 fw-semibold text-success border-success border-opacity-50">
+                                        <span class="badge liquid-badge-green rounded-pill px-2.5 py-0.5 fs-7 fw-semibold">
                                             <i class="fas fa-check-circle me-1"></i> Verified
                                         </span>
                                     @else
-                                        <span class="liquid-badge rounded-pill px-2 py-0.5 fs-7 fw-semibold text-warning border-warning border-opacity-50">
+                                        <span class="badge liquid-badge-gold rounded-pill px-2.5 py-0.5 fs-7 fw-semibold">
                                             <i class="fas fa-exclamation-triangle me-1"></i> Action Needed
                                         </span>
                                     @endif
                                 </div>
                                 <p class="text-white-50 mb-0 small mt-1">
-                                    <i class="fas fa-map-marker-alt me-1 text-warning"></i> Serving Gujarat Hub (Ahmedabad) &nbsp;|&nbsp; Member since {{ auth()->user()->created_at->format('M Y') }}
+                                    <i class="fas fa-location-dot me-1 text-warning"></i> Serving Gujarat Hub (Ahmedabad) &nbsp;|&nbsp; Member since {{ auth()->user()->created_at->format('M Y') }}
                                 </p>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-wrap gap-2 mt-3">
-                            <span class="liquid-badge rounded-pill px-3 py-1 fs-7 font-monospace">
-                                <i class="fas fa-bolt text-warning me-1"></i> Instant Self-Drive Pickup
+                        <div class="d-flex flex-wrap gap-2 mt-2">
+                            <span class="badge liquid-badge-blue rounded-pill px-3 py-1 fs-7 fw-semibold">
+                                <i class="fas fa-bolt me-1"></i> Instant Self-Drive Pickup
                             </span>
                         </div>
                     </div>

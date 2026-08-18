@@ -6,32 +6,31 @@
 @section('content')
 <div class="container-fluid px-0">
         
-        <!-- Command Center Hero Banner -->
+        <!-- Unified Liquid Glass Command Center Hero Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
-                 style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
+            <div class="liquid-glass-hero text-white">
                 
-                <!-- Ambient Accent Orbs -->
-                <div class="position-absolute rounded-circle" style="width: 300px; height: 300px; background: rgba(255, 122, 0, 0.15); filter: blur(70px); top: -60px; right: -50px;"></div>
-                <div class="position-absolute rounded-circle" style="width: 220px; height: 220px; background: rgba(37, 99, 235, 0.2); filter: blur(50px); bottom: -40px; left: 15%;"></div>
+                <!-- Fluid Morphing Liquid Orbs -->
+                <div class="liquid-glow-orb-1"></div>
+                <div class="liquid-glow-orb-2"></div>
 
-                <div class="row align-items-center position-relative" style="z-index: 2;">
-                    <div class="col-lg-7 mb-3 mb-lg-0">
-                        <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-10 border border-white border-opacity-15 rounded-pill px-3 py-1 mb-3 small">
-                            <span class="d-inline-block rounded-circle bg-success" style="width: 8px; height: 8px; box-shadow: 0 0 8px #10b981;"></span>
-                            <span class="text-white-50 fw-semibold fs-7">System Operational &nbsp;•&nbsp; MySQL & Instant UPI Gateway Connected</span>
+                <div class="row align-items-center position-relative g-3" style="z-index: 2;">
+                    <div class="col-lg-7">
+                        <div class="d-inline-flex align-items-center gap-2 liquid-badge-green rounded-pill px-3 py-1 mb-1 small">
+                            <span class="d-inline-block rounded-circle bg-success" style="width: 7px; height: 7px; box-shadow: 0 0 8px #10b981;"></span>
+                            <span class="text-white fw-semibold fs-7">System Operational &nbsp;•&nbsp; Database & Payment Gateway Connected</span>
                         </div>
 
-                        <h1 class="fw-bold text-white font-display fs-2 mb-2">AutoLux Command Center</h1>
-                        <p class="text-white-50 mb-0 max-w-2xl">
-                            Real-time overview of car availability, customer reservations, driver verification approvals, and monthly revenue.
+                        <h1 class="fw-bold text-white font-display fs-3 mb-1">AutoLux Command Center</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl small">
+                            Real-time overview of vehicle fleet status, customer bookings, driver verifications, and monthly revenue.
                         </p>
                     </div>
 
                     <!-- Quick Command Action Shortcuts -->
-                    <div class="col-lg-5 text-lg-end">
+                    <div class="col-lg-5 text-lg-end mt-2 mt-lg-0">
                         <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
-                            <a href="{{ route('admin.cars.create') }}" class="btn rounded-pill px-3 py-2 fw-bold text-white shadow" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                            <a href="{{ route('admin.cars.create') }}" class="btn rounded-pill px-3.5 py-2 fw-bold text-white shadow-sm" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
                                 <i class="fas fa-plus-circle me-1"></i> Add Vehicle
                             </a>
                             <a href="{{ route('admin.documents.index') }}" class="btn btn-outline-light rounded-pill px-3 py-2 fw-medium position-relative">
@@ -42,7 +41,6 @@
                                     </span>
                                 @endif
                             </a>
-                            <a href="{{ route('admin.reports.index') }}" class="btn btn-outline-light rounded-pill px-3 py-2 fw-medium">
                                 <i class="fas fa-chart-line me-1"></i> Reports
                             </a>
                         </div>

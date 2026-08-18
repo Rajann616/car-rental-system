@@ -129,30 +129,31 @@
 <section class="dashboard-section pb-5">
     <div class="container-fluid px-0">
         
-        <!-- Liquid Glass Slim Header Banner -->
+        <!-- Unified Liquid Glass Header Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="py-3 px-4 rounded-4 text-white liquid-cars-hero shadow-sm">
-                <div class="hero-glow-1"></div>
-                <div class="hero-glow-2"></div>
+            <div class="liquid-glass-hero text-white">
+                <div class="liquid-glow-orb-1"></div>
+                <div class="liquid-glow-orb-2"></div>
 
-                <div class="row align-items-center position-relative g-2" style="z-index: 2;">
-                    <div class="col-md-8 col-lg-9">
+                <div class="row align-items-center position-relative g-3" style="z-index: 2;">
+                    <div class="col-lg-8">
                         <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            <h4 class="fw-bold text-white font-display mb-0">Find Your Ideal Self-Drive Car</h4>
-                            <span class="badge liquid-badge rounded-pill px-3 py-1 fs-7 fw-semibold">
-                                <i class="fas fa-sparkles text-warning me-1"></i> Gujarat Verified Fleet
+                            <span class="badge liquid-badge-gold rounded-pill px-3 py-1 fs-7 fw-semibold">
+                                <i class="fas fa-car me-1"></i> Self-Drive Fleet
+                            </span>
+                            <span class="badge liquid-badge-blue rounded-pill px-3 py-1 fs-7 fw-semibold">
+                                <i class="fas fa-location-dot me-1"></i> Gujarat Hub
                             </span>
                         </div>
-                        <p class="text-white-50 mb-0 small">
+                        <h1 class="fw-bold text-white font-display fs-3 mb-1">Find Your Ideal Self-Drive Car</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl small">
                             Explore Ahmedabad's finest self-drive vehicles. Filter by brand, fuel, transmission, or price.
                         </p>
                     </div>
-                    <div class="col-md-4 col-lg-3 text-md-end mt-2 mt-md-0">
-                        <div class="d-inline-flex align-items-center gap-2 liquid-badge px-3 py-2 rounded-pill shadow-xs">
-                            <i class="fas fa-circle-check text-success fs-5"></i>
-                            <div class="text-start">
-                                <div class="fw-bold fs-6 text-white leading-none">{{ $cars->total() }} Vehicles Available</div>
-                            </div>
+                    <div class="col-lg-4 text-lg-end mt-2 mt-lg-0">
+                        <div class="d-inline-flex align-items-center gap-2 liquid-badge-green px-3.5 py-2 rounded-pill shadow-xs">
+                            <i class="fas fa-circle-check fs-6 text-success"></i>
+                            <span class="fw-bold fs-7 text-white">{{ $cars->total() }} Vehicles Available</span>
                         </div>
                     </div>
                 </div>

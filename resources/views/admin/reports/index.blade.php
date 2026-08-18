@@ -7,21 +7,25 @@
 <div class="container-fluid px-0">
         
         <!-- Header Banner Card -->
+        <!-- Unified Liquid Glass Header Banner -->
         <div class="mb-4" data-aos="fade-down">
-            <div class="p-4 p-md-5 rounded-4 text-white shadow-lg position-relative overflow-hidden" 
-                 style="background: linear-gradient(135deg, #0a1628 0%, #153663 50%, #1a4a8a 100%); border: 1px solid rgba(255,255,255,0.1);">
-                <div class="row align-items-center position-relative" style="z-index: 2;">
+            <div class="liquid-glass-hero text-white">
+                <div class="liquid-glow-orb-1"></div>
+                <div class="liquid-glow-orb-2"></div>
+                <div class="row align-items-center position-relative g-3" style="z-index: 2;">
                     <div class="col-lg-8">
-                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-2 small fw-bold">
-                            <i class="fas fa-chart-pie me-1"></i> Business Intelligence
-                        </span>
-                        <h1 class="fw-bold text-white font-display fs-2 mb-2">Reports & Financial Analytics</h1>
-                        <p class="text-white-50 mb-0 max-w-2xl">
+                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                            <span class="badge liquid-badge-gold rounded-pill px-3 py-1 fs-7 fw-semibold">
+                                <i class="fas fa-chart-pie me-1"></i> Business Intelligence
+                            </span>
+                        </div>
+                        <h1 class="fw-bold text-white font-display fs-3 mb-1">Reports & Financial Analytics</h1>
+                        <p class="text-white-50 mb-0 max-w-2xl small">
                             Filter revenue stream audit logs, check trip performance metrics, and track completed payment transactions.
                         </p>
                     </div>
-                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light rounded-pill px-4 fw-medium">
+                    <div class="col-lg-4 text-lg-end mt-2 mt-lg-0">
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light rounded-pill px-4 py-2 fw-medium shadow-xs">
                             <i class="fas fa-arrow-left me-2"></i> Dashboard
                         </a>
                     </div>
@@ -29,8 +33,8 @@
             </div>
         </div>
 
-        <!-- Date Range Filter Bar -->
-        <div class="search-card mb-4 border-0 shadow-sm rounded-4 p-4 bg-white" data-aos="fade-up">
+        <!-- Date Range Filter Bar Liquid Card -->
+        <div class="liquid-card mb-4 border-0 shadow-sm p-4" data-aos="fade-up">
             <form action="{{ route('admin.reports.index') }}" method="GET">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-4">
