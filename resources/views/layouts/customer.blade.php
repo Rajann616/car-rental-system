@@ -162,7 +162,7 @@
                     <!-- Left: Mobile/Sidebar Toggle + Breadcrumb -->
                     <div class="d-flex align-items-center gap-3">
                         <!-- Mobile Drawer Trigger Button -->
-                        <button type="button" class="btn btn-light d-lg-none rounded-3 border-0" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebarDrawer" aria-controls="mobileSidebarDrawer">
+                        <button type="button" class="btn btn-light d-lg-none rounded-3 border-0" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebarDrawer" aria-controls="mobileSidebarDrawer" aria-label="Open navigation menu">
                             <i class="fas fa-bars fs-5 text-dark"></i>
                         </button>
 
@@ -181,7 +181,7 @@
                                 $dbNotifications = auth()->user()->notifications()->latest()->take(8)->get();
                             @endphp
                             <div class="dropdown">
-                                <button class="btn btn-light rounded-circle position-relative p-2" data-bs-toggle="dropdown" aria-expanded="false" id="notificationBell">
+                                <button class="btn btn-light rounded-circle position-relative p-2" data-bs-toggle="dropdown" aria-expanded="false" id="notificationBell" aria-label="View notifications">
                                     <i class="fas fa-bell fs-5 text-muted"></i>
                                     @if($unreadCount > 0)
                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
