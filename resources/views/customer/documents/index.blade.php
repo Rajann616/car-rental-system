@@ -243,9 +243,6 @@
                             <span class="badge glass-badge-gold rounded-pill px-3 py-1.5 fs-7 fw-bold">
                                 <i class="fas fa-shield-check me-1"></i> Identity Verification
                             </span>
-                            <span class="badge glass-badge-dark rounded-pill px-3 py-1.5 fs-7 fw-semibold">
-                                <i class="fas fa-lock text-info me-1"></i> 256-Bit SSL Encrypted
-                            </span>
                         </div>
                         <h1 class="fw-bold text-white font-display fs-3 mb-1">ID Verification & Documents</h1>
                         <p class="text-white-50 mb-0 max-w-2xl small">
@@ -377,7 +374,7 @@
                             <div class="text-info fs-5 mt-0.5"><i class="fas fa-user-lock"></i></div>
                             <div>
                                 <h6 class="fw-bold text-dark mb-0.5 fs-7">Privacy & Data Security</h6>
-                                <p class="text-muted mb-0 fs-7">Stored in 256-bit encrypted vault, strictly used for verification.</p>
+                                <p class="text-muted mb-0 fs-7">Strictly used for driver verification and identity safety.</p>
                             </div>
                         </div>
                     </div>
