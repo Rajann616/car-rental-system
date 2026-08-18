@@ -94,7 +94,16 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center py-5 text-muted">No vehicle maintenance records logged yet.</td>
+                                    <td colspan="7" class="text-center py-5">
+                                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-2" style="background: rgba(37, 99, 235, 0.08); color: #2563eb;">
+                                            <i class="fas fa-screwdriver-wrench fs-3"></i>
+                                        </div>
+                                        <h6 class="fw-bold text-dark mb-1">No Maintenance Records</h6>
+                                        <p class="small text-muted mb-3">All fleet vehicles are currently active and in good condition.</p>
+                                        <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 py-1.5 fw-semibold" data-bs-toggle="modal" data-bs-target="#newMaintenanceModal">
+                                            <i class="fas fa-plus me-1"></i> Log Maintenance
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -131,7 +140,11 @@
                             </div>
                         </div>
                     @empty
-                        <div class="text-center py-4 text-muted">No vehicle maintenance records logged yet.</div>
+                        <div class="text-center py-5 bg-light rounded-4">
+                            <i class="fas fa-screwdriver-wrench text-muted opacity-25 fs-2 mb-2 d-block"></i>
+                            <h6 class="fw-bold text-dark mb-1">No Maintenance Records</h6>
+                            <p class="small text-muted mb-0">All fleet vehicles are in service.</p>
+                        </div>
                     @endforelse
                 </div>
 

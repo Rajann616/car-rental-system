@@ -354,7 +354,7 @@
                                         <span class="text-uppercase text-primary small fw-bold tracking-wider">{{ $car->brand }}</span>
                                         <span class="small text-muted fw-semibold fs-7"><i class="fas fa-calendar me-1"></i>{{ $car->year }}</span>
                                     </div>
-                                    <h5 class="fw-bold mb-2 fs-6">
+                                    <h5 class="fw-bold mb-2 fs-6" style="min-height: 2.2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                         <a href="{{ route('cars.show', $car->id) }}" class="text-dark text-decoration-none transition-all hover-primary">
                                             {{ $car->model }}
                                         </a>

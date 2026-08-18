@@ -393,7 +393,7 @@
             
             <!-- Left: Current & Upcoming Rentals -->
             <div class="col-lg-8" data-aos="fade-up">
-                <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
+                <div class="liquid-card border-0 shadow-sm overflow-hidden">
                     <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between">
                         <h5 class="fw-bold mb-0 text-dark">
                             <i class="fas fa-key me-2 text-primary"></i> Current & Active Rentals
@@ -458,10 +458,10 @@
                                 </div>
                                 <h6 class="fw-bold text-dark mb-2">No Active Vehicle Rental</h6>
                                 <p class="text-muted mx-auto mb-3 small" style="max-width: 440px;">
-                                    You don't have any active rental currently checked out. Browse our verified Gujarat fleet for your next journey!
+                                    You don't have any cars currently checked out. Browse our luxury fleet in Gujarat and book your next trip.
                                 </p>
-                                <a href="{{ route('cars.index') }}" class="btn btn-primary btn-sm rounded-pill px-4 py-2 fw-bold shadow-sm" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                                    <i class="fas fa-search me-2"></i> Explore Available Cars
+                                <a href="{{ route('cars.index') }}" class="btn btn-primary rounded-pill btn-sm px-4 py-2 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                                    <i class="fas fa-search me-1"></i> Book a Car Now
                                 </a>
                             </div>
                         @endif
@@ -473,7 +473,7 @@
             <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
                 
                 <!-- Profile & Verification Card -->
-                <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden mb-4" id="profile" style="transition: all 0.3s ease;">
+                <div class="liquid-card border-0 shadow-sm overflow-hidden mb-4" id="profile">
                     <div class="card-header-custom bg-white p-4 border-bottom">
                         <h5 class="fw-bold mb-0 text-dark">
                             <i class="fas fa-shield-alt me-2 text-primary"></i> Verification & Profile
