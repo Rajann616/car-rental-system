@@ -235,12 +235,6 @@
                                 </p>
                             </div>
                         </div>
-
-                        <div class="d-flex flex-wrap gap-2 mt-3">
-                            <span class="liquid-badge rounded-pill px-3 py-1 fs-7 font-monospace">
-                                <i class="fas fa-bolt text-warning me-1"></i> Instant Self-Drive Pickup
-                            </span>
-                        </div>
                     </div>
 
                     <!-- Middle: Live Liquid Quick Stats -->
