@@ -102,23 +102,6 @@
                     </ul>
                 </div>
 
-                <div class="sidebar-group mt-4">
-                    <div class="sidebar-group-title sidebar-label">PORTAL SWITCH</div>
-                    <ul class="sidebar-nav">
-                        <li class="sidebar-item">
-                            <a href="{{ route('customer.dashboard') }}" class="sidebar-link text-muted" data-bs-toggle="tooltip" data-bs-placement="right" title="Customer View">
-                                <i class="fas fa-user-gear sidebar-icon"></i>
-                                <span class="sidebar-label">Customer Portal</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="{{ route('home') }}" class="sidebar-link text-muted" target="_blank" data-bs-toggle="tooltip" data-bs-placement="right" title="Public Site">
-                                <i class="fas fa-globe sidebar-icon"></i>
-                                <span class="sidebar-label">Live Site <i class="fas fa-arrow-up-right-from-square ms-1" style="font-size: 0.7rem;"></i></span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </div>
 
             <div class="sidebar-footer">
@@ -187,19 +170,6 @@
                         </li>
                     </ul>
 
-                    <div class="text-muted small fw-bold text-uppercase mb-2">PORTAL SWITCH</div>
-                    <ul class="nav flex-column gap-1">
-                        <li class="nav-item">
-                            <a href="{{ route('customer.dashboard') }}" class="nav-link rounded-3 py-2 px-3 text-muted">
-                                <i class="fas fa-user-gear me-2"></i> Customer Portal
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('home') }}" class="nav-link rounded-3 py-2 px-3 text-muted" target="_blank">
-                                <i class="fas fa-globe me-2"></i> Live Website
-                            </a>
-                        </li>
-                    </ul>
                 </div>
                 <div class="p-3 border-top bg-light">
                     <form method="POST" action="{{ route('logout') }}">
