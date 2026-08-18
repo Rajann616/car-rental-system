@@ -8,7 +8,7 @@
         <!-- Header -->
         <div class="dashboard-header mb-4" data-aos="fade-down">
             <h1 class="fw-bold mb-1">Confirm Reservation & Payment</h1>
-            <p class="text-muted">Review your itinerary and complete payment via Instant UPI / GPay.</p>
+            <p class="text-muted">Review your itinerary and complete payment via Razorpay Test Mode.</p>
         </div>
 
         <!-- Multi-Step Checkout Stepper -->
@@ -62,7 +62,7 @@
                         </div>
                         <div class="d-none d-md-block">
                             <span class="badge bg-light text-muted fw-bold rounded-pill mb-1" style="font-size: 0.65rem;">STEP 4</span>
-                            <div class="fw-bold text-muted small">Instant Payment</div>
+                            <div class="fw-bold text-muted small">Razorpay Payment</div>
                         </div>
                     </div>
 
@@ -146,7 +146,7 @@
                 </div>
             </div>
 
-            <!-- Right Column: Fare Breakdown & Instant UPI Payment -->
+            <!-- Right Column: Fare Breakdown & Razorpay Checkout -->
             <div class="col-lg-5" data-aos="fade-left">
                 <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden sticky-top" style="top: 100px;">
                     <div class="card-header-custom p-4 text-white" style="background: linear-gradient(135deg, #0a1628 0%, #1a4a8a 100%);">
@@ -173,27 +173,26 @@
                             <span class="fw-bold fs-4 text-primary">₹{{ number_format($totalAmount, 0) }}</span>
                         </div>
 
-                        <!-- Hidden Form for Payment Submission -->
+                        <!-- Hidden Form for Payment Callback Verification -->
                         <form action="{{ route('customer.bookings.store') }}" method="POST" id="upiPaymentForm">
                             @csrf
+                            <input type="hidden" name="booking_id" value="{{ $booking->id }}">
                             <input type="hidden" name="car_id" value="{{ $car->id }}">
                             <input type="hidden" name="pickup_date" value="{{ $pickupDate->toDateString() }}">
                             <input type="hidden" name="return_date" value="{{ $returnDate->toDateString() }}">
                             <input type="hidden" name="pickup_location" value="{{ $request->pickup_location }}">
-                            <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
-                            <input type="hidden" name="security_deposit" value="{{ $securityDeposit }}">
                             
                             <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
                             <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="{{ $razorpayOrder['id'] }}">
                             <input type="hidden" name="razorpay_signature" id="razorpay_signature">
 
-                            <button type="button" id="payBtn" onclick="startUPIPayment()" class="btn btn-success btn-lg w-100 rounded-pill fw-bold py-3 shadow-lg" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                                <i class="fas fa-lock me-2"></i> Proceed to Secure Payment
+                            <button type="button" id="payBtn" onclick="startRazorpayPayment()" class="btn btn-success btn-lg w-100 rounded-pill fw-bold py-3 shadow-lg" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                                <i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Razorpay — Proceed to Secure Payment
                             </button>
                         </form>
 
                         <div class="text-center mt-3">
-                            <small class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> 256-Bit Encrypted Secure Checkout</small>
+                            <small class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> Razorpay Standard Checkout (Test Mode)</small>
                         </div>
                     </div>
                 </div>
@@ -202,57 +201,38 @@
     </div>
 </section>
 
-<!-- Instant UPI JS Checkout Integration -->
-@if(!$isSandbox)
+<!-- Razorpay Standard Checkout JS SDK -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-@endif
 <script>
-    const IS_SANDBOX = @json($isSandbox);
-
-    function startUPIPayment() {
+    function startRazorpayPayment() {
         const payBtn = document.getElementById('payBtn');
         payBtn.disabled = true;
-        payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+        payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Opening Razorpay...';
 
-        if (IS_SANDBOX) {
-            // Sandbox / Demo mode — simulate payment directly
-            if (!confirm('🧪 Demo Mode: No real payment will be charged.\n\nClick OK to simulate a successful payment.')) {
-                payBtn.disabled = false;
-                payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Proceed to Secure Payment';
-                return;
-            }
-
-            const demoPaymentId = "pay_demo_" + Math.random().toString(36).substring(2, 16);
-            document.getElementById('razorpay_payment_id').value = demoPaymentId;
-            document.getElementById('razorpay_signature').value = '';
-            document.getElementById('upiPaymentForm').submit();
-            return;
-        }
-
-        // Production mode — open real Razorpay checkout
         const options = {
             "key": @json($razorpayKey),
-            "amount": "{{ $totalAmount * 100 }}",
+            "amount": "{{ (int) round($totalAmount * 100) }}",
             "currency": "INR",
             "name": "AutoLux Car Rental",
-            "description": "Rental Booking for {{ $car->brand }} {{ $car->model }}",
+            "description": "Rental Booking for {{ $car->brand }} {{ $car->model }} ({{ $booking->booking_number }})",
             "image": "https://cdn-icons-png.flaticon.com/512/3202/3202926.png",
-            "order_id": "{{ $razorpayOrder['id'] }}",
+            "order_id": @json($razorpayOrder['id']),
             "handler": function (response) {
+                payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Verifying Signature...';
                 document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
                 document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
                 document.getElementById('razorpay_signature').value = response.razorpay_signature || '';
                 document.getElementById('upiPaymentForm').submit();
             },
             "prefill": {
-                "name": "{{ auth()->user()->name }}",
-                "email": "{{ auth()->user()->email }}",
-                "contact": "{{ auth()->user()->phone ?? '' }}"
+                "name": @json(auth()->user()->name),
+                "email": @json(auth()->user()->email),
+                "contact": @json(auth()->user()->phone ?? '')
             },
             "modal": {
                 "ondismiss": function() {
                     payBtn.disabled = false;
-                    payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Proceed to Secure Payment';
+                    payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Razorpay';
                 }
             },
             "theme": {
@@ -263,16 +243,16 @@
         try {
             const rzp = new Razorpay(options);
             rzp.on('payment.failed', function (response) {
-                alert("Payment Failed: " + response.error.description);
+                alert("Payment Failed: " + (response.error.description || "Transaction was declined."));
                 payBtn.disabled = false;
-                payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Proceed to Secure Payment';
+                payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Razorpay';
             });
             rzp.open();
         } catch (e) {
             console.error('Razorpay initialization error:', e);
-            alert('Payment gateway could not be loaded. Please try again.');
+            alert('Razorpay Checkout failed to initialize. Please verify your connection.');
             payBtn.disabled = false;
-            payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Instant UPI / GPay';
+            payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Razorpay';
         }
     }
 </script>

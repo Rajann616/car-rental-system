@@ -60,7 +60,7 @@ class CustomerBookingTest extends TestCase
             // Missing pickup_date, return_date, total_amount, etc.
         ]);
 
-        $response->assertSessionHasErrors(['pickup_date', 'return_date', 'total_amount', 'security_deposit']);
+        $response->assertSessionHasErrors(['pickup_date', 'return_date', 'pickup_location', 'razorpay_payment_id', 'razorpay_order_id']);
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

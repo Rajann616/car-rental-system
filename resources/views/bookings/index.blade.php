@@ -102,6 +102,11 @@
                                         </td>
                                         <td>
                                             <div class="d-flex gap-2">
+                                                @if($booking->status === 'Pending')
+                                                    <a href="{{ route('customer.bookings.create', $booking->car_id) }}?pickup_date={{ $booking->pickup_date->toDateString() }}&return_date={{ $booking->return_date->toDateString() }}&pickup_location={{ urlencode($booking->pickup_location) }}" class="btn btn-sm btn-warning rounded-pill px-3 fw-bold" title="Complete Razorpay Payment">
+                                                        <i class="fas fa-credit-card me-1"></i> Pay Now
+                                                    </a>
+                                                @endif
                                                 <a href="{{ route('bookings.show', $booking->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3" title="View & Print Invoice">
                                                     <i class="fas fa-receipt me-1"></i> Invoice
                                                 </a>
@@ -160,6 +165,11 @@
                                         <div class="fw-bold text-dark fs-5">₹{{ number_format($booking->total_amount, 0) }}</div>
                                     </div>
                                     <div class="d-flex gap-2">
+                                        @if($booking->status === 'Pending')
+                                            <a href="{{ route('customer.bookings.create', $booking->car_id) }}?pickup_date={{ $booking->pickup_date->toDateString() }}&return_date={{ $booking->return_date->toDateString() }}&pickup_location={{ urlencode($booking->pickup_location) }}" class="btn btn-sm btn-warning rounded-pill px-3 fw-bold">
+                                                <i class="fas fa-credit-card me-1"></i> Pay Now
+                                            </a>
+                                        @endif
                                         <a href="{{ route('bookings.show', $booking->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
                                             <i class="fas fa-receipt me-1"></i> Invoice
                                         </a>

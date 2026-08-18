@@ -83,7 +83,7 @@ class AuthTest extends TestCase
             'password' => 'secret123',
         ]);
 
-        $response->assertRedirect('/cars');
+        $response->assertRedirect('/customer/dashboard');
         $this->assertAuthenticatedAs($user);
     }
 
