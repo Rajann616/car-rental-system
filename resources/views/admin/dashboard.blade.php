@@ -41,6 +41,7 @@
                                     </span>
                                 @endif
                             </a>
+                            <a href="{{ route('admin.reports.index') }}" class="btn btn-outline-light rounded-pill px-3 py-2 fw-medium">
                                 <i class="fas fa-chart-line me-1"></i> Reports
                             </a>
                         </div>
@@ -184,7 +185,7 @@
 
             <!-- Driver ID Verification Queue Widget -->
             <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
-                <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden h-100">
+                <div class="liquid-card border-0 shadow-sm overflow-hidden h-100">
                     <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between">
                         <h5 class="fw-bold mb-0 text-dark">
                             <i class="fas fa-id-card me-2 text-primary"></i> Driver Verification Approvals Queue
@@ -252,7 +253,7 @@
         <!-- Recent Customer Reservations Table -->
         <div class="row g-4 mb-4" data-aos="fade-up">
             <div class="col-12">
-                <div class="dashboard-card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
+                <div class="liquid-card border-0 shadow-sm overflow-hidden">
                     <div class="card-header-custom bg-white p-4 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
                         <h5 class="fw-bold mb-0 text-dark">
                             <i class="fas fa-list-check me-2 text-primary"></i> Live Reservations Command Stream

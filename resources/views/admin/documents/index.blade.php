@@ -127,7 +127,13 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-5 text-muted">No document verification records found.</td>
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-2" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                                            <i class="fas fa-check-circle fs-3"></i>
+                                        </div>
+                                        <h6 class="fw-bold text-dark mb-1">Queue is Clear</h6>
+                                        <p class="small text-muted mb-0">No documents are pending verification.</p>
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -166,7 +172,11 @@
                             </div>
                         </div>
                     @empty
-                        <div class="text-center py-4 text-muted">No document verification records found.</div>
+                        <div class="text-center py-5 bg-light rounded-4">
+                            <i class="fas fa-check-circle text-success fs-2 mb-2 d-block opacity-75"></i>
+                            <h6 class="fw-bold text-dark mb-1">Queue is Clear</h6>
+                            <p class="small text-muted mb-0">No documents require review.</p>
+                        </div>
                     @endforelse
                 </div>
 

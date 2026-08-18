@@ -116,7 +116,16 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center py-5 text-muted">No vehicles found in fleet.</td>
+                                    <td colspan="7" class="text-center py-5">
+                                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-2" style="background: rgba(37, 99, 235, 0.08); color: #2563eb;">
+                                            <i class="fas fa-car fs-3"></i>
+                                        </div>
+                                        <h6 class="fw-bold text-dark mb-1">No Vehicles Found</h6>
+                                        <p class="small text-muted mb-3">Add a new car or adjust your filter query.</p>
+                                        <a href="{{ route('admin.cars.create') }}" class="btn btn-sm btn-primary rounded-pill px-3 py-1.5 fw-semibold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                                            <i class="fas fa-plus me-1"></i> Add Vehicle
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -166,7 +175,11 @@
                             </div>
                         </div>
                     @empty
-                        <div class="text-center py-4 text-muted">No vehicles found in fleet.</div>
+                        <div class="text-center py-5 bg-light rounded-4">
+                            <i class="fas fa-car text-muted opacity-25 fs-2 mb-2 d-block"></i>
+                            <h6 class="fw-bold text-dark mb-1">No Vehicles Found</h6>
+                            <p class="small text-muted mb-0">Try changing your search keywords or filter.</p>
+                        </div>
                     @endforelse
                 </div>
 
