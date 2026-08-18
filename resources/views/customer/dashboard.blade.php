@@ -263,7 +263,7 @@
                             <div class="col-6">
                                 <div class="liquid-badge p-3 rounded-4 h-100 d-flex flex-column justify-content-between">
                                     <div class="d-flex align-items-center justify-content-between text-white-50 fs-7 mb-1">
-                                        <span>ID Status</span>
+                                        <span>License Status</span>
                                         <i class="fas fa-id-card text-info"></i>
                                     </div>
                                     <div class="fw-bold fs-5 text-white">
@@ -281,16 +281,14 @@
                     <div class="col-xl-3 col-lg-3 text-lg-end">
                         <div class="d-flex flex-column gap-2">
                             <a href="{{ route('cars.index') }}" class="btn btn-liquid-primary btn-md rounded-pill px-3 py-2 fw-bold d-inline-flex align-items-center justify-content-center gap-2">
-                                <i class="fas fa-car-side fs-6"></i> Book New Vehicle
+                                <i class="fas fa-car-side fs-6"></i> Book a Car
                             </a>
                             <a href="{{ route('customer.documents.index') }}" class="btn btn-liquid-glass btn-md rounded-pill px-3 py-2 fw-medium d-inline-flex align-items-center justify-content-center gap-2">
                                 <i class="fas fa-id-card fs-6"></i> My Documents
                             </a>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </div>
 
@@ -300,8 +298,8 @@
                 <form action="{{ route('cars.index') }}" method="GET" class="flex-grow-1">
                     <div class="input-group">
                         <span class="input-group-text bg-light border-0 ps-3 text-muted"><i class="fas fa-search"></i></span>
-                        <input type="text" name="search" class="form-control bg-light border-0 py-2 fs-6" placeholder="Quick search vehicles by model, brand (e.g. Swift, Fortuner, Thar)...">
-                        <button type="submit" class="btn btn-primary rounded-end-3 px-4 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">Search Fleet</button>
+                        <input type="text" name="search" class="form-control bg-light border-0 py-2 fs-6" placeholder="Search cars by brand or model (e.g. Swift, Fortuner, Thar)...">
+                        <button type="submit" class="btn btn-primary rounded-end-3 px-4 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">Search Cars</button>
                     </div>
                 </form>
 
@@ -347,7 +345,7 @@
                     <div class="stat-value font-display fs-2 fw-bold text-dark">{{ $totalBookings }}</div>
                     <div class="small mt-2">
                         <a href="{{ route('customer.bookings.index') }}" class="text-primary fw-semibold text-decoration-none">
-                            View full history <i class="fas fa-arrow-right ms-1"></i>
+                            View all bookings <i class="fas fa-arrow-right ms-1"></i>
                         </a>
                     </div>
                 </div>
@@ -356,14 +354,14 @@
             <div class="col-xl-3 col-sm-6" data-aos="fade-up" data-aos-delay="300">
                 <div class="stat-card-modern p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <span class="stat-label text-muted fw-bold small text-uppercase tracking-wider">Total Amount Spent</span>
+                        <span class="stat-label text-muted fw-bold small text-uppercase tracking-wider">Total Spent</span>
                         <div class="stat-icon-wrapper" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
                             <i class="fas fa-wallet"></i>
                         </div>
                     </div>
                     <div class="stat-value font-display fs-2 fw-bold text-dark">₹{{ number_format($totalSpent, 0) }}</div>
                     <div class="small mt-2">
-                        <span class="text-success fw-medium"><i class="fas fa-shield-alt me-1"></i> Instant UPI / Razorpay Secured</span>
+                        <span class="text-success fw-medium"><i class="fas fa-shield-alt me-1"></i> Razorpay & UPI Secured</span>
                     </div>
                 </div>
             </div>
