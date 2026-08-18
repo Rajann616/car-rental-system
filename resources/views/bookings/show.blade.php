@@ -52,18 +52,12 @@
 </style>
 <section class="dashboard-section pb-5">
     <div class="container">
-        <!-- Print & WhatsApp Share Action Header -->
+        <!-- Print Action Header -->
         <div class="d-flex justify-content-between align-items-center mb-4 d-print-none flex-wrap gap-2" data-aos="fade-down">
             <a href="{{ route('customer.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
                 <i class="fas fa-arrow-left me-1"></i> Dashboard
             </a>
-            <div class="d-flex gap-2">
-                @php
-                    $waText = urlencode("Hello AutoLux! Here is my booking invoice #{$booking->booking_number} for {$booking->car->brand} {$booking->car->model}: " . route('bookings.show', $booking->id));
-                @endphp
-                <a href="https://wa.me/?text={{ $waText }}" target="_blank" class="btn btn-success btn-sm rounded-pill px-3 fw-bold">
-                    <i class="fab fa-whatsapp me-1 fs-6"></i> Share on WhatsApp
-                </a>
+            <div>
                 <button onclick="window.print()" class="btn btn-primary btn-sm rounded-pill px-3 fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
                     <i class="fas fa-file-pdf me-1"></i> Print / Download Tax Invoice (PDF)
                 </button>
