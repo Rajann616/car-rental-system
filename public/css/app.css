@@ -2145,33 +2145,75 @@ body.has-hero #mainNavbar:not(.scrolled) .btn-nav-outline {
 
 /* Top Header Bar */
 .customer-top-header, .admin-top-header {
-    height: 64px;
+    height: 60px;
     z-index: 1030;
     background: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(10, 22, 40, 0.05);
 }
 
 .customer-content-area, .admin-content-area {
     flex: 1;
     min-width: 0;
     background: var(--soft-bg);
-    padding: 24px 28px 40px;
+    padding: 18px 24px 32px;
 }
 
-@media (max-width: 991.98px) {
+/* Multi-Viewport Responsive Adjustments (1440px, 1280px, 1024px, 768px, 430px, 390px, 375px) */
+@media (min-width: 1440px) {
     .customer-content-area, .admin-content-area {
-        padding: 20px;
+        padding: 20px 32px 40px;
     }
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 1279.98px) {
     .customer-content-area, .admin-content-area {
-        padding: 16px;
+        padding: 18px 20px 30px;
+    }
+}
+
+@media (max-width: 1023.98px) {
+    .customer-content-area, .admin-content-area {
+        padding: 16px 18px 28px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .customer-content-area, .admin-content-area {
+        padding: 14px 14px 24px;
+    }
+    
+    .desktop-table-container {
+        display: none !important;
+    }
+
+    .mobile-card-container, .mobile-booking-cards {
+        display: flex !important;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .mobile-card-container, .mobile-booking-cards {
+        display: none !important;
+    }
+}
+
+@media (max-width: 430px) {
+    .customer-top-header, .admin-top-header {
+        height: 56px;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+    
+    .dashboard-header h1, .dashboard-header h2 {
+        font-size: 1.35rem !important;
     }
 }
 
 /* Mobile Sidebar Drawer Adjustments */
 .mobile-sidebar-drawer {
-    width: 280px;
+    width: 270px;
 }
 
 /* Mobile Viewports (<= 991.98px) */
@@ -2191,33 +2233,14 @@ body.has-hero #mainNavbar:not(.scrolled) .btn-nav-outline {
     border: 2px dashed var(--primary-300);
     background: rgba(37, 99, 235, 0.02);
     border-radius: var(--card-radius);
-    padding: 2.5rem 1.5rem;
+    padding: 2rem 1.25rem;
     text-align: center;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
 }
 
 .upload-dropzone:hover {
     border-color: var(--action-blue);
     background: rgba(37, 99, 235, 0.05);
-}
-
-/* Mobile Booking Card View (<= 767.98px) */
-@media (max-width: 767.98px) {
-    .desktop-table-container {
-        display: none !important;
-    }
-
-    .mobile-booking-cards {
-        display: flex !important;
-        flex-direction: column;
-        gap: 1rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .mobile-booking-cards {
-        display: none !important;
-    }
 }
 

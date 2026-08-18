@@ -335,7 +335,7 @@
 
                             <div class="mt-4 pt-2 border-top text-end">
                                 <button type="submit" id="submitBtn" class="btn btn-liquid-primary rounded-pill px-4 py-2.5 fw-bold shadow-sm">
-                                    <i class="fas fa-paper-plane me-2"></i> Submit for Verification
+                                    <i class="fas fa-paper-plane me-2"></i> Upload & Verify
                                 </button>
                             </div>
                         </form>

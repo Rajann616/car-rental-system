@@ -49,7 +49,7 @@
 
             <div class="sidebar-content">
                 <div class="sidebar-group">
-                    <div class="sidebar-group-title sidebar-label">MAIN CONTROL</div>
+                    <div class="sidebar-group-title sidebar-label">MAIN</div>
                     <ul class="sidebar-nav">
                         <li class="sidebar-item">
                             <a href="{{ route('admin.dashboard') }}" class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
@@ -57,29 +57,35 @@
                                 <span class="sidebar-label">Dashboard</span>
                             </a>
                         </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-group mt-3">
+                    <div class="sidebar-group-title sidebar-label">OPERATIONS</div>
+                    <ul class="sidebar-nav">
                         <li class="sidebar-item">
-                            <a href="{{ route('admin.cars.index') }}" class="sidebar-link {{ request()->routeIs('admin.cars.*') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Vehicle Fleet">
+                            <a href="{{ route('admin.cars.index') }}" class="sidebar-link {{ request()->routeIs('admin.cars.*') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Vehicles">
                                 <i class="fas fa-car sidebar-icon"></i>
-                                <span class="sidebar-label">Vehicle Fleet</span>
+                                <span class="sidebar-label">Vehicles</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="{{ route('admin.bookings.index') }}" class="sidebar-link {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Reservations">
+                            <a href="{{ route('admin.bookings.index') }}" class="sidebar-link {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Bookings">
                                 <i class="fas fa-clipboard-list sidebar-icon"></i>
-                                <span class="sidebar-label">Reservations</span>
+                                <span class="sidebar-label">Bookings</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="{{ route('admin.documents.index') }}" class="sidebar-link {{ request()->routeIs('admin.documents.*') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Driver Verifications">
+                            <a href="{{ route('admin.documents.index') }}" class="sidebar-link {{ request()->routeIs('admin.documents.*') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Pending Verifications">
                                 <i class="fas fa-id-card sidebar-icon"></i>
-                                <span class="sidebar-label">ID Verifications</span>
+                                <span class="sidebar-label">Pending Verifications</span>
                             </a>
                         </li>
                     </ul>
                 </div>
 
-                <div class="sidebar-group mt-4">
-                    <div class="sidebar-group-title sidebar-label">OPERATIONS & AUDIT</div>
+                <div class="sidebar-group mt-3">
+                    <div class="sidebar-group-title sidebar-label">MANAGEMENT</div>
                     <ul class="sidebar-nav">
                         <li class="sidebar-item">
                             <a href="{{ route('admin.maintenance.index') }}" class="sidebar-link {{ request()->routeIs('admin.maintenance.*') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Maintenance Log">
@@ -88,7 +94,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="{{ route('admin.reports.index') }}" class="sidebar-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports & Financials">
+                            <a href="{{ route('admin.reports.index') }}" class="sidebar-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports & Analytics">
                                 <i class="fas fa-chart-line sidebar-icon"></i>
                                 <span class="sidebar-label">Reports & Analytics</span>
                             </a>
@@ -139,32 +145,36 @@
             </div>
             <div class="offcanvas-body p-0 d-flex flex-column justify-content-between">
                 <div class="p-3">
-                    <div class="text-muted small fw-bold text-uppercase mb-2">MAIN CONTROL</div>
-                    <ul class="nav flex-column gap-1 mb-4">
+                    <div class="text-muted small fw-bold text-uppercase mb-2">MAIN</div>
+                    <ul class="nav flex-column gap-1 mb-3">
                         <li class="nav-item">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link rounded-3 py-2 px-3 {{ request()->routeIs('admin.dashboard') ? 'bg-primary text-white font-weight-bold' : 'text-dark' }}">
                                 <i class="fas fa-chart-pie me-2"></i> Dashboard
                             </a>
                         </li>
+                    </ul>
+
+                    <div class="text-muted small fw-bold text-uppercase mb-2">OPERATIONS</div>
+                    <ul class="nav flex-column gap-1 mb-3">
                         <li class="nav-item">
                             <a href="{{ route('admin.cars.index') }}" class="nav-link rounded-3 py-2 px-3 {{ request()->routeIs('admin.cars.*') ? 'bg-primary text-white font-weight-bold' : 'text-dark' }}">
-                                <i class="fas fa-car me-2"></i> Vehicle Fleet
+                                <i class="fas fa-car me-2"></i> Vehicles
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('admin.bookings.index') }}" class="nav-link rounded-3 py-2 px-3 {{ request()->routeIs('admin.bookings.*') ? 'bg-primary text-white font-weight-bold' : 'text-dark' }}">
-                                <i class="fas fa-clipboard-list me-2"></i> Reservations
+                                <i class="fas fa-clipboard-list me-2"></i> Bookings
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('admin.documents.index') }}" class="nav-link rounded-3 py-2 px-3 {{ request()->routeIs('admin.documents.*') ? 'bg-primary text-white font-weight-bold' : 'text-dark' }}">
-                                <i class="fas fa-id-card me-2"></i> ID Verifications
+                                <i class="fas fa-id-card me-2"></i> Pending Verifications
                             </a>
                         </li>
                     </ul>
 
-                    <div class="text-muted small fw-bold text-uppercase mb-2">OPERATIONS</div>
-                    <ul class="nav flex-column gap-1 mb-4">
+                    <div class="text-muted small fw-bold text-uppercase mb-2">MANAGEMENT</div>
+                    <ul class="nav flex-column gap-1 mb-3">
                         <li class="nav-item">
                             <a href="{{ route('admin.maintenance.index') }}" class="nav-link rounded-3 py-2 px-3 {{ request()->routeIs('admin.maintenance.*') ? 'bg-primary text-white font-weight-bold' : 'text-dark' }}">
                                 <i class="fas fa-screwdriver-wrench me-2"></i> Maintenance Log
