@@ -17,11 +17,6 @@
 
                 <div class="row align-items-center position-relative" style="z-index: 2;">
                     <div class="col-lg-7 mb-3 mb-lg-0">
-                        <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-10 border border-white border-opacity-15 rounded-pill px-3 py-1 mb-3 small">
-                            <span class="d-inline-block rounded-circle bg-success" style="width: 8px; height: 8px; box-shadow: 0 0 8px #10b981;"></span>
-                            <span class="text-white-50 fw-semibold fs-7">System Operational &nbsp;•&nbsp; MySQL & Instant UPI Gateway Connected</span>
-                        </div>
-
                         <h1 class="fw-bold text-white font-display fs-2 mb-2">AutoLux Command Center</h1>
                         <p class="text-white-50 mb-0 max-w-2xl">
                             Real-time overview of car availability, customer reservations, driver verification approvals, and monthly revenue.
