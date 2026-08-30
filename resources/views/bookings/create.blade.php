@@ -14,14 +14,31 @@
         background: transparent;
         border: none;
     }
-    .step-pill {
-        cursor: pointer;
+    .step-btn {
+        border: none;
+        font-size: 0.88rem;
+        transition: all 0.25s ease;
+        background: transparent;
+    }
+    .step-btn.active {
+        background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+    }
+    .step-btn.active span {
+        color: #ffffff !important;
+    }
+    .step-num {
+        width: 22px;
+        height: 22px;
+        font-size: 0.72rem;
+        font-weight: 700;
         transition: all 0.25s ease;
     }
     .preset-pill {
         cursor: pointer;
         transition: all 0.2s ease;
-        font-size: 0.8rem;
+        font-size: 0.82rem;
     }
     .preset-pill:hover, .preset-pill.active {
         background: linear-gradient(135deg, #ff7a00, #ea580c) !important;
@@ -29,12 +46,6 @@
         border-color: transparent !important;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35);
-    }
-    .stepper-circle {
-        width: 44px;
-        height: 44px;
-        font-size: 1.1rem;
-        transition: all 0.3s ease;
     }
     .search-suggestion-item {
         cursor: pointer;
@@ -76,37 +87,18 @@
             </div>
         </div>
 
-        <!-- 2-Step Modern Booking Stepper Bar -->
-        <div class="mb-4" data-aos="fade-down">
-            <div class="card border-0 shadow-sm rounded-4 bg-white p-3 p-md-4">
-                <div class="d-flex align-items-center justify-content-center position-relative">
-                    
-                    <!-- Step 1 Indicator -->
-                    <div class="d-flex align-items-center gap-3 step-pill" id="stepperTab1" onclick="goToStep(1)">
-                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm flex-shrink-0 stepper-circle" id="stepperCircle1">
-                            <i class="fas fa-map-marker-alt" id="stepperIcon1"></i>
-                        </div>
-                        <div>
-                            <span class="badge bg-primary text-white fw-bold rounded-pill mb-1" style="font-size: 0.65rem;" id="stepperBadge1">STEP 1 • ACTIVE</span>
-                            <div class="fw-bold text-dark small">1. Choose Delivery Address</div>
-                        </div>
-                    </div>
-
-                    <!-- Connecting Line -->
-                    <div class="flex-grow-1 mx-3 mx-md-4 border-top border-2 border-primary-subtle" style="max-width: 140px;" id="stepperDivider"></div>
-
-                    <!-- Step 2 Indicator -->
-                    <div class="d-flex align-items-center gap-3 opacity-60 step-pill" id="stepperTab2" onclick="validateAndGoToStep(2)">
-                        <div class="rounded-circle bg-light border text-muted d-flex align-items-center justify-content-center flex-shrink-0 stepper-circle" id="stepperCircle2">
-                            <i class="fas fa-credit-card" id="stepperIcon2"></i>
-                        </div>
-                        <div>
-                            <span class="badge bg-light text-muted fw-bold rounded-pill mb-1" style="font-size: 0.65rem;" id="stepperBadge2">STEP 2</span>
-                            <div class="fw-bold text-muted small">2. Review & Payment</div>
-                        </div>
-                    </div>
-
-                </div>
+        <!-- Sleek Segmented Stepper Bar -->
+        <div class="d-flex justify-content-center mb-4" data-aos="fade-down">
+            <div class="d-inline-flex align-items-center bg-white p-1.5 rounded-pill shadow-sm border">
+                <button type="button" class="btn rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2 step-btn active" id="stepperTab1" onclick="goToStep(1)">
+                    <span class="step-num rounded-circle d-flex align-items-center justify-content-center bg-primary text-white" id="stepNum1">1</span>
+                    <span>1. Delivery Address</span>
+                </button>
+                <div class="step-arrow text-muted px-2" style="font-size: 0.75rem;"><i class="fas fa-chevron-right text-muted opacity-50"></i></div>
+                <button type="button" class="btn rounded-pill px-4 py-2 fw-semibold d-flex align-items-center gap-2 step-btn text-muted" id="stepperTab2" onclick="validateAndGoToStep(2)">
+                    <span class="step-num rounded-circle d-flex align-items-center justify-content-center bg-light text-muted" id="stepNum2">2</span>
+                    <span>2. Review & Payment</span>
+                </button>
             </div>
         </div>
 
@@ -682,48 +674,34 @@
         const step1 = document.getElementById('step1Container');
         const step2 = document.getElementById('step2Container');
 
-        const circle1 = document.getElementById('stepperCircle1');
-        const badge1 = document.getElementById('stepperBadge1');
-        const icon1 = document.getElementById('stepperIcon1');
         const tab1 = document.getElementById('stepperTab1');
-
-        const circle2 = document.getElementById('stepperCircle2');
-        const badge2 = document.getElementById('stepperBadge2');
         const tab2 = document.getElementById('stepperTab2');
+        const num1 = document.getElementById('stepNum1');
+        const num2 = document.getElementById('stepNum2');
 
         if (step === 1) {
             step1.style.display = 'block';
             step2.style.display = 'none';
 
-            circle1.className = 'rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm flex-shrink-0 stepper-circle';
-            badge1.className = 'badge bg-primary text-white fw-bold rounded-pill mb-1';
-            badge1.innerText = 'STEP 1 • ACTIVE';
-            icon1.className = 'fas fa-map-marker-alt';
-            tab1.classList.remove('opacity-60');
-
-            circle2.className = 'rounded-circle bg-light border text-muted d-flex align-items-center justify-content-center flex-shrink-0 stepper-circle';
-            badge2.className = 'badge bg-light text-muted fw-bold rounded-pill mb-1';
-            badge2.innerText = 'STEP 2';
-            tab2.classList.add('opacity-60');
+            tab1.className = 'btn rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2 step-btn active';
+            tab2.className = 'btn rounded-pill px-4 py-2 fw-semibold d-flex align-items-center gap-2 step-btn text-muted';
+            num1.innerHTML = '1';
+            num1.className = 'step-num rounded-circle d-flex align-items-center justify-content-center bg-primary text-white';
+            num2.className = 'step-num rounded-circle d-flex align-items-center justify-content-center bg-light text-muted';
 
             if (checkoutMap) setTimeout(() => { checkoutMap.invalidateSize(); }, 200);
         } else if (step === 2) {
             step1.style.display = 'none';
             step2.style.display = 'block';
 
-            circle1.className = 'rounded-circle bg-success text-white d-flex align-items-center justify-content-center shadow-sm flex-shrink-0 stepper-circle';
-            badge1.className = 'badge bg-success bg-opacity-10 text-success fw-bold rounded-pill mb-1';
-            badge1.innerText = 'STEP 1 • COMPLETED';
-            icon1.className = 'fas fa-check';
-            tab1.classList.add('opacity-60');
-
-            circle2.className = 'rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm flex-shrink-0 stepper-circle';
-            badge2.className = 'badge bg-primary text-white fw-bold rounded-pill mb-1';
-            badge2.innerText = 'STEP 2 • ACTIVE';
-            tab2.classList.remove('opacity-60');
+            tab1.className = 'btn rounded-pill px-4 py-2 fw-semibold d-flex align-items-center gap-2 step-btn text-muted';
+            tab2.className = 'btn rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2 step-btn active';
+            num1.innerHTML = '<i class="fas fa-check" style="font-size: 0.65rem;"></i>';
+            num1.className = 'step-num rounded-circle d-flex align-items-center justify-content-center bg-success text-white';
+            num2.className = 'step-num rounded-circle d-flex align-items-center justify-content-center bg-primary text-white';
         }
 
-        window.scrollTo({ top: 120, behavior: 'smooth' });
+        window.scrollTo({ top: 80, behavior: 'smooth' });
     }
 
     /* Razorpay Payment Handler */
