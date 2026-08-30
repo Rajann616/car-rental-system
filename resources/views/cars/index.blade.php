@@ -340,11 +340,6 @@
                                     <span class="glass-badge-dark position-absolute top-0 end-0 m-3 rounded-pill px-3 py-1 small font-weight-bold">
                                         <i class="fas fa-gas-pump me-1 text-warning"></i> {{ $car->fuel_type }}
                                     </span>
-
-                                    <!-- Bottom Verified Tag -->
-                                    <span class="glass-badge-light position-absolute bottom-0 start-0 m-3 rounded-pill px-2.5 py-0.5 fs-7 fw-semibold">
-                                        <i class="fas fa-shield-check text-success me-1"></i> Verified
-                                    </span>
                                 </a>
 
                                 <!-- Body Info -->
@@ -376,7 +371,7 @@
                                             <small class="text-muted fs-7">per day</small>
                                         </div>
                                         <a href="{{ route('cars.show', $car->id) }}" class="btn btn-liquid-primary rounded-pill px-3 py-2 fw-semibold fs-7">
-                                            View & Reserve <i class="fas fa-arrow-right ms-1"></i>
+                                            Rent Now <i class="fas fa-arrow-right ms-1"></i>
                                         </a>
                                     </div>
                                 </div>
