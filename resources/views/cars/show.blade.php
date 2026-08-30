@@ -31,6 +31,22 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
+    /* Vibrant Liquid Primary Button Theme */
+    .btn-liquid-primary {
+        background: linear-gradient(135deg, #ff7a00, #ea580c) !important;
+        color: #ffffff !important;
+        border: none !important;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-shadow: 0 4px 15px rgba(234, 88, 12, 0.35) !important;
+        font-weight: 700 !important;
+    }
+    .btn-liquid-primary:hover {
+        background: linear-gradient(135deg, #ea580c, #c2410c) !important;
+        color: #ffffff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(234, 88, 12, 0.45) !important;
+    }
+
     /* Leaflet Map Modern Styling */
     #pickupMap {
         height: 220px;
@@ -341,17 +357,6 @@
                                             </small>
                                         </div>
 
-                                        <!-- Doorstep Delivery Info Box -->
-                                        <div class="p-3 bg-light rounded-3 mb-3 border">
-                                            <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <div class="small fw-bold text-dark"><i class="fas fa-truck-fast text-primary me-1"></i> Doorstep Delivery</div>
-                                                <span class="badge bg-success-subtle text-success">FREE</span>
-                                            </div>
-                                            <small class="text-muted d-block fs-7">
-                                                Select your exact doorstep address or airport hub on the next step.
-                                            </small>
-                                        </div>
-
                                         <!-- Fare Summary Breakdown Box with Duration Discounts -->
                                         <div class="p-3 bg-light rounded-3 mb-4 border" id="fareBox">
                                             <div class="d-flex justify-content-between small text-muted mb-1">
@@ -377,8 +382,8 @@
                                             </div>
                                         </div>
 
-                                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold shadow-sm py-3">
-                                            Proceed to Choose Address & Book <i class="fas fa-arrow-right ms-2"></i>
+                                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold shadow-md py-3 text-white" style="font-size: 1.05rem;">
+                                            Continue to Book <i class="fas fa-arrow-right ms-2"></i>
                                         </button>
 
                                         <!-- 4 High-Trust Micro-Badges -->
@@ -540,17 +545,6 @@
                         <input type="hidden" name="pickup_date" id="mobile_pickup_date" value="{{ date('Y-m-d') }}">
                         <input type="hidden" name="return_date" id="mobile_return_date" value="{{ date('Y-m-d', strtotime('+1 day')) }}">
 
-                        <!-- Doorstep Delivery Info Notice -->
-                        <div class="p-3 bg-light rounded-3 mb-3 border">
-                            <div class="d-flex align-items-center justify-content-between mb-1">
-                                <div class="small fw-bold text-dark"><i class="fas fa-truck-fast text-primary me-1"></i> Doorstep Vehicle Delivery</div>
-                                <span class="badge bg-success-subtle text-success">FREE</span>
-                            </div>
-                            <small class="text-muted d-block fs-7">
-                                You will select your doorstep location or airport hub on the next step.
-                            </small>
-                        </div>
-
                         <!-- Dynamic Live Price Breakdown -->
                         <div class="p-3 bg-light rounded-3 mb-3 border">
                             <div class="d-flex justify-content-between small text-muted mb-1">
@@ -576,8 +570,8 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold mb-3 shadow-sm py-3">
-                            Proceed to Choose Address & Book <i class="fas fa-arrow-right ms-2"></i>
+                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold mb-3 shadow-md py-3 text-white" style="font-size: 1.05rem;">
+                            Continue to Book <i class="fas fa-arrow-right ms-2"></i>
                         </button>
                     </form>
                 @endif

@@ -42,6 +42,21 @@
     .search-suggestion-item:hover {
         background-color: #f8fafc;
     }
+    /* Liquid Primary Button Theme */
+    .btn-liquid-primary {
+        background: linear-gradient(135deg, #ff7a00, #ea580c) !important;
+        color: #ffffff !important;
+        border: none !important;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-shadow: 0 4px 15px rgba(234, 88, 12, 0.35) !important;
+        font-weight: 700 !important;
+    }
+    .btn-liquid-primary:hover {
+        background: linear-gradient(135deg, #ea580c, #c2410c) !important;
+        color: #ffffff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(234, 88, 12, 0.45) !important;
+    }
 </style>
 @endpush
 
