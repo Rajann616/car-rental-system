@@ -397,33 +397,12 @@
                                 <button type="button" id="payBtn" onclick="startRazorpayPayment()" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold py-3 shadow-lg text-white" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none; font-size: 1.08rem; letter-spacing: 0.2px;">
                                     <i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} & Confirm Booking
                                 </button>
-                                <div class="text-center mt-2">
+                                <div class="text-center mt-3">
                                     <small class="text-muted fs-7"><i class="fas fa-shield-halved text-success me-1"></i> Proceed to Secure Payment</small>
                                 </div>
                             </form>
 
-                            <!-- Accepted Payment Options Badges -->
-                            <div class="mt-4 pt-3 border-top text-center">
-                                <label class="small text-muted text-uppercase fw-bold d-block mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">Accepted Payment Methods</label>
-                                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap mb-3">
-                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fas fa-mobile-screen-button text-primary me-1"></i> UPI (GPay/PhonePe)</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fab fa-cc-visa text-primary me-1"></i> Visa</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fab fa-cc-mastercard text-danger me-1"></i> Mastercard</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fas fa-credit-card text-success me-1"></i> RuPay</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fas fa-building-columns text-info me-1"></i> NetBanking</span>
-                                </div>
-                            </div>
-
-                            <!-- Trust & Security Micro Badges -->
-                            <div class="p-3 bg-light rounded-4 border d-flex align-items-center justify-content-around text-muted small flex-wrap gap-2 text-center">
-                                <div><i class="fas fa-shield-check text-success me-1 fs-6"></i> <strong>100% Safe</strong> & Secure</div>
-                                <div class="vr d-none d-md-block opacity-25"></div>
-                                <div><i class="fas fa-lock text-primary me-1 fs-6"></i> <strong>256-Bit SSL</strong> Encrypted</div>
-                                <div class="vr d-none d-md-block opacity-25"></div>
-                                <div><i class="fas fa-rotate-left text-info me-1 fs-6"></i> <strong>Refundable</strong> ₹2,000 Deposit</div>
-                            </div>
-
-                            <div class="text-center mt-3">
+                            <div class="text-center mt-3 pt-2 border-top">
                                 <button type="button" class="btn btn-link btn-sm text-decoration-none text-muted" onclick="goToStep(1)">
                                     <i class="fas fa-arrow-left me-1"></i> Edit Delivery Address
                                 </button>
