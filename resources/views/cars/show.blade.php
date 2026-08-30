@@ -3,6 +3,91 @@
 @section('title', $car->display_name . ' — AutoLux')
 @section('page_title', $car->display_name)
 
+@php
+    $galleryList = [];
+    if ($car->thumbnail) {
+        $galleryList[] = [
+            'src' => asset('storage/' . $car->thumbnail),
+            'title' => $car->brand . ' ' . $car->model . ' - Hero Profile',
+            'category' => 'exterior'
+        ];
+    }
+    foreach ($car->images as $idx => $img) {
+        $galleryList[] = [
+            'src' => asset('storage/' . $img->image_path),
+            'title' => $car->brand . ' ' . $car->model . ' - View ' . ($idx + 2),
+            'category' => ($idx % 2 === 0) ? 'exterior' : 'interior'
+        ];
+    }
+    $bookedRanges = $car->bookings->map(function($b) {
+        return [
+            'from' => \Carbon\Carbon::parse($b->pickup_date)->format('Y-m-d'),
+            'to' => \Carbon\Carbon::parse($b->return_date)->format('Y-m-d')
+        ];
+    })->values();
+@endphp
+
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+    /* Modern Flatpickr Custom Theme */
+    .flatpickr-calendar {
+        border-radius: 16px !important;
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18) !important;
+        border: 1px solid rgba(226, 232, 240, 0.9) !important;
+        font-family: inherit !important;
+        overflow: hidden;
+    }
+    .flatpickr-months {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: #ffffff;
+        padding-top: 6px;
+    }
+    .flatpickr-month, .flatpickr-current-month, .flatpickr-current-month .cur-month {
+        color: #ffffff !important;
+        font-weight: 700;
+    }
+    .flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+    }
+    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+        background: linear-gradient(135deg, #ff7a00, #ea580c) !important;
+        border-color: transparent !important;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(234, 88, 12, 0.4);
+    }
+    .flatpickr-day.inRange {
+        background: rgba(255, 122, 0, 0.14) !important;
+        border-color: transparent !important;
+    }
+    .flatpickr-day.flatpickr-disabled, .flatpickr-day.flatpickr-disabled:hover {
+        color: #94a3b8 !important;
+        background: repeating-linear-gradient(45deg, #f8fafc, #f8fafc 5px, #f1f5f9 5px, #f1f5f9 10px) !important;
+        text-decoration: line-through;
+        opacity: 0.65;
+    }
+    /* Full-Screen Lightbox Animations */
+    .lightbox-thumb {
+        opacity: 0.55;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+    }
+    .lightbox-thumb:hover, .lightbox-thumb.active {
+        opacity: 1;
+        border-color: #ff7a00 !important;
+        transform: scale(1.08);
+    }
+    .hover-lift {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12) !important;
+    }
+</style>
+@endpush
+
 @section('content')
 <section class="dashboard-section pb-5">
     <div class="container">
@@ -16,8 +101,8 @@
         <div class="row g-4 mb-5">
             <!-- Left Column: Gallery & Details -->
             <div class="col-lg-7" data-aos="fade-right">
-                <!-- Vehicle Hero Image -->
-                <div class="car-detail-hero mb-3 position-relative rounded-4 overflow-hidden shadow-lg bg-light d-flex align-items-center justify-content-center" style="height: 380px;">
+                <!-- Vehicle Hero Image with Zoom & Lightbox Trigger -->
+                <div class="car-detail-hero mb-3 position-relative rounded-4 overflow-hidden shadow-lg bg-light d-flex align-items-center justify-content-center cursor-pointer" style="height: 390px; cursor: zoom-in;" onclick="openLightbox(0)" title="Click to view full screen">
                     @if($car->thumbnail)
                         <img src="{{ asset('storage/' . $car->thumbnail) }}" id="mainCarImage" alt="{{ $car->display_name }}" class="w-100 h-100 object-fit-cover">
                     @else
@@ -29,16 +114,16 @@
                     <span class="position-absolute top-0 start-0 m-3 badge-status {{ strtolower($car->status) }} fs-6">
                         {{ $car->status }}
                     </span>
+                    <button type="button" class="btn btn-dark bg-opacity-75 text-white position-absolute bottom-0 end-0 m-3 rounded-pill px-3 py-1.5 fs-7 fw-semibold shadow-sm border-0" onclick="event.stopPropagation(); openLightbox(0)">
+                        <i class="fas fa-images me-1 text-warning"></i> View Gallery ({{ count($galleryList) }})
+                    </button>
                 </div>
 
                 <!-- Image Gallery Thumbnails -->
-                @if($car->images->count() > 0)
+                @if(count($galleryList) > 1)
                     <div class="d-flex gap-2 mb-4 overflow-auto pb-2">
-                        @if($car->thumbnail)
-                            <img src="{{ asset('storage/' . $car->thumbnail) }}" onclick="document.getElementById('mainCarImage').src = this.src" class="rounded-3 border border-2 border-primary cursor-pointer object-fit-cover" style="width: 80px; height: 60px;">
-                        @endif
-                        @foreach($car->images as $image)
-                            <img src="{{ asset('storage/' . $image->image_path) }}" onclick="document.getElementById('mainCarImage').src = this.src" class="rounded-3 border border-2 border-light cursor-pointer object-fit-cover" style="width: 80px; height: 60px;">
+                        @foreach($galleryList as $gIdx => $gItem)
+                            <img src="{{ $gItem['src'] }}" onclick="openLightbox({{ $gIdx }})" class="rounded-3 border border-2 {{ $gIdx === 0 ? 'border-primary' : 'border-light' }} cursor-pointer object-fit-cover shadow-xs hover-lift" style="width: 86px; height: 62px;" title="View photo {{ $gIdx + 1 }} in lightbox">
                         @endforeach
                     </div>
                 @endif
@@ -257,41 +342,92 @@
                                             </div>
                                         </div>
 
-                                        <div class="row g-2 mb-3">
-                                            <div class="col-6">
-                                                <label class="form-label small fw-bold text-muted">Delivery Date</label>
-                                                <input type="date" name="pickup_date" class="form-control border-2" min="{{ date('Y-m-d') }}" required id="pickup_date" onchange="calculateTotal()">
+                                        <!-- Interactive Rental Dates Range Picker -->
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-bold text-muted text-uppercase mb-1">
+                                                <i class="fas fa-calendar-alt text-primary me-1"></i> Rental Period (Pickup & Return)
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-2 border-end-0 text-primary"><i class="fas fa-calendar-days"></i></span>
+                                                <input type="text" id="desktop_date_range_picker" class="form-control border-2 border-start-0 fw-semibold bg-white cursor-pointer py-2" placeholder="Select Pickup & Return Dates" readonly required>
                                             </div>
-                                            <div class="col-6">
-                                                <label class="form-label small fw-bold text-muted">Return Date</label>
-                                                <input type="date" name="return_date" class="form-control border-2" min="{{ date('Y-m-d', strtotime('+1 day')) }}" required id="return_date" onchange="calculateTotal()">
-                                            </div>
+                                            <input type="hidden" name="pickup_date" id="pickup_date" value="{{ date('Y-m-d') }}">
+                                            <input type="hidden" name="return_date" id="return_date" value="{{ date('Y-m-d', strtotime('+1 day')) }}">
+                                            <small class="text-muted d-block mt-1 fs-7">
+                                                <i class="fas fa-circle-info text-primary me-1"></i> Crossed-out dates are already booked for this car.
+                                            </small>
                                         </div>
 
-                                        <!-- Fare Summary Breakdown Box -->
-                                        <div class="p-3 bg-light rounded-3 mb-4" id="fareBox">
+                                        <!-- Fare Summary Breakdown Box with Duration Discounts -->
+                                        <div class="p-3 bg-light rounded-3 mb-4 border" id="fareBox">
                                             <div class="d-flex justify-content-between small text-muted mb-1">
-                                                <span>Rental Charge</span>
+                                                <span>Rental Base Rate</span>
                                                 <span id="rentalCharge">₹{{ number_format($car->rental_price_per_day, 0) }} × <span id="daysCount">1</span> day</span>
                                             </div>
+                                            <div class="d-flex justify-content-between small text-success mb-1" id="discountRow" style="display: none;">
+                                                <span><i class="fas fa-tag me-1"></i> Duration Discount (<span id="discountPercent">0%</span>)</span>
+                                                <span id="discountAmount" class="fw-bold">-₹0</span>
+                                            </div>
                                             <div class="d-flex justify-content-between small text-muted mb-1">
-                                                <span>Delivery Charge</span>
-                                                <span class="text-success fw-semibold">Free</span>
+                                                <span>Doorstep Vehicle Delivery</span>
+                                                <span class="badge bg-success-subtle text-success">FREE</span>
                                             </div>
                                             <div class="d-flex justify-content-between small text-muted mb-2">
                                                 <span>Security Deposit</span>
-                                                <span>₹2,000</span>
+                                                <span>₹2,000 <small class="text-success fw-medium">(100% Refundable)</small></span>
                                             </div>
                                             <hr class="my-2">
                                             <div class="d-flex justify-content-between fw-bold text-dark fs-6">
                                                 <span>Estimated Total</span>
-                                                <span class="text-primary" id="grandTotal">₹{{ number_format($car->rental_price_per_day + 2000, 0) }}</span>
+                                                <span class="text-primary fs-5" id="grandTotal">₹{{ number_format($car->rental_price_per_day + 2000, 0) }}</span>
                                             </div>
                                         </div>
 
-                                        <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold shadow-sm">
                                             Proceed to Booking <i class="fas fa-arrow-right ms-2"></i>
                                         </button>
+
+                                        <!-- 4 High-Trust Micro-Badges -->
+                                        <div class="mt-4 pt-3 border-top">
+                                            <div class="row g-2 text-muted">
+                                                <div class="col-6">
+                                                    <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-white border shadow-2xs">
+                                                        <i class="fas fa-rotate-left text-success fs-5"></i>
+                                                        <div>
+                                                            <strong class="d-block text-dark" style="font-size: 0.75rem;">Free Cancellation</strong>
+                                                            <span class="text-muted" style="font-size: 0.68rem;">100% refund up to 24h</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-white border shadow-2xs">
+                                                        <i class="fas fa-shield-check text-primary fs-5"></i>
+                                                        <div>
+                                                            <strong class="d-block text-dark" style="font-size: 0.75rem;">Zero Hidden Charges</strong>
+                                                            <span class="text-muted" style="font-size: 0.68rem;">Taxes & insurance incl.</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-white border shadow-2xs">
+                                                        <i class="fas fa-bolt text-warning fs-5"></i>
+                                                        <div>
+                                                            <strong class="d-block text-dark" style="font-size: 0.75rem;">Instant Booking</strong>
+                                                            <span class="text-muted" style="font-size: 0.68rem;">Guaranteed reservation</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-white border shadow-2xs">
+                                                        <i class="fas fa-lock text-info fs-5"></i>
+                                                        <div>
+                                                            <strong class="d-block text-dark" style="font-size: 0.75rem;">Deposit Safe</strong>
+                                                            <span class="text-muted" style="font-size: 0.68rem;">Fast 48h auto-refund</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 @else
                                     <div class="text-center py-4">
@@ -316,20 +452,37 @@
                                         <input type="text" name="pickup_location" class="form-control border-2" placeholder="Enter your delivery address" required>
                                     </div>
 
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-6">
-                                            <label class="form-label small fw-bold text-muted">Delivery Date</label>
-                                            <input type="date" name="pickup_date" class="form-control border-2" min="{{ date('Y-m-d') }}" required id="pickup_date" onchange="calculateTotal()">
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-muted">Rental Dates</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white border-2 border-end-0 text-primary"><i class="fas fa-calendar-days"></i></span>
+                                            <input type="text" id="guest_date_range_picker" class="form-control border-2 border-start-0 fw-semibold bg-white cursor-pointer" placeholder="Select Pickup & Return Dates" readonly required>
                                         </div>
-                                        <div class="col-6">
-                                            <label class="form-label small fw-bold text-muted">Return Date</label>
-                                            <input type="date" name="return_date" class="form-control border-2" min="{{ date('Y-m-d', strtotime('+1 day')) }}" required id="return_date" onchange="calculateTotal()">
-                                        </div>
+                                        <input type="hidden" name="pickup_date" id="guest_pickup_date" value="{{ date('Y-m-d') }}">
+                                        <input type="hidden" name="return_date" id="guest_return_date" value="{{ date('Y-m-d', strtotime('+1 day')) }}">
                                     </div>
 
-                                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
+                                    <a href="{{ route('login') }}" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold shadow-sm">
                                         Sign In to Book <i class="fas fa-lock ms-2"></i>
                                     </a>
+
+                                    <!-- 4 High-Trust Micro-Badges -->
+                                    <div class="mt-4 pt-3 border-top">
+                                        <div class="row g-2 text-muted">
+                                            <div class="col-6">
+                                                <div class="p-2 rounded-3 bg-white border text-center">
+                                                    <i class="fas fa-rotate-left text-success mb-1"></i>
+                                                    <div class="fw-bold text-dark" style="font-size: 0.72rem;">Free Cancellation</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="p-2 rounded-3 bg-white border text-center">
+                                                    <i class="fas fa-shield-check text-primary mb-1"></i>
+                                                    <div class="fw-bold text-dark" style="font-size: 0.72rem;">Zero Hidden Charges</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             @else
                                 <div class="text-center py-4">
@@ -341,6 +494,155 @@
                         </div>
                     @endauth
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Sticky Booking Bar (Docked Bottom on Viewports < 768px) -->
+    <div class="d-md-none fixed-bottom bg-white border-top shadow-lg px-3 py-2.5 d-flex justify-content-between align-items-center" style="z-index: 1040;">
+        <div>
+            <div class="fw-bold text-dark fs-5 mb-0">
+                ₹{{ number_format($car->rental_price_per_day, 0) }} <small class="text-muted fs-7 fw-normal">/day</small>
+            </div>
+            <div class="text-muted" style="font-size: 0.73rem;">
+                <i class="fas fa-shield-check text-success me-1"></i> Verified Self-Drive Fleet
+            </div>
+        </div>
+        @if($car->status === 'Available')
+            <button type="button" class="btn btn-liquid-primary rounded-pill px-4 py-2 fw-bold shadow-sm" data-bs-toggle="offcanvas" data-bs-target="#mobileBookingDrawer">
+                Rent Now <i class="fas fa-arrow-right ms-1"></i>
+            </button>
+        @else
+            <button class="btn btn-secondary rounded-pill px-3 py-2 fw-semibold fs-7" disabled>
+                {{ $car->status }}
+            </button>
+        @endif
+    </div>
+
+    <!-- Mobile Offcanvas Booking Drawer -->
+    <div class="offcanvas offcanvas-bottom rounded-top-4 border-0 shadow-2xl" tabindex="-1" id="mobileBookingDrawer" style="height: 88vh; z-index: 1050;" aria-labelledby="mobileBookingDrawerLabel">
+        <div class="offcanvas-header border-bottom py-3 px-4 bg-light">
+            <div>
+                <h6 class="offcanvas-title fw-bold text-dark mb-0" id="mobileBookingDrawerLabel">
+                    <i class="fas fa-calendar-check me-2 text-primary"></i> Reserve {{ $car->brand }} {{ $car->model }}
+                </h6>
+                <small class="text-muted">₹{{ number_format($car->rental_price_per_day, 0) }} / day · Free Doorstep Delivery</small>
+            </div>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-4">
+            @auth
+                @if(auth()->user()->isCustomer())
+                    <form action="{{ route('customer.bookings.create', $car->id) }}" method="GET" id="mobileBookingForm" onsubmit="prepareMobilePickupLocation(event)">
+                        <input type="hidden" name="pickup_location" id="mobile_final_pickup_location">
+                        
+                        <!-- Date Selector with Range Picker -->
+                        <label class="form-label small fw-bold text-muted text-uppercase mb-2">Trip Rental Dates</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-white border-2 border-end-0 text-primary"><i class="fas fa-calendar-days"></i></span>
+                            <input type="text" id="mobile_date_range_picker" class="form-control border-2 border-start-0 fw-semibold" placeholder="Select Pickup & Return Dates" required readonly>
+                        </div>
+                        <input type="hidden" name="pickup_date" id="mobile_pickup_date" value="{{ date('Y-m-d') }}">
+                        <input type="hidden" name="return_date" id="mobile_return_date" value="{{ date('Y-m-d', strtotime('+1 day')) }}">
+
+                        <!-- Delivery Address Input -->
+                        <label class="form-label small fw-bold text-muted text-uppercase mb-2">Delivery Address in Ahmedabad</label>
+                        <div class="mb-3">
+                            <textarea class="form-control mb-2 border-2" id="mobile_pickup_address" rows="2" placeholder="House / Flat No, Street, Area, Landmark *" required></textarea>
+                            <div class="row g-2">
+                                <div class="col-7">
+                                    <input type="text" id="mobile_pickup_city" class="form-control form-control-sm border-2" placeholder="City" value="Ahmedabad" required>
+                                </div>
+                                <div class="col-5">
+                                    <input type="text" id="mobile_pickup_pincode" class="form-control form-control-sm border-2" placeholder="Pincode *" pattern="[0-9]{6}" maxlength="6" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Live Price Breakdown -->
+                        <div class="p-3 bg-light rounded-3 mb-3 border">
+                            <div class="d-flex justify-content-between small text-muted mb-1">
+                                <span>Base Rate (<span id="mobileDaysCount">1</span> Day)</span>
+                                <span id="mobileBaseRent">₹{{ number_format($car->rental_price_per_day, 0) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between small text-success mb-1" id="mobileDiscountRow" style="display: none;">
+                                <span>Duration Discount</span>
+                                <span id="mobileDiscountAmount" class="fw-bold">-₹0</span>
+                            </div>
+                            <div class="d-flex justify-content-between small text-muted mb-1">
+                                <span>Security Deposit (100% Refundable)</span>
+                                <span>₹2,000</span>
+                            </div>
+                            <div class="d-flex justify-content-between small text-muted mb-2">
+                                <span>Doorstep Delivery</span>
+                                <span class="badge bg-success-subtle text-success">FREE</span>
+                            </div>
+                            <hr class="my-2">
+                            <div class="d-flex justify-content-between fw-bold text-dark fs-6">
+                                <span>Estimated Total</span>
+                                <span class="text-primary fs-5" id="mobileGrandTotal">₹{{ number_format($car->rental_price_per_day + 2000, 0) }}</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold mb-3 shadow-sm">
+                            Proceed to Booking <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </form>
+                @endif
+            @else
+                <div class="text-center py-4">
+                    <i class="fas fa-user-lock text-primary display-4 mb-3"></i>
+                    <h5 class="fw-bold">Sign In to Reserve</h5>
+                    <p class="text-muted small mb-4">Please log in to your AutoLux account to verify driving credentials and book this vehicle.</p>
+                    <a href="{{ route('login') }}" class="btn btn-liquid-primary rounded-pill px-4 py-2 fw-bold w-100 shadow-sm">
+                        Sign In to Book <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            @endauth
+        </div>
+    </div>
+
+    <!-- Full-Screen Interactive Gallery Lightbox Modal -->
+    <div class="modal fade" id="carGalleryLightbox" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-dark text-white border-0">
+                <div class="modal-header border-0 pb-0 d-flex justify-content-between align-items-center px-4 pt-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <h5 class="modal-title fw-bold text-white mb-0 font-display">{{ $car->brand }} {{ $car->model }}</h5>
+                        <span class="badge bg-white bg-opacity-10 text-white rounded-pill px-3 py-1" id="lightboxCounter">1 / {{ count($galleryList) }}</span>
+                    </div>
+                    <!-- Category Tabs -->
+                    <div class="d-none d-md-flex gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-3 active lightbox-tab" onclick="filterLightbox('all', this)">All ({{ count($galleryList) }})</button>
+                        <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-3 lightbox-tab" onclick="filterLightbox('exterior', this)">Exterior</button>
+                        <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-3 lightbox-tab" onclick="filterLightbox('interior', this)">Cabin & Specs</button>
+                    </div>
+                    <button type="button" class="btn btn-outline-light btn-sm rounded-circle d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close" style="width: 40px; height: 40px;">
+                        <i class="fas fa-times fs-5"></i>
+                    </button>
+                </div>
+                <div class="modal-body d-flex flex-column align-items-center justify-content-center position-relative p-0 overflow-hidden">
+                    <!-- Prev Button -->
+                    <button type="button" class="btn btn-dark bg-opacity-60 text-white position-absolute start-0 top-50 translate-middle-y ms-3 rounded-circle shadow-lg z-3 border-0 d-flex align-items-center justify-content-center" onclick="prevLightboxImage()" style="width: 52px; height: 52px;" aria-label="Previous image">
+                        <i class="fas fa-chevron-left fs-5"></i>
+                    </button>
+                    <!-- Main Lightbox Image -->
+                    <div class="w-100 h-100 d-flex align-items-center justify-content-center p-3">
+                        <img id="lightboxMainImage" src="{{ count($galleryList) > 0 ? $galleryList[0]['src'] : '' }}" alt="{{ $car->display_name }}" class="img-fluid rounded-3 shadow-2xl object-fit-contain" style="max-height: 75vh; max-width: 90vw; transition: opacity 0.2s ease;">
+                    </div>
+                    <!-- Next Button -->
+                    <button type="button" class="btn btn-dark bg-opacity-60 text-white position-absolute end-0 top-50 translate-middle-y me-3 rounded-circle shadow-lg z-3 border-0 d-flex align-items-center justify-content-center" onclick="nextLightboxImage()" style="width: 52px; height: 52px;" aria-label="Next image">
+                        <i class="fas fa-chevron-right fs-5"></i>
+                    </button>
+                </div>
+                <!-- Bottom Thumbnail Strip -->
+                <div class="modal-footer border-0 justify-content-center py-3 bg-black bg-opacity-50 overflow-x-auto">
+                    <div class="d-flex gap-2" id="lightboxThumbStrip">
+                        @foreach($galleryList as $idx => $item)
+                            <img src="{{ $item['src'] }}" data-category="{{ $item['category'] }}" onclick="setLightboxIndex({{ $idx }})" class="rounded-2 border border-2 {{ $idx === 0 ? 'border-primary' : 'border-transparent' }} lightbox-thumb" style="width: 72px; height: 50px; object-fit: cover;">
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -526,28 +828,168 @@
         document.getElementById('final_pickup_location').value = finalLocation;
     }
 
-    function calculateTotal() {
+    function prepareMobilePickupLocation(e) {
+        const addr = document.getElementById('mobile_pickup_address') ? document.getElementById('mobile_pickup_address').value.trim() : '';
+        const city = document.getElementById('mobile_pickup_city') ? document.getElementById('mobile_pickup_city').value.trim() : '';
+        const pincode = document.getElementById('mobile_pickup_pincode') ? document.getElementById('mobile_pickup_pincode').value.trim() : '';
+
+        let finalLocation = addr;
+        if (city) finalLocation += ', ' + city;
+        if (pincode) finalLocation += ' - ' + pincode;
+
+        document.getElementById('mobile_final_pickup_location').value = finalLocation;
+    }
+
+    /* Dynamic Pricing Engine with Duration Discounts */
+    function calculateTotal(startDate, endDate) {
         const rate = {{ $car->rental_price_per_day }};
-        const pDateInput = document.getElementById('pickup_date');
-        const rDateInput = document.getElementById('return_date');
+        const pInput = document.getElementById('pickup_date');
+        const rInput = document.getElementById('return_date');
 
-        if (!pDateInput || !rDateInput) return;
-
-        const pDate = new Date(pDateInput.value);
-        const rDate = new Date(rDateInput.value);
+        let pDate = startDate || (pInput ? new Date(pInput.value) : null);
+        let rDate = endDate || (rInput ? new Date(rInput.value) : null);
 
         if (pDate && rDate && rDate > pDate) {
             const diffTime = Math.abs(rDate - pDate);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            const total = (diffDays * rate) + 2000;
+            const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+            
+            // Duration Discount: 10% for 7+ days, 5% for 3+ days
+            let discountRate = 0;
+            if (diffDays >= 7) {
+                discountRate = 0.10;
+            } else if (diffDays >= 3) {
+                discountRate = 0.05;
+            }
 
+            const baseRental = diffDays * rate;
+            const discountAmount = Math.round(baseRental * discountRate);
+            const total = (baseRental - discountAmount) + 2000;
+
+            // Update Desktop Card
             const daysCountEl = document.getElementById('daysCount');
+            const rentalChargeEl = document.getElementById('rentalCharge');
             const grandTotalEl = document.getElementById('grandTotal');
+            const discountRow = document.getElementById('discountRow');
+            const discountAmountEl = document.getElementById('discountAmount');
+            const discountPercentEl = document.getElementById('discountPercent');
 
             if (daysCountEl) daysCountEl.innerText = diffDays;
+            if (rentalChargeEl) rentalChargeEl.innerText = '₹' + baseRental.toLocaleString('en-IN') + ' × ' + diffDays + ' ' + (diffDays === 1 ? 'day' : 'days');
+            
+            if (discountRow) {
+                if (discountAmount > 0) {
+                    discountRow.style.display = 'flex';
+                    if (discountPercentEl) discountPercentEl.innerText = (discountRate * 100) + '% OFF';
+                    if (discountAmountEl) discountAmountEl.innerText = '-₹' + discountAmount.toLocaleString('en-IN');
+                } else {
+                    discountRow.style.display = 'none';
+                }
+            }
+
             if (grandTotalEl) grandTotalEl.innerText = '₹' + total.toLocaleString('en-IN');
+
+            // Update Mobile Drawer
+            const mDays = document.getElementById('mobileDaysCount');
+            const mBase = document.getElementById('mobileBaseRent');
+            const mDiscRow = document.getElementById('mobileDiscountRow');
+            const mDisc = document.getElementById('mobileDiscountAmount');
+            const mTotal = document.getElementById('mobileGrandTotal');
+
+            if (mDays) mDays.innerText = diffDays;
+            if (mBase) mBase.innerText = '₹' + baseRental.toLocaleString('en-IN');
+            if (mDiscRow) {
+                if (discountAmount > 0) {
+                    mDiscRow.style.display = 'flex';
+                    if (mDisc) mDisc.innerText = '-₹' + discountAmount.toLocaleString('en-IN') + ' (' + (discountRate * 100) + '%)';
+                } else {
+                    mDiscRow.style.display = 'none';
+                }
+            }
+            if (mTotal) mTotal.innerText = '₹' + total.toLocaleString('en-IN');
         }
     }
+
+    /* Full-Screen Gallery Lightbox Controller */
+    const galleryItems = @json($galleryList);
+    let currentLightboxIdx = 0;
+    let activeFilter = 'all';
+
+    function openLightbox(index) {
+        setLightboxIndex(index || 0);
+        const modalEl = document.getElementById('carGalleryLightbox');
+        if (modalEl && typeof bootstrap !== 'undefined') {
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        }
+    }
+
+    function setLightboxIndex(index) {
+        if (!galleryItems || galleryItems.length === 0) return;
+        if (index < 0) index = galleryItems.length - 1;
+        if (index >= galleryItems.length) index = 0;
+
+        currentLightboxIdx = index;
+        const item = galleryItems[index];
+
+        const mainImg = document.getElementById('lightboxMainImage');
+        const counter = document.getElementById('lightboxCounter');
+
+        if (mainImg) {
+            mainImg.style.opacity = '0.3';
+            setTimeout(() => {
+                mainImg.src = item.src;
+                mainImg.style.opacity = '1';
+            }, 100);
+        }
+
+        if (counter) {
+            counter.innerText = (index + 1) + ' / ' + galleryItems.length;
+        }
+
+        // Highlight active thumbnail in strip
+        document.querySelectorAll('#lightboxThumbStrip .lightbox-thumb').forEach((thumb, idx) => {
+            if (idx === index) {
+                thumb.classList.add('border-primary');
+                thumb.classList.remove('border-transparent');
+                thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } else {
+                thumb.classList.remove('border-primary');
+                thumb.classList.add('border-transparent');
+            }
+        });
+    }
+
+    function nextLightboxImage() {
+        setLightboxIndex(currentLightboxIdx + 1);
+    }
+
+    function prevLightboxImage() {
+        setLightboxIndex(currentLightboxIdx - 1);
+    }
+
+    function filterLightbox(category, tabBtn) {
+        activeFilter = category;
+        document.querySelectorAll('.lightbox-tab').forEach(b => b.classList.remove('active'));
+        if (tabBtn) tabBtn.classList.add('active');
+
+        document.querySelectorAll('#lightboxThumbStrip .lightbox-thumb').forEach(thumb => {
+            const thumbCat = thumb.getAttribute('data-category');
+            if (category === 'all' || thumbCat === category) {
+                thumb.style.display = 'block';
+            } else {
+                thumb.style.display = 'none';
+            }
+        });
+    }
+
+    // Keyboard navigation in lightbox
+    document.addEventListener('keydown', function(e) {
+        const modalEl = document.getElementById('carGalleryLightbox');
+        if (modalEl && modalEl.classList.contains('show')) {
+            if (e.key === 'ArrowRight') nextLightboxImage();
+            if (e.key === 'ArrowLeft') prevLightboxImage();
+        }
+    });
 
     // Wait for Google Maps API to be ready
     function waitForGoogleMaps() {
@@ -560,7 +1002,69 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         waitForGoogleMaps();
+
+        // Initialize Flatpickr with Booked-Dates Disabling & Range Mode
+        const bookedRanges = @json($bookedRanges);
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const flatpickrConfig = {
+            mode: 'range',
+            minDate: 'today',
+            dateFormat: 'Y-m-d',
+            altInput: true,
+            altFormat: 'M j, Y',
+            disable: bookedRanges,
+            defaultDate: [new Date(), tomorrow],
+            locale: {
+                rangeSeparator: '  ⟶  '
+            },
+            onChange: function(selectedDates) {
+                if (selectedDates.length === 2) {
+                    const start = selectedDates[0];
+                    const end = selectedDates[1];
+                    const startStr = start.toISOString().split('T')[0];
+                    const endStr = end.toISOString().split('T')[0];
+
+                    // Sync desktop hidden inputs
+                    const pInput = document.getElementById('pickup_date');
+                    const rInput = document.getElementById('return_date');
+                    if (pInput) pInput.value = startStr;
+                    if (rInput) rInput.value = endStr;
+
+                    // Sync mobile hidden inputs
+                    const mpInput = document.getElementById('mobile_pickup_date');
+                    const mrInput = document.getElementById('mobile_return_date');
+                    if (mpInput) mpInput.value = startStr;
+                    if (mrInput) mrInput.value = endStr;
+
+                    calculateTotal(start, end);
+                }
+            }
+        };
+
+        // Desktop Date Range Picker
+        const desktopPickerEl = document.getElementById('desktop_date_range_picker');
+        if (desktopPickerEl && typeof flatpickr !== 'undefined') {
+            flatpickr(desktopPickerEl, flatpickrConfig);
+        }
+
+        // Guest Date Range Picker
+        const guestPickerEl = document.getElementById('guest_date_range_picker');
+        if (guestPickerEl && typeof flatpickr !== 'undefined') {
+            flatpickr(guestPickerEl, flatpickrConfig);
+        }
+
+        // Mobile Date Range Picker
+        const mobilePickerEl = document.getElementById('mobile_date_range_picker');
+        if (mobilePickerEl && typeof flatpickr !== 'undefined') {
+            flatpickr(mobilePickerEl, flatpickrConfig);
+        }
+
+        // Initial total calculation
+        calculateTotal(new Date(), tomorrow);
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endpush
 @endsection

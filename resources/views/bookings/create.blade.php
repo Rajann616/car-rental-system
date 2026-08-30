@@ -191,6 +191,14 @@
                             </button>
                         </form>
 
+                        <div class="mt-4 p-3 bg-light rounded-4 border d-flex align-items-center justify-content-around text-muted small flex-wrap gap-2 text-center">
+                            <div><i class="fas fa-lock text-success me-1 fs-6"></i> <strong>256-Bit SSL</strong> Encrypted</div>
+                            <div class="vr d-none d-md-block opacity-25"></div>
+                            <div><i class="fas fa-shield-check text-primary me-1 fs-6"></i> <strong>Razorpay</strong> Certified Gateway</div>
+                            <div class="vr d-none d-md-block opacity-25"></div>
+                            <div><i class="fas fa-rotate-left text-info me-1 fs-6"></i> <strong>₹2,000 Deposit</strong> 100% Refundable</div>
+                        </div>
+
                         <div class="text-center mt-3">
                             <small class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> Razorpay Standard Checkout (Test Mode)</small>
                         </div>

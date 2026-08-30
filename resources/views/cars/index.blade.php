@@ -249,25 +249,33 @@
                 
                 <!-- Quick Filter Chips (1-Tap Fast Selection) -->
                 <div class="d-flex align-items-center gap-2 mb-3 overflow-x-auto pb-1 scrollbar-none">
-                    <a href="{{ route('cars.index', request()->except(['fuel_type', 'transmission', 'page'])) }}" 
-                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap {{ !request('fuel_type') && !request('transmission') ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
+                    <a href="{{ route('cars.index', request()->except(['fuel_type', 'transmission', 'max_price', 'keyword', 'page'])) }}" 
+                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap filter-chip-btn {{ !request('fuel_type') && !request('transmission') && !request('max_price') && !request('keyword') ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
                         <i class="fas fa-layer-group me-1"></i> All Fleet
                     </a>
-                    <a href="{{ route('cars.index', array_merge(request()->except(['fuel_type', 'page']), ['fuel_type' => 'Petrol'])) }}" 
-                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap {{ request('fuel_type') == 'Petrol' ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
-                        ⛽ Petrol Fleet
-                    </a>
-                    <a href="{{ route('cars.index', array_merge(request()->except(['fuel_type', 'page']), ['fuel_type' => 'Diesel'])) }}" 
-                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap {{ request('fuel_type') == 'Diesel' ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
-                        🛢️ Diesel Power
-                    </a>
-                    <a href="{{ route('cars.index', array_merge(request()->except(['fuel_type', 'page']), ['fuel_type' => 'Electric'])) }}" 
-                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap {{ request('fuel_type') == 'Electric' ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
-                        ⚡ EV / Electric
+                    <a href="{{ route('cars.index', array_merge(request()->except(['max_price', 'page']), ['max_price' => 3000])) }}" 
+                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap filter-chip-btn {{ request('max_price') == 3000 ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
+                        🏷️ Under ₹3,000
                     </a>
                     <a href="{{ route('cars.index', array_merge(request()->except(['transmission', 'page']), ['transmission' => 'Automatic'])) }}" 
-                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap {{ request('transmission') == 'Automatic' ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
-                        ⚙️ Automatic Drive
+                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap filter-chip-btn {{ request('transmission') == 'Automatic' ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
+                        ⚙️ Automatic
+                    </a>
+                    <a href="{{ route('cars.index', array_merge(request()->except(['fuel_type', 'page']), ['fuel_type' => 'Diesel'])) }}" 
+                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap filter-chip-btn {{ request('fuel_type') == 'Diesel' ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
+                        🛢️ Diesel Power
+                    </a>
+                    <a href="{{ route('cars.index', array_merge(request()->except(['fuel_type', 'page']), ['fuel_type' => 'Petrol'])) }}" 
+                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap filter-chip-btn {{ request('fuel_type') == 'Petrol' ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
+                        ⛽ Petrol Fleet
+                    </a>
+                    <a href="{{ route('cars.index', array_merge(request()->except(['fuel_type', 'page']), ['fuel_type' => 'Electric'])) }}" 
+                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap filter-chip-btn {{ request('fuel_type') == 'Electric' ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
+                        ⚡ Electric (EV)
+                    </a>
+                    <a href="{{ route('cars.index', array_merge(request()->except(['keyword', 'page']), ['keyword' => 'SUV'])) }}" 
+                       class="btn btn-sm rounded-pill px-3 py-2 fw-semibold text-nowrap filter-chip-btn {{ request('keyword') == 'SUV' ? 'btn-primary shadow-xs' : 'btn-white border text-dark' }}">
+                        🚙 SUVs & 4x4
                     </a>
                 </div>
 
@@ -559,6 +567,17 @@
                 showSkeletonLoader();
             });
         });
+        document.querySelectorAll('.filter-chip-btn, .pagination .page-link').forEach(link => {
+            link.addEventListener('click', function() {
+                showSkeletonLoader();
+            });
+        });
+        const sortSelect = document.querySelector('#topSortForm select');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                showSkeletonLoader();
+            });
+        }
     });
 </script>
 @endpush
