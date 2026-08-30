@@ -394,17 +394,33 @@
                                 <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="{{ $razorpayOrder['id'] }}">
                                 <input type="hidden" name="razorpay_signature" id="razorpay_signature">
 
-                                <button type="button" id="payBtn" onclick="startRazorpayPayment()" class="btn btn-success btn-lg w-100 rounded-pill fw-bold py-3 shadow-lg" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none;">
-                                    <i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Razorpay — Proceed to Secure Payment
+                                <button type="button" id="payBtn" onclick="startRazorpayPayment()" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold py-3 shadow-lg text-white" style="background: linear-gradient(135deg, #ff7a00, #ea580c); border: none; font-size: 1.08rem; letter-spacing: 0.2px;">
+                                    <i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} & Confirm Booking
                                 </button>
+                                <div class="text-center mt-2">
+                                    <small class="text-muted fs-7"><i class="fas fa-shield-halved text-success me-1"></i> Proceed to Secure Payment</small>
+                                </div>
                             </form>
 
-                            <div class="mt-4 p-3 bg-light rounded-4 border d-flex align-items-center justify-content-around text-muted small flex-wrap gap-2 text-center">
-                                <div><i class="fas fa-lock text-success me-1 fs-6"></i> <strong>256-Bit SSL</strong> Encrypted</div>
+                            <!-- Accepted Payment Options Badges -->
+                            <div class="mt-4 pt-3 border-top text-center">
+                                <label class="small text-muted text-uppercase fw-bold d-block mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">Accepted Payment Methods</label>
+                                <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap mb-3">
+                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fas fa-mobile-screen-button text-primary me-1"></i> UPI (GPay/PhonePe)</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fab fa-cc-visa text-primary me-1"></i> Visa</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fab fa-cc-mastercard text-danger me-1"></i> Mastercard</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fas fa-credit-card text-success me-1"></i> RuPay</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 fw-semibold"><i class="fas fa-building-columns text-info me-1"></i> NetBanking</span>
+                                </div>
+                            </div>
+
+                            <!-- Trust & Security Micro Badges -->
+                            <div class="p-3 bg-light rounded-4 border d-flex align-items-center justify-content-around text-muted small flex-wrap gap-2 text-center">
+                                <div><i class="fas fa-shield-check text-success me-1 fs-6"></i> <strong>100% Safe</strong> & Secure</div>
                                 <div class="vr d-none d-md-block opacity-25"></div>
-                                <div><i class="fas fa-shield-check text-primary me-1 fs-6"></i> <strong>Razorpay</strong> Certified Gateway</div>
+                                <div><i class="fas fa-lock text-primary me-1 fs-6"></i> <strong>256-Bit SSL</strong> Encrypted</div>
                                 <div class="vr d-none d-md-block opacity-25"></div>
-                                <div><i class="fas fa-rotate-left text-info me-1 fs-6"></i> <strong>₹2,000 Deposit</strong> 100% Refundable</div>
+                                <div><i class="fas fa-rotate-left text-info me-1 fs-6"></i> <strong>Refundable</strong> ₹2,000 Deposit</div>
                             </div>
 
                             <div class="text-center mt-3">
@@ -735,7 +751,7 @@
     function startRazorpayPayment() {
         const payBtn = document.getElementById('payBtn');
         payBtn.disabled = true;
-        payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Opening Razorpay...';
+        payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Connecting to Secure Gateway...';
 
         const options = {
             "key": @json($razorpayKey),
@@ -746,7 +762,7 @@
             "image": "https://cdn-icons-png.flaticon.com/512/3202/3202926.png",
             "order_id": @json($razorpayOrder['id']),
             "handler": function (response) {
-                payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Verifying Signature...';
+                payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Confirming Booking...';
                 document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
                 document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
                 document.getElementById('razorpay_signature').value = response.razorpay_signature || '';
@@ -760,11 +776,11 @@
             "modal": {
                 "ondismiss": function() {
                     payBtn.disabled = false;
-                    payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Razorpay';
+                    payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} & Confirm Booking';
                 }
             },
             "theme": {
-                "color": "#2563eb"
+                "color": "#ff7a00"
             }
         };
 
@@ -773,14 +789,14 @@
             rzp.on('payment.failed', function (response) {
                 alert("Payment Failed: " + (response.error.description || "Transaction was declined."));
                 payBtn.disabled = false;
-                payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Razorpay';
+                payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} & Confirm Booking';
             });
             rzp.open();
         } catch (e) {
-            console.error('Razorpay error:', e);
-            alert('Razorpay Checkout failed to initialize. Please check your connection.');
+            console.error('Payment checkout error:', e);
+            alert('Secure payment gateway failed to initialize. Please check your connection.');
             payBtn.disabled = false;
-            payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} via Razorpay';
+            payBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Pay ₹{{ number_format($totalAmount, 0) }} & Confirm Booking';
         }
     }
 
