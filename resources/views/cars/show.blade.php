@@ -28,8 +28,31 @@
 @endphp
 
 @push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
+    /* Leaflet Map Modern Styling */
+    #pickupMap {
+        height: 220px;
+        border-radius: 12px;
+        z-index: 5;
+    }
+    .leaflet-popup-content-wrapper {
+        border-radius: 10px;
+        font-family: inherit;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .custom-leaflet-pin {
+        background: transparent;
+        border: none;
+    }
+    .search-suggestion-item {
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+    .search-suggestion-item:hover {
+        background: #f8fafc;
+    }
     /* Modern Flatpickr Custom Theme */
     .flatpickr-calendar {
         border-radius: 16px !important;
@@ -313,17 +336,21 @@
                                                     </button>
                                                 </div>
 
-                                                <!-- Google Places Autocomplete Search -->
-                                                <div class="input-group input-group-sm mb-2">
-                                                    <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
-                                                    <input type="text" id="places_search" class="form-control border-start-0 fw-medium" placeholder="🔍 Search Delivery Address..." autocomplete="off">
+                                                <!-- Interactive Address Search with Auto-Suggestions -->
+                                                <div class="position-relative mb-2">
+                                                    <div class="input-group input-group-sm">
+                                                        <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
+                                                        <input type="text" id="places_search" class="form-control border-start-0 fw-medium" placeholder="🔍 Search Area (e.g. Navrangpura, SG Highway)..." autocomplete="off">
+                                                        <button type="button" class="btn btn-sm btn-light border border-start-0" id="clearSearchBtn" style="display: none;" onclick="clearLocationSearch()"><i class="fas fa-times text-muted"></i></button>
+                                                    </div>
+                                                    <div id="searchResultsDropdown" class="list-group position-absolute w-100 shadow-lg border rounded-3 overflow-hidden d-none" style="z-index: 1060; max-height: 220px; overflow-y: auto;"></div>
                                                 </div>
 
-                                                <!-- Google Maps -->
-                                                <div id="pickupMap" class="w-100 rounded-3 mb-2 border shadow-sm" style="height: 200px; z-index: 1;"></div>
+                                                <!-- Interactive Leaflet Delivery Map -->
+                                                <div id="pickupMap" class="w-100 rounded-3 mb-2 border shadow-sm" style="height: 220px; z-index: 5;"></div>
 
                                                 <small class="text-muted d-block mb-2 text-center" style="font-size: 0.72rem;">
-                                                    <i class="fas fa-hand-pointer me-1 text-primary"></i> You can also drag pin or click map to set delivery location
+                                                    <i class="fas fa-hand-pointer me-1 text-primary"></i> Drag pin or click map anywhere in Ahmedabad to set delivery location
                                                 </small>
 
                                                 <input type="text" id="pickup_flat" class="form-control form-control-sm mb-2 border-1 fw-semibold text-dark" placeholder="Flat / House / Office Name & No *" required>
@@ -650,8 +677,9 @@
 </section>
 
 @push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
-    let pickupMap, pickupMarker, geocoder;
+    let pickupMap, pickupMarker;
     const DEFAULT_LAT = 23.0225; // Ahmedabad Center
     const DEFAULT_LNG = 72.5714;
 
@@ -659,117 +687,174 @@
         if (pickupMap) return;
 
         const mapContainer = document.getElementById('pickupMap');
-        if (!mapContainer || typeof google === 'undefined') return;
+        if (!mapContainer || typeof L === 'undefined') return;
 
-        geocoder = new google.maps.Geocoder();
-
-        const defaultPos = { lat: DEFAULT_LAT, lng: DEFAULT_LNG };
-
-        pickupMap = new google.maps.Map(mapContainer, {
-            center: defaultPos,
-            zoom: 14,
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: false,
+        // Initialize Leaflet map centered on Ahmedabad
+        pickupMap = L.map('pickupMap', {
             zoomControl: true,
-            styles: [
-                { featureType: "poi", stylers: [{ visibility: "off" }] },
-                { featureType: "transit", stylers: [{ visibility: "off" }] }
-            ]
+            attributionControl: false
+        }).setView([DEFAULT_LAT, DEFAULT_LNG], 13);
+
+        // OpenStreetMap clean tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(pickupMap);
+
+        // Custom orange pin icon
+        const customPin = L.divIcon({
+            className: 'custom-leaflet-pin',
+            html: '<div style="background: linear-gradient(135deg, #ff7a00, #ea580c); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid #ffffff; box-shadow: 0 4px 15px rgba(234, 88, 12, 0.5); display: flex; align-items: center; justify-content: center;"><i class="fas fa-car" style="transform: rotate(45deg); font-size: 13px; color: #ffffff;"></i></div>',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
         });
 
-        pickupMarker = new google.maps.Marker({
-            position: defaultPos,
-            map: pickupMap,
+        pickupMarker = L.marker([DEFAULT_LAT, DEFAULT_LNG], {
             draggable: true,
-            animation: google.maps.Animation.DROP,
-            title: 'Delivery Location'
-        });
+            icon: customPin
+        }).addTo(pickupMap);
 
-        const infoWindow = new google.maps.InfoWindow({
-            content: '<b>📍 Delivery Location</b><br>Drag pin or click map to move'
-        });
-        infoWindow.open(pickupMap, pickupMarker);
+        pickupMarker.bindPopup('<b>📍 Delivery Location</b><br><small class="text-muted">Drag pin or click map to change</small>').openPopup();
 
         // Map click event
-        pickupMap.addListener('click', function(e) {
-            pickupMarker.setPosition(e.latLng);
-            reverseGeocode(e.latLng.lat(), e.latLng.lng());
-            infoWindow.close();
+        pickupMap.on('click', function(e) {
+            pickupMarker.setLatLng(e.latlng);
+            pickupMap.panTo(e.latlng);
+            reverseGeocode(e.latlng.lat, e.latlng.lng);
         });
 
         // Marker drag event
-        pickupMarker.addListener('dragend', function() {
-            const pos = pickupMarker.getPosition();
-            reverseGeocode(pos.lat(), pos.lng());
-            infoWindow.close();
+        pickupMarker.on('dragend', function(e) {
+            const pos = pickupMarker.getLatLng();
+            reverseGeocode(pos.lat, pos.lng);
         });
-
-        // Google Places Autocomplete
-        const searchInput = document.getElementById('places_search');
-        if (searchInput) {
-            const autocomplete = new google.maps.places.Autocomplete(searchInput, {
-                types: ['geocode', 'establishment'],
-                componentRestrictions: { country: 'in' }
-            });
-            autocomplete.bindTo('bounds', pickupMap);
-
-            autocomplete.addListener('place_changed', function() {
-                const place = autocomplete.getPlace();
-                if (!place.geometry || !place.geometry.location) return;
-
-                pickupMap.setCenter(place.geometry.location);
-                pickupMap.setZoom(16);
-                pickupMarker.setPosition(place.geometry.location);
-
-                // Extract address components
-                if (place.address_components) {
-                    fillAddressFromComponents(place.address_components);
-                }
-            });
-        }
 
         // Initial reverse geocode
         reverseGeocode(DEFAULT_LAT, DEFAULT_LNG);
+
+        // Setup live address search
+        setupAddressSearch();
+
+        // Fix container size
+        setTimeout(() => { pickupMap.invalidateSize(); }, 400);
     }
 
+    let geocodeAbortController;
     function reverseGeocode(lat, lng) {
-        if (!geocoder) return;
+        if (geocodeAbortController) geocodeAbortController.abort();
+        geocodeAbortController = new AbortController();
 
-        geocoder.geocode({ location: { lat: lat, lng: lng } }, function(results, status) {
-            if (status === 'OK' && results[0]) {
-                fillAddressFromComponents(results[0].address_components);
-            }
-        });
+        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&addressdetails=1`;
+        
+        fetch(url, { signal: geocodeAbortController.signal, headers: { 'Accept-Language': 'en' } })
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.address) {
+                    fillAddressFromOSM(data.address, data.display_name);
+                }
+            })
+            .catch(err => {
+                if (err.name !== 'AbortError') console.warn('Geocoding error:', err);
+            });
     }
 
-    function fillAddressFromComponents(addressComponents) {
-        let city = '', pincode = '', landmark = '';
+    function fillAddressFromOSM(addr, displayName) {
+        const flat = addr.house_number || addr.building || addr.office || addr.residential || '';
+        const landmark = addr.road || addr.suburb || addr.neighbourhood || addr.commercial || '';
+        const city = addr.city || addr.town || addr.village || addr.state_district || 'Ahmedabad';
+        const pincode = addr.postcode || '';
 
-        addressComponents.forEach(function(component) {
-            const types = component.types;
-            if (types.includes('locality')) {
-                city = component.long_name;
-            }
-            if (types.includes('postal_code')) {
-                pincode = component.long_name;
-            }
-            if (types.includes('sublocality_level_1') || types.includes('sublocality')) {
-                landmark = component.long_name;
-            }
-            if (!landmark && (types.includes('neighborhood') || types.includes('route'))) {
-                landmark = component.long_name;
-            }
-        });
-
+        const flatInput = document.getElementById('pickup_flat');
+        const landmarkInput = document.getElementById('pickup_landmark');
         const cityInput = document.getElementById('pickup_city');
-        if (cityInput && city) cityInput.value = city;
-
         const pincodeInput = document.getElementById('pickup_pincode');
+
+        if (flatInput && !flatInput.value) flatInput.value = flat || displayName.split(',')[0];
+        if (landmarkInput) landmarkInput.value = landmark;
+        if (cityInput) cityInput.value = city;
         if (pincodeInput && pincode) pincodeInput.value = pincode;
 
-        const landmarkInput = document.getElementById('pickup_landmark');
-        if (landmarkInput && landmark) landmarkInput.value = landmark;
+        // Mobile drawer fields
+        const mAddr = document.getElementById('mobile_pickup_address');
+        const mCity = document.getElementById('mobile_pickup_city');
+        const mPin = document.getElementById('mobile_pickup_pincode');
+        if (mAddr && !mAddr.value) mAddr.value = (flat ? flat + ', ' : '') + landmark;
+        if (mCity) mCity.value = city;
+        if (mPin && pincode) mPin.value = pincode;
+    }
+
+    let searchDebounceTimer;
+    function setupAddressSearch() {
+        const searchInput = document.getElementById('places_search');
+        const dropdown = document.getElementById('searchResultsDropdown');
+        const clearBtn = document.getElementById('clearSearchBtn');
+        if (!searchInput || !dropdown) return;
+
+        searchInput.addEventListener('input', function() {
+            const q = this.value.trim();
+            if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+
+            if (q.length < 3) {
+                dropdown.classList.add('d-none');
+                dropdown.innerHTML = '';
+                return;
+            }
+
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                dropdown.innerHTML = '<div class="list-group-item small text-muted"><i class="fas fa-spinner fa-spin me-2 text-primary"></i>Searching locations in Ahmedabad...</div>';
+                dropdown.classList.remove('d-none');
+
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q + ', Gujarat, India')}&addressdetails=1&limit=5`, {
+                    headers: { 'Accept-Language': 'en' }
+                })
+                .then(res => res.json())
+                .then(results => {
+                    dropdown.innerHTML = '';
+                    if (!results || results.length === 0) {
+                        dropdown.innerHTML = '<div class="list-group-item small text-muted">No matching places found. Try dragging pin on map.</div>';
+                        return;
+                    }
+                    results.forEach(res => {
+                        const item = document.createElement('button');
+                        item.type = 'button';
+                        item.className = 'list-group-item list-group-item-action small py-2 d-flex align-items-center gap-2 text-start search-suggestion-item';
+                        item.innerHTML = `<i class="fas fa-location-dot text-primary flex-shrink-0"></i> <div><strong class="d-block text-dark">${res.display_name.split(',')[0]}</strong><span class="text-muted fs-7">${res.display_name}</span></div>`;
+                        item.onclick = function() {
+                            const lat = parseFloat(res.lat);
+                            const lon = parseFloat(res.lon);
+                            if (pickupMap && pickupMarker) {
+                                pickupMap.setView([lat, lon], 16);
+                                pickupMarker.setLatLng([lat, lon]);
+                                pickupMarker.bindPopup(`<b>📍 ${res.display_name.split(',')[0]}</b>`).openPopup();
+                                reverseGeocode(lat, lon);
+                            }
+                            searchInput.value = res.display_name.split(',')[0];
+                            dropdown.classList.add('d-none');
+                        };
+                        dropdown.appendChild(item);
+                    });
+                })
+                .catch(() => {
+                    dropdown.innerHTML = '<div class="list-group-item small text-muted">Search temporarily offline. Please drag map pin.</div>';
+                });
+            }, 300);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('d-none');
+            }
+        });
+    }
+
+    function clearLocationSearch() {
+        const input = document.getElementById('places_search');
+        const clearBtn = document.getElementById('clearSearchBtn');
+        const dropdown = document.getElementById('searchResultsDropdown');
+        if (input) input.value = '';
+        if (clearBtn) clearBtn.style.display = 'none';
+        if (dropdown) dropdown.classList.add('d-none');
     }
 
     function detectGPSLocation(e) {
@@ -785,18 +870,11 @@
             position => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
-                const pos = { lat: lat, lng: lng };
 
                 if (pickupMap && pickupMarker) {
-                    pickupMap.setCenter(pos);
-                    pickupMap.setZoom(16);
-                    pickupMarker.setPosition(pos);
-
-                    const infoWindow = new google.maps.InfoWindow({
-                        content: '<b>🎯 Your Current Location</b>'
-                    });
-                    infoWindow.open(pickupMap, pickupMarker);
-
+                    pickupMap.setView([lat, lng], 16);
+                    pickupMarker.setLatLng([lat, lng]);
+                    pickupMarker.bindPopup('<b>🎯 Your Current Location</b>').openPopup();
                     reverseGeocode(lat, lng);
                 }
 
@@ -991,17 +1069,8 @@
         }
     });
 
-    // Wait for Google Maps API to be ready
-    function waitForGoogleMaps() {
-        if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
-            initPickupMap();
-        } else {
-            setTimeout(waitForGoogleMaps, 100);
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
-        waitForGoogleMaps();
+        initPickupMap();
 
         // Initialize Flatpickr with Booked-Dates Disabling & Range Mode
         const bookedRanges = @json($bookedRanges);
