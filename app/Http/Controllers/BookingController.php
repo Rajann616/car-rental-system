@@ -23,8 +23,10 @@ class BookingController extends Controller
         $request->validate([
             'pickup_date' => 'required|date|after_or_equal:today',
             'return_date' => 'required|date|after:pickup_date',
-            'pickup_location' => 'required|string',
+            'pickup_location' => 'nullable|string',
         ]);
+
+        $pickupLocation = $request->filled('pickup_location') ? $request->pickup_location : 'Ahmedabad (Doorstep Delivery)';
 
         $pickupDate = Carbon::parse($request->pickup_date);
         $returnDate = Carbon::parse($request->return_date);
@@ -56,16 +58,16 @@ class BookingController extends Controller
                 'return_date' => $returnDate->toDateString(),
                 'total_amount' => $totalAmount,
                 'security_deposit' => $securityDeposit,
-                'pickup_location' => $request->pickup_location,
-                'return_location' => $request->pickup_location,
+                'pickup_location' => $pickupLocation,
+                'return_location' => $pickupLocation,
                 'status' => 'Pending',
             ]);
         } else {
             $booking->update([
                 'total_amount' => $totalAmount,
                 'security_deposit' => $securityDeposit,
-                'pickup_location' => $request->pickup_location,
-                'return_location' => $request->pickup_location,
+                'pickup_location' => $pickupLocation,
+                'return_location' => $pickupLocation,
             ]);
         }
 

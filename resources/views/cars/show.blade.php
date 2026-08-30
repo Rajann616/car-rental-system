@@ -325,50 +325,6 @@
                                     <form action="{{ route('customer.bookings.create', $car->id) }}" method="GET" id="bookingForm" onsubmit="preparePickupLocation(event)">
                                         <input type="hidden" name="pickup_location" id="final_pickup_location">
 
-                                        <!-- Delivery Address Section -->
-                                        <label class="form-label small fw-bold text-muted text-uppercase mb-2">Delivery Address</label>
-                                        <div class="mb-3">
-                                            <div class="p-3 border rounded-3 bg-light">
-                                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                                    <span class="text-primary small fw-bold"><i class="fas fa-location-dot me-1"></i> Your Delivery Location</span>
-                                                    <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 rounded-pill fw-bold" onclick="detectGPSLocation(event)" style="font-size: 0.75rem;" id="gpsBtn">
-                                                        <i class="fas fa-location-crosshairs me-1"></i> 📍 Use Current Location
-                                                    </button>
-                                                </div>
-
-                                                <!-- Interactive Address Search with Auto-Suggestions -->
-                                                <div class="position-relative mb-2">
-                                                    <div class="input-group input-group-sm">
-                                                        <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
-                                                        <input type="text" id="places_search" class="form-control border-start-0 fw-medium" placeholder="🔍 Search Area (e.g. Navrangpura, SG Highway)..." autocomplete="off">
-                                                        <button type="button" class="btn btn-sm btn-light border border-start-0" id="clearSearchBtn" style="display: none;" onclick="clearLocationSearch()"><i class="fas fa-times text-muted"></i></button>
-                                                    </div>
-                                                    <div id="searchResultsDropdown" class="list-group position-absolute w-100 shadow-lg border rounded-3 overflow-hidden d-none" style="z-index: 1060; max-height: 220px; overflow-y: auto;"></div>
-                                                </div>
-
-                                                <!-- Interactive Leaflet Delivery Map -->
-                                                <div id="pickupMap" class="w-100 rounded-3 mb-2 border shadow-sm" style="height: 220px; z-index: 5;"></div>
-
-                                                <small class="text-muted d-block mb-2 text-center" style="font-size: 0.72rem;">
-                                                    <i class="fas fa-hand-pointer me-1 text-primary"></i> Drag pin or click map anywhere in Ahmedabad to set delivery location
-                                                </small>
-
-                                                <input type="text" id="pickup_flat" class="form-control form-control-sm mb-2 border-1 fw-semibold text-dark" placeholder="Flat / House / Office Name & No *" required>
-                                                <input type="text" id="pickup_landmark" class="form-control form-control-sm mb-2 border-1" placeholder="Landmark *" required>
-                                                <div class="row g-2">
-                                                    <div class="col-7">
-                                                        <input type="text" id="pickup_city" class="form-control form-control-sm border-1" placeholder="City *" required>
-                                                    </div>
-                                                    <div class="col-5">
-                                                        <input type="text" id="pickup_pincode" class="form-control form-control-sm border-1" placeholder="Pincode *" pattern="[0-9]{6}" maxlength="6" required>
-                                                    </div>
-                                                </div>
-                                                <small class="text-muted d-block mt-2" style="font-size: 0.73rem;">
-                                                    <i class="fas fa-shield-alt text-success me-1"></i> Vehicle will be delivered to your selected address.
-                                                </small>
-                                            </div>
-                                        </div>
-
                                         <!-- Interactive Rental Dates Range Picker -->
                                         <div class="mb-3">
                                             <label class="form-label small fw-bold text-muted text-uppercase mb-1">
@@ -382,6 +338,17 @@
                                             <input type="hidden" name="return_date" id="return_date" value="{{ date('Y-m-d', strtotime('+1 day')) }}">
                                             <small class="text-muted d-block mt-1 fs-7">
                                                 <i class="fas fa-circle-info text-primary me-1"></i> Crossed-out dates are already booked for this car.
+                                            </small>
+                                        </div>
+
+                                        <!-- Doorstep Delivery Info Box -->
+                                        <div class="p-3 bg-light rounded-3 mb-3 border">
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                                <div class="small fw-bold text-dark"><i class="fas fa-truck-fast text-primary me-1"></i> Doorstep Delivery</div>
+                                                <span class="badge bg-success-subtle text-success">FREE</span>
+                                            </div>
+                                            <small class="text-muted d-block fs-7">
+                                                Select your exact doorstep address or airport hub on the next step.
                                             </small>
                                         </div>
 
@@ -410,8 +377,8 @@
                                             </div>
                                         </div>
 
-                                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold shadow-sm">
-                                            Proceed to Booking <i class="fas fa-arrow-right ms-2"></i>
+                                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold shadow-sm py-3">
+                                            Proceed to Choose Address & Book <i class="fas fa-arrow-right ms-2"></i>
                                         </button>
 
                                         <!-- 4 High-Trust Micro-Badges -->
@@ -573,18 +540,15 @@
                         <input type="hidden" name="pickup_date" id="mobile_pickup_date" value="{{ date('Y-m-d') }}">
                         <input type="hidden" name="return_date" id="mobile_return_date" value="{{ date('Y-m-d', strtotime('+1 day')) }}">
 
-                        <!-- Delivery Address Input -->
-                        <label class="form-label small fw-bold text-muted text-uppercase mb-2">Delivery Address in Ahmedabad</label>
-                        <div class="mb-3">
-                            <textarea class="form-control mb-2 border-2" id="mobile_pickup_address" rows="2" placeholder="House / Flat No, Street, Area, Landmark *" required></textarea>
-                            <div class="row g-2">
-                                <div class="col-7">
-                                    <input type="text" id="mobile_pickup_city" class="form-control form-control-sm border-2" placeholder="City" value="Ahmedabad" required>
-                                </div>
-                                <div class="col-5">
-                                    <input type="text" id="mobile_pickup_pincode" class="form-control form-control-sm border-2" placeholder="Pincode *" pattern="[0-9]{6}" maxlength="6" required>
-                                </div>
+                        <!-- Doorstep Delivery Info Notice -->
+                        <div class="p-3 bg-light rounded-3 mb-3 border">
+                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                <div class="small fw-bold text-dark"><i class="fas fa-truck-fast text-primary me-1"></i> Doorstep Vehicle Delivery</div>
+                                <span class="badge bg-success-subtle text-success">FREE</span>
                             </div>
+                            <small class="text-muted d-block fs-7">
+                                You will select your doorstep location or airport hub on the next step.
+                            </small>
                         </div>
 
                         <!-- Dynamic Live Price Breakdown -->
@@ -612,8 +576,8 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold mb-3 shadow-sm">
-                            Proceed to Booking <i class="fas fa-arrow-right ms-2"></i>
+                        <button type="submit" class="btn btn-liquid-primary btn-lg w-100 rounded-pill fw-bold mb-3 shadow-sm py-3">
+                            Proceed to Choose Address & Book <i class="fas fa-arrow-right ms-2"></i>
                         </button>
                     </form>
                 @endif
@@ -899,11 +863,12 @@
 
         let finalLocation = '';
         if (flat) finalLocation += flat;
-        if (landmark) finalLocation += ', ' + landmark;
-        if (city) finalLocation += ', ' + city;
+        if (landmark) finalLocation += (finalLocation ? ', ' : '') + landmark;
+        if (city) finalLocation += (finalLocation ? ', ' : '') + city;
         if (pincode) finalLocation += ' - ' + pincode;
 
-        document.getElementById('final_pickup_location').value = finalLocation;
+        const locInput = document.getElementById('final_pickup_location');
+        if (locInput) locInput.value = finalLocation || 'Ahmedabad';
     }
 
     function prepareMobilePickupLocation(e) {
@@ -912,10 +877,11 @@
         const pincode = document.getElementById('mobile_pickup_pincode') ? document.getElementById('mobile_pickup_pincode').value.trim() : '';
 
         let finalLocation = addr;
-        if (city) finalLocation += ', ' + city;
+        if (city) finalLocation += (finalLocation ? ', ' : '') + city;
         if (pincode) finalLocation += ' - ' + pincode;
 
-        document.getElementById('mobile_final_pickup_location').value = finalLocation;
+        const mLocInput = document.getElementById('mobile_final_pickup_location');
+        if (mLocInput) mLocInput.value = finalLocation || 'Ahmedabad';
     }
 
     /* Dynamic Pricing Engine with Duration Discounts */
